@@ -1,16 +1,26 @@
+/* *********************
+ * ** --- GENERAL --- **
+ * ********************* 
+ */
+
+function CsaWpPluginSlideToggle (which){
+	var $j = jQuery.noConflict();
+	$j(which).slideToggle("slow");
+}
+
 /* **********************
  * ** --- PRODUCTS --- **
  * ********************** 
  */
-
+ 
 function slow_hideshow_addNewProductForm() {
 	var $j = jQuery.noConflict();
 	if (document.getElementById("csa_wp_addProduct_ack").style.display != "none")
 		document.getElementById("csa_wp_addProduct_ack").style.display = "none";
 	
 	if (document.getElementById("csa_wp_addProduct_div").style.display == "none")
-		document.getElementById("csa_wp_addProduct_formHeader_text").innerHTML = "<font size='4'> New Product Form (hide) </font>";
-	else document.getElementById("csa_wp_addProduct_formHeader_text").innerHTML = "<font size='4'> New Product Form (show) </font>";
+		document.getElementById("csa_wp_addProduct_formHeader_text").innerHTML = "<font size='4'> Add New Product (hide form) </font>";
+	else document.getElementById("csa_wp_addProduct_formHeader_text").innerHTML = "<font size='4'> Add New Product (show form) </font>";
 
 	$j("#csa_wp_addProduct_div").slideToggle("slow");
 }
@@ -109,12 +119,12 @@ function CsaWpPluginToggleProductVisibility(productID, pluginsDir) {
  * ******************** 
  */
  
-function slow_hideshow_submitOrderForm() {
+function slow_hideshow_submitOrderForm(text) {
 	var $j = jQuery.noConflict();
 
 	if (document.getElementById("csa_wp_submitOrder_div").style.display == "none")
-		document.getElementById("csa_wp_submitOrder_formHeader_text").innerHTML = "<font size='4'> Submit New Order Form (hide) </font>";
-	else document.getElementById("csa_wp_submitOrder_formHeader_text").innerHTML = "<font size='4'> Submit New Order Form (show) </font>";
+		document.getElementById("csa_wp_submitOrder_formHeader_text").innerHTML = "<font size='4'> " + text + " (hide form) </font>";
+	else document.getElementById("csa_wp_submitOrder_formHeader_text").innerHTML = "<font size='4'> " + text + " (show form) </font>";
 
 	$j("#csa_wp_submitOrder_div").slideToggle("slow");
 
@@ -134,34 +144,102 @@ function calcNewOrderCost() {
 	document.getElementById('totalCalc').innerHTML = 'Σύνολο: <span style=font-weight:bold;color:green>' + totalCost.toFixed(2) + ' €</span>';
 }
 
-function CsaWpPluginSendRequestSumbitOrderToServer(user_login) {
+function calcEditableOrderCost(product) {
+	var $j = jQuery.noConflict();
+	var ordsQuantity = $j('.editable_product_order_quantity');
+	var ordsPrice = $j('.editable_product_order_price');
+	var ordsCost = $j('.editable_product_order_cost');
+	var len = ordsQuantity.length;
+	
+	var totalCost = 0;
+	for (var i=0; i<len; i++) {
+		var quantity = ordsQuantity.eq(i).text().replace(' €', '');
+		var price = ordsPrice.eq(i).text().replace(' €', '');
+		var cost = quantity * price;
+		ordsCost.eq(i).text(cost + " €");
+		totalCost+=cost;
+		
+		if (quantity == 0) CsaWpPluginRequestDeleteProductOrder(product, false);
+	}
+	
+	document.getElementById("editable_product_order_TotalCost").innerHTML = totalCost + " €";
+}
 
-	console.log ("Initializing submit");
+function CsaWpPluginRequestSumbitOrderToServer(user_login) {
 
 	var $j = jQuery.noConflict();
 	var serializedFormData = $j('#csa_wp_plugin_sumbitOrder_form').serializeArray();
+	
+	serializedFormData = JSON.stringify(serializedFormData);
 		
-	console.log("Length of data:" + serializedFormData.length);
-	
-    $j.each(serializedFormData, function(i, field){
-        console.log(field.name + ":" + field.value + " ");
-    });
-	
-	console.log ("data to sent: [" + serializedFormData+ "]");
-	
 	var data = {
 		'action': 'csa_wp_plugin_add_new_order',
 		'user_login': user_login,
 		'data': serializedFormData
-	  }
-	
-	console.log ("submitting to server");
+	}
 	
 	$j.post(ajaxurl, data ,
 		function(response){
-			console.log("Server returned: [" + response + "]");
+			//console.log("Server returned: [" + response + "]");
+			location.reload(true);
 		});
 
+
+}
+
+function CsaWpPluginHoverIcon(element, iconName, pluginsDir) {
+	element.setAttribute('src', pluginsDir + '/csa-wp-plugin/icons/' + iconName +'_hover.png');
+}
+
+function CsaWpPluginUnHoverIcon(element, iconName, pluginsDir) {
+	element.setAttribute('src', pluginsDir + '/csa-wp-plugin/icons/' + iconName +'.png');
+}
+
+function CsaWpPluginRequestDeleteProductOrder(product, cancelIconPressed) {
+
+	var $j = jQuery.noConflict();		
+
+	var product;
+	if (cancelIconPressed) product = product.parentNode.parentNode;
+	else product = product.parentNode;
+
+	var productOrderID = $j(product).attr("id").split('_')[1];
+	
+	//update database
+	var data = {
+		"action" : "csa_wp_plugin_delete_user_order_product",
+		"productOrderID" : productOrderID
+	};
+	
+	$j.post(ajaxurl, data, 
+		function(response) { 
+			//console.log ("Server returned:["+response+"]");
+			
+			$j(product).fadeOut(200,function() {
+					$j(product).remove();
+					//calcTotalCost();
+					if ($j('#csa_wp_showUserOrder_table .csa-wp-plugin-user-order-product').length == 0) location.reload(true);
+			});
+		}
+	);
+}
+
+function CsaWpPluginRequestDeleteUserOrder(user, lastDeliveryDate) {
+	var $j = jQuery.noConflict();		
+	
+	//update database
+	var data = {
+		"action" : "csa_wp_plugin_delete_user_order",
+		"userLogin" : user,
+		"lastDeliveryDate" : lastDeliveryDate
+	};
+	
+	$j.post(ajaxurl, data, 
+		function(response) { 
+			//console.log ("Server returned:["+response+"]");
+			location.reload(true);
+		}
+	);
 
 }
 

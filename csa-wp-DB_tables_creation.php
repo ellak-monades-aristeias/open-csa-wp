@@ -19,7 +19,7 @@ function CsaWpPluginDBTablesCreation () {
 	  variety varchar(30) DEFAULT NULL,
 	  price float DEFAULT NULL,
 	  unit text,
-	  date date DEFAULT NULL,
+	  date datetime DEFAULT NULL,
 	  quantity float DEFAULT NULL,
 	  PRIMARY KEY  (id)
 	) $charset_collate;
@@ -151,7 +151,7 @@ function CsaWpPluginDBTablesDrop() {
 
 	global $wpdb; 
 
-	$wpdb->query("DROP TABLE IF EXISTS ". csaPreOrders);
+	$wpdb->query("DROP TABLE IF EXISTS ". csaOrders);
 	$wpdb->query("DROP TABLE IF EXISTS ". csaProducts);
 }
 

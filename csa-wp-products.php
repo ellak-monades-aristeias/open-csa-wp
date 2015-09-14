@@ -9,7 +9,7 @@ function CsaWpPluginShowNewProductForm() {
 	wp_enqueue_script( 'CsaWpPluginScripts' );?>
 	
 	<br />
-	<div id="csa_wp_addProduct_formHeader"><span style="cursor:pointer" id="csa_wp_addProduct_formHeader_text" onclick="slow_hideshow_addNewProductForm()"><font size='4'>New Product Form (show)</font></span></div>
+	<div id="csa_wp_addProduct_formHeader"><span style="cursor:pointer" id="csa_wp_addProduct_formHeader_text" onclick="slow_hideshow_addNewProductForm()"><font size='4'>Add New Product (show form)</font></span></div>
 	<div id="csa_wp_addProduct_ack" class="info-text" style="display:none"> Το προϊόν καταχωρήθηκε επιτυχώς</div>
 	<div id="csa_wp_addProduct_div" style="display:none">
 		<!-- SQL: Get Columns from csa_product table: SELECT COLUMN_NAME FROM INFORMATION_SCHEMA.COLUMNS WHERE TABLE_NAME = 'csa_product' ORDER BY ORDINAL_POSITION -->
@@ -120,7 +120,7 @@ function CsaWpPluginShowProducts() {
 		//edit any value of any object (of class .editable)
 		$j(".editable", oTable.fnGetNodes()).editable(
 			function(value, settings) { 
-				tmp = this;
+				var tmp = this;
 			
 				var dataPost = {
 					"action" : "csa_wp_plugin_update_product",
@@ -187,11 +187,10 @@ function CsaWpPluginShowProducts() {
 add_shortcode('csa-wp-plugin-showProductsList', 'CsaWpPluginShowProducts');
 
 function CsaWpPluginUpdateProduct() {
-
 	if(isset($_POST['value']) && isset($_POST['column']) && isset($_POST['productID'])) {
 		//$old_value = clean_input($_POST['old_val']);
 		$new_value = clean_input($_POST['value']);
-		$columnNum = intval(clean_input($_POST['column'])); //not valid for getting the right column, when html table structure differs from the relative db table
+		$columnNum = intval(clean_input($_POST['column'])); //not valid for getting the right column, when html table structure differs from the relative db table ??????? IS THIS IMPORTANT ?????
 		$productID = intval(clean_input($_POST['productID']));
 		if(!empty($columnNum) && !empty($productID)) {
 			// Updating the information 
@@ -226,7 +225,7 @@ function CsaWpPluginUpdateProductAvailability() {
 		if(	$wpdb->update(
 			csaProducts,
 			array("available" => $availability), 
-			array('id' => $productID )
+			array('id' => $productID)
 		) === FALSE) 
 			echo '<span style="color:red">Κάτι δε δούλεψε σωστά. Παρακαλώ αναφέρετε τις λεπτομέρειες της ενέργειάς σας στο διαχειριστή ,['.$new_value.']['.$columnNum.']['.$c_id.']['.$columnName.']</span>';												
 		else echo 'success, Availability has been updated.';

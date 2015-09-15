@@ -132,9 +132,9 @@ function CsaWpPluginShowProducts() {
 					function(response) { 
 						//console.log ("Server returned:["+response+"]");
 						
-						var fetch = response.split(",");
-						var aPos = oTable.fnGetPosition(tmp);
-						oTable.fnUpdate(fetch[1], aPos[0], aPos[1]);
+						//var fetch = response.split(",");
+						//var aPos = oTable.fnGetPosition(tmp);
+						//oTable.fnUpdate(fetch[1], aPos[0], aPos[1]);
 					}
 				);
 				return(value);

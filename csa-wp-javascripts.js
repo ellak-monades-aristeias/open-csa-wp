@@ -144,8 +144,9 @@ function calcNewOrderCost() {
 	document.getElementById('totalCalc').innerHTML = 'Σύνολο: <span style=font-weight:bold;color:green>' + totalCost.toFixed(2) + ' €</span>';
 }
 
-function calcEditableOrderCost(product) {
+function calcEditableOrderCost() {
 	var $j = jQuery.noConflict();
+	
 	var ordsQuantity = $j('.editable_product_order_quantity');
 	var ordsPrice = $j('.editable_product_order_price');
 	var ordsCost = $j('.editable_product_order_cost');
@@ -158,8 +159,6 @@ function calcEditableOrderCost(product) {
 		var cost = quantity * price;
 		ordsCost.eq(i).text(cost + " €");
 		totalCost+=cost;
-		
-		if (quantity == 0) CsaWpPluginRequestDeleteProductOrder(product, false);
 	}
 	
 	document.getElementById("editable_product_order_TotalCost").innerHTML = totalCost + " €";
@@ -195,15 +194,12 @@ function CsaWpPluginUnHoverIcon(element, iconName, pluginsDir) {
 	element.setAttribute('src', pluginsDir + '/csa-wp-plugin/icons/' + iconName +'.png');
 }
 
-function CsaWpPluginRequestDeleteProductOrder(product, cancelIconPressed) {
+function CsaWpPluginRequestDeleteProductOrder(product) {
 
 	var $j = jQuery.noConflict();		
+	var productTR = $j(product).closest("tr");
 
-	var product;
-	if (cancelIconPressed) product = product.parentNode.parentNode;
-	else product = product.parentNode;
-
-	var productOrderID = $j(product).attr("id").split('_')[1];
+	var productOrderID = $j(productTR).attr("id").split('_')[1];
 	
 	//update database
 	var data = {
@@ -215,9 +211,15 @@ function CsaWpPluginRequestDeleteProductOrder(product, cancelIconPressed) {
 		function(response) { 
 			//console.log ("Server returned:["+response+"]");
 			
-			$j(product).fadeOut(200,function() {
-					$j(product).remove();
-					//calcTotalCost();
+			$j(productTR).fadeOut(200,function() {
+					var productTDs = $j(productTR).find("td");
+					var len = productTDs.length;
+					for (var i=0; i<len; i++) $j(productTDs.eq(i)).remove();
+														
+					$j(productTR).remove();
+					
+					calcEditableOrderCost();
+					
 					if ($j('#csa_wp_showUserOrder_table .csa-wp-plugin-user-order-product').length == 0) location.reload(true);
 			});
 		}

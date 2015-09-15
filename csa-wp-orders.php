@@ -32,15 +32,16 @@ function CsaWpPluginUserOrder($user = NULL) {
 		return;
 		
 	// ============== THIS SHOULD BE UPDATED ==================
-	$current_date_string = current_time('mysql');
+	//$current_date_string = current_time('mysql');
 	//$current_date = new DateTime($current_date_string);
+	$current_date = current_time('mysql');
 	//$delivery_day = $wpdb->get_var("SELECT pref_value FROM $prefs WHERE pref_name='delivery_day'" ); //eg. "Monday"
 	$delivery_day = "Monday";
 	//$nextDelivery_date = new DateTime( date('Y-m-d', strtotime("Next ".$delivery_day)) );	
 	//$last_delivery_date = $wpdb->get_var("SELECT pref_value FROM $prefs WHERE pref_name='last_delivery_date'");
 	$date_format = "Y-m-d";
 	$time_format = "H:i:s";
-	$last_delivery_date = date( "{$date_format} {$time_format}", strtotime($current_date_string.' -1 day'));
+	$last_delivery_date = date( "{$date_format} {$time_format}", strtotime($current_date.' -1 day'));
 	//$check = $wpdb->get_results("SELECT type FROM $ords WHERE user_login='".$current_user->user_login."' AND date BETWEEN '".$last_delivery_date."' AND CURDATE()", ARRAY_N);
 	
 	$userHasOrder = false;
@@ -55,7 +56,7 @@ function CsaWpPluginUserOrder($user = NULL) {
 	else CsaWpPluginShowNewOrderForm($user);
 	
 }
-add_shortcode('personalOrder', 'CsaWpPluginUserOrder');
+add_shortcode('csa-wp-plugin-myPersonalOrder', 'CsaWpPluginUserOrder');
 
 
 
@@ -258,11 +259,11 @@ function CsaWpPluginShowEditableOrder($user, $last_delivery_date) {
 					function(response) { 
 						//console.log ("Server returned:["+response+"]");
 						
-						var fetch = response.split(",");
-						var aPos = oTable.fnGetPosition(tmp);
-						oTable.fnUpdate(fetch[1], aPos[0], aPos[1]);
-						
-						calcEditableOrderCost(tmp);
+						//var aPos = oTable.fnGetPosition(tmp);
+						//oTable.fnUpdate(value, aPos[0], aPos[1]);	
+					
+						if (value == 0)	CsaWpPluginRequestDeleteProductOrder(tmp);
+						else calcEditableOrderCost(tmp);
 					}
 				);
 				return(value);
@@ -271,45 +272,7 @@ function CsaWpPluginShowEditableOrder($user, $last_delivery_date) {
 		);	
 	});
 	
-	</script>
-	<script language="javascript" type="text/javascript">
-	/*
-	function count_perRow_Cost(event,rowId) {
-		if (event.keyCode == 13) //on enter pressed
-		{
-			setTimeout( function(){countCost(rowId)}, 300); //fire a little later after the ajax call has returned
-		}
-	}
-	
-	function countCost(rowId) { 
-		var cost = 0;
-		var quantity = document.getElementById('quantity'+rowId).innerHTML;
-		if(quantity >= 0) {
-			 var price = document.getElementById('price['+rowId+']').innerHTML;
-			 cost =  price * quantity;	
-		}
-		document.getElementById('cost['+rowId+']').innerHTML = cost.toFixed(2) + ' €';
-		
-		calcTotalCost();
-	}
-	
-	function calcTotalCost() // <!>This function is not intended for large tables!
-	{   
-		//loop through all cells, looking for the 'cost' class ones. Then add their values. 
-		var tds = document.getElementById('preorder_tb').getElementsByTagName('TD');
-		var sum = 0;
-		for(var i = 0; i < tds.length; i ++) {
-			if( tds[i].className.indexOf('cost') != -1 ) 
-			{
-				var price = parseFloat( tds[i].innerHTML.replace(' €', '') );
-				sum += price;
-			}
-		}
-		document.getElementById('tCost').innerHTML = sum.toFixed(2) ;
-	}
-			*/
-	</script>
-	
+	</script>	
 
 	<span  class='tip' title='Για να επεξεργαστείτε οποιαδήποτε ποσότητα, πιέστε τον αριθμό της, αλλάξτε τον και πατήστε ENTER.
 	|Για να διαγράψετε ένα προϊόν από την παραγγελία, πιέστε το εικονίδιο στο τέλος της γραμμής.'><p style="width:36em;text-align:right"><i>διαβάστε εδώ πληροφορίες για την αλλαγή της παραγγελίας</i></p>
@@ -344,7 +307,7 @@ function CsaWpPluginShowEditableOrder($user, $last_delivery_date) {
 			$pCost = $row->price * $row->quantity;
 			$productOrderID = $row->id;
 			echo "
-			<tr class='csa-wp-plugin-user-order-product' id='productOrderID_$productOrderID'>
+			<tr class='csa-wp-plugin-user-order-product' id='productOrderID_$productOrderID'>			
 				<td id='quantity$productOrderID' class='editable_product_order_quantity' style='text-align:center'>$row->quantity</td>
 				<td>".$row->type."</TD>
 				<td>".$row->variety."</td>
@@ -355,7 +318,7 @@ function CsaWpPluginShowEditableOrder($user, $last_delivery_date) {
 				if ($row->details != '')
 					echo "<td style='text-align:center'><span class='tip' title='|".$row->details."'>info</span></td>";			
 				else echo "<td/>";			
-				echo "<td> <img class='delete no-underline' src='$pluginsDir/csa-wp-plugin/icons/delete.png' style='cursor:pointer;padding-left:10px;' onmouseover='CsaWpPluginHoverIcon(this, \"delete\", \"$pluginsDir\")' onmouseout='CsaWpPluginUnHoverIcon(this, \"delete\", \"$pluginsDir\")' onclick='CsaWpPluginRequestDeleteProductOrder(this,true)' title='διαγραφή'/></td>
+				echo "<td> <img class='delete no-underline' src='$pluginsDir/csa-wp-plugin/icons/delete.png' style='cursor:pointer;padding-left:10px;' onmouseover='CsaWpPluginHoverIcon(this, \"delete\", \"$pluginsDir\")' onmouseout='CsaWpPluginUnHoverIcon(this, \"delete\", \"$pluginsDir\")' onclick='CsaWpPluginRequestDeleteProductOrder(this)' title='διαγραφή'/></td>
 			</tr>"; 
 			$totalCost+=$pCost;
 		}
@@ -462,5 +425,198 @@ function CsaWpPluginDeleteUserOrder() {
 	wp_die(); 	// this is required to terminate immediately and return a proper response
 
 }
+
+function CsaWpPluginShowTotalUserOrdersForDelivery () {
+	global $wpdb;
+
+	//$last_delivery_date = $wpdb->get_var("SELECT pref_value FROM $prefs WHERE pref_name='last_delivery_date'");
+	$current_date = current_time('mysql');
+	$date_format = "Y-m-d";
+	$time_format = "H:i:s";
+	$last_delivery_date = date( "{$date_format} {$time_format}", strtotime($current_date.' -1 day'));
+	$producers_involved = $wpdb->get_col($wpdb->prepare("SELECT distinct ".csaProducts.".producer FROM ".csaOrders.", ".csaProducts." WHERE ".csaProducts.".id = ".csaOrders.".product_id  AND date BETWEEN %s AND NOW()", $last_delivery_date));
+	$producers_count = count($producers_involved);
+
+	if($producers_count <= 0)
+		echo "<span class='info-text' style='font-size:15px'>Δεν έχει καταχωρηθεί ακόμη καμία παραγγελία. </span> <br><br>";
+	else
+	{
+		global $site_url;
+		echo "<span class='info-text' style='font-size:15px'>Παραγγελίες: </span>";
+		$users_count = $wpdb->get_var($wpdb->prepare("SELECT count(DISTINCT user_login) AS usersCount FROM ".csaOrders." WHERE date BETWEEN %s AND NOW()", $last_delivery_date));
+		$product_details_width = 130;
+		$amount_perProduct_width = 30;
+		$user_order_width = 58; 			//change also by css (class .left) ???? SHALL WE INCORPORATE THIS? ????
+		$productValue_width = 70;
+		$mainWidth = $product_details_width + $amount_perProduct_width + $user_order_width*$users_count + 30; // +30 is an offset to accomodate the space of the first orders
+		$tableWidth = $mainWidth + $productValue_width;
+				
+		foreach ($producers_involved as $producer)
+		{
+			$revenue = 0; //the amount to be paid to this producer
+			echo "<p class='panel'> <span style='font-size:14px'> Παραγωγός: </span> <span class='producer'>".$producer."</span> </p>";
+			
+			//Get the products in order for this producer
+			$products_in_order = $wpdb->get_results($wpdb->prepare("SELECT ".csaOrders.".type,".csaOrders.".variety,".csaOrders.".price,".csaOrders.".product_id,".csaOrders.".unit,SUM(".csaOrders.".quantity) AS total, FORMAT(SUM(".csaOrders.".quantity*".csaOrders.".price),2) as costPerProduct
+																	FROM ".csaOrders.", ".csaProducts."
+																	WHERE ".csaProducts.".id = ".csaOrders.".product_id
+																	  AND date BETWEEN %s AND NOW()
+																	  AND ".csaProducts.".producer=%s
+																	GROUP BY ".csaOrders.".product_id ", $last_delivery_date, $producer));
+			//display product details
+			foreach ($products_in_order as $product) 
+			{
+				$preOrders_ofProduct = $wpdb->get_results($wpdb->prepare("SELECT user_login,type,variety,quantity FROM ".csaOrders." WHERE date BETWEEN %s AND NOW() AND product_id=%d", $last_delivery_date, $product->product_id) );
+				$total = $product->total;
+				if (strpos($total, '.') !== FALSE )
+					$total = number_format((float)$product->total, 1, '.', '');
+				?>
+				<div class='container' style='min-width:100%;width:<?php echo $tableWidth ?>px;font-size:14px'>  <!--keeps the quantity and total value divs together-->
+					
+					
+						<div class='container' style='float:left; width:<?php echo $mainWidth ?>px;'> 
+							<!--product details-->
+							
+							<div class='left' style='width:<?php echo $product_details_width ?>px; background-color:Khaki; display:block; '>
+								<div style='display:table-cell; vertical-align:middle; height:70px; padding-left:10px '>
+								<?php echo $product->type." ".$product->variety."<br/> <span class='info-text'>(".$product->price." € / ".$product->unit.")</span>" ?>
+								</div>
+							</div>
+							
+							<div class='left' style='width:<?php echo $amount_perProduct_width ?>px;height:70px;line-height:70px;padding-left:10px;font-weight:bold;font-size:16px;background-color:Khaki'>
+								<span style='display:inline-block; vertical-align:middle;'><?php echo $total ?></span>
+							</div>
+
+							<!--order details-->
+							<div class="div_tr">
+								<?php
+								foreach($preOrders_ofProduct as $preOrder) 
+									echo "<div class='left' style='font-weight:bold;'>".mb_substr($preOrder->user_login, 0, 7,'UTF-8')."</div>"; 
+								?>
+							</div>
+								<!--<div style="height:37px;"></div>-->
+							<div class="div_tr">
+								<?php
+								foreach($preOrders_ofProduct as $preOrder) 
+									echo "<div class='left' >".$preOrder->quantity."</div>"; 
+								?>
+							</div>
+													
+						</div>
+					
+						<!-- price details-->
+						<div class='left' style='display:table; height:70px;'>
+							<div style='display:table-cell; vertical-align:bottom;'>
+							<?php echo "<span class='info-text'>".$product->costPerProduct."€</span>"; ?>
+							</div>
+						</div>
+					
+					
+				</div>
+				
+				<?php	$revenue += $product->costPerProduct;
+			}
+			
+			echo"<br/><p class='total' style='margin: -5% 0 3% 0'><span class='emphasis-box'>Σύνολο: ".$revenue." € </span></p><br/>";
+		}
+	
+		?>
+		<table style="margin-top:30px" class='table-straight'> <!-- stucture table (to display the following table next to each other -->
+			<tr><td>
+				<span style="font-weight:bold;color:green">Κόστος ανά μέλος</span><?php
+				
+				//Show costs in total
+				$total_user_costs = $wpdb->get_results($wpdb->prepare("SELECT FORMAT(SUM(quantity*price),2) AS cost,user_login
+																		FROM ".csaOrders."
+																		WHERE date BETWEEN '%s' AND NOW()
+																		GROUP BY user_login", $last_delivery_date));
+				$total_cost = $wpdb->get_var($wpdb->prepare("SELECT FORMAT(SUM(quantity*price),2)
+																	FROM ".csaOrders."
+																	WHERE date BETWEEN %s AND NOW() ", $last_delivery_date));
+				?>
+				<table style='width:200px;' class='table-bordered'>
+					<thead>
+						<tr>
+							<td>Μέλος</td>
+							<td>Συνολικό Κόστος</td>
+						</tr>
+					</thead>
+					
+					<?php 
+					foreach ($total_user_costs as $tCost) { 
+					?>
+						<tr>
+							<td style='width:100px;font-weight:bold'><?php echo $tCost->user_login ?></td>
+							<td><?php echo round($tCost->cost, 1)." €"; ?></td>
+						</tr>
+					<?php 
+					} 
+					?>
+
+					<tr style='background-color:Khaki'>
+						<td style="font-weight:bold">Σύνολο</td>
+						<td style="font-weight:bold"><?php echo round($total_cost,1)." €"; ?></td>
+					</tr>
+					</tr>
+				</table>
+			</td>
+			<td> <div style='width:80px'>  </div> </td>
+			<td>
+				<?php	
+				
+				//Show costs per producer
+				?><span style="font-weight:bold;color:green;margin-left:5%">Κόστος ανά παραγωγό</span><?php
+				$producer_costs = $wpdb->get_results($wpdb->prepare("SELECT producer, FORMAT(SUM(quantity*".csaOrders.".price),2) AS cost 
+																	 FROM ".csaProducts.", ".csaOrders."
+																	 WHERE ".csaProducts.".id = ".csaOrders.".product_id AND date BETWEEN %s AND NOW() 
+																	 GROUP BY producer",$last_delivery_date));
+				?>
+
+
+				<table style='width:200px;' class='table-bordered'>
+					<thead>
+						<tr>
+							<td>Μέλος</td>
+							<td style='width:100px'>Έσοδα Παραγωγού</td>
+						</tr>
+					</thead>
+					<?php
+					foreach ($producer_costs as $pCost) {
+						echo "
+							<tr>
+								<td style='width:100px;font-weight:bold'>".$pCost->producer."</td>
+								<td>". round($pCost->cost, 1)." €</td>
+							</tr>";
+					
+						}
+					?>
+
+					<tr style='background-color:Khaki'>
+						<td style="font-weight:bold">Σύνολο</td>
+						<td style="font-weight:bold"><?php echo round($total_cost,1)." €" ?></td>
+					</tr>
+				</table>
+
+			</td>
+			</tr>
+		</table>
+		
+<!--		<br>			
+		<table style='width:600px;margin-left:5%' class='table-bordered'>
+		<?php /*
+			$noteGroups = $wpdb->get_results($wpdb->prepare("SELECT user_login, GROUP_CONCAT(note SEPARATOR '| ') AS notes FROM $ordNotes WHERE date BETWEEN '%s' AND CURDATE() GROUP BY user_login", $last_delivery_date));
+			if (count($noteGroups) > 0){
+				echo "<span style='font-weight:bold;color:green;margin-left:5%'>Σημειώσεις</span>";
+				foreach ($noteGroups as $noteGroup)
+					echo "<tr><td style='font-weight:bold'>".$noteGroup->user_login."</td><td>".$noteGroup->notes."</td></tr>";
+			}*/
+		?>
+		</table> -->
+						
+	<?php
+	}
+}
+add_shortcode('csa-wp-plugin-showTotalOrders', 'CsaWpPluginShowTotalUserOrdersForDelivery');	
+
 
 ?>

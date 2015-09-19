@@ -8,6 +8,24 @@ function CsaWpPluginSlideToggle (which){
 	$j(which).slideToggle("slow");
 }
 
+function CsaWpPluginHoverIcon(element, iconName, pluginsDir) {
+	element.setAttribute('src', pluginsDir + '/csa-wp-plugin/icons/' + iconName +'_hover.png');
+}
+
+function CsaWpPluginUnHoverIcon(element, iconName, pluginsDir) {
+	element.setAttribute('src', pluginsDir + '/csa-wp-plugin/icons/' + iconName +'.png');
+}
+
+/* *******************
+ * ** --- USERS --- **
+ * ******************* 
+ */
+ 
+ function CsaWpPluginProducerOrderInfoVia (selection, which) {
+	if (selection.value == "consumer") which.style.display = "none";
+	else which.style.display = "block";
+ }
+
 /* **********************
  * ** --- PRODUCTS --- **
  * ********************** 
@@ -130,7 +148,7 @@ function slow_hideshow_submitOrderForm(text) {
 
 }
 
-function calcNewOrderCost() {
+function CsaWpPluginCalcNewOrderCost() {
 	var $j = jQuery.noConflict();
 	var serializedFormData = $j('#csa_wp_plugin_sumbitOrder_form').serializeArray();
 	var totalCost = 0;
@@ -141,10 +159,10 @@ function calcNewOrderCost() {
 		if (field.name == "csa_wp_plugin_order_productQuantity") totalCost += field.value * price;
 	});
 
-	document.getElementById('totalCalc').innerHTML = 'Σύνολο: <span style=font-weight:bold;color:green>' + totalCost.toFixed(2) + ' €</span>';
+	document.getElementById('csa-wp-plugin-totalCalc').innerHTML = 'Σύνολο: <span style=font-weight:bold;color:green>' + totalCost.toFixed(2) + ' €</span>';
 }
 
-function calcEditableOrderCost() {
+function CsaWpPluginCalcEditableOrderCost() {
 	var $j = jQuery.noConflict();
 	
 	var ordsQuantity = $j('.editable_product_order_quantity');
@@ -164,11 +182,12 @@ function calcEditableOrderCost() {
 	document.getElementById("editable_product_order_TotalCost").innerHTML = totalCost + " €";
 }
 
-function CsaWpPluginRequestSumbitOrderToServer(user_login) {
+function CsaWpPluginRequestSumbitOrderToServer(user_login,btn) {
+
+	btn.disabled = true;
 
 	var $j = jQuery.noConflict();
 	var serializedFormData = $j('#csa_wp_plugin_sumbitOrder_form').serializeArray();
-	
 	serializedFormData = JSON.stringify(serializedFormData);
 		
 	var data = {
@@ -184,14 +203,6 @@ function CsaWpPluginRequestSumbitOrderToServer(user_login) {
 		});
 
 
-}
-
-function CsaWpPluginHoverIcon(element, iconName, pluginsDir) {
-	element.setAttribute('src', pluginsDir + '/csa-wp-plugin/icons/' + iconName +'_hover.png');
-}
-
-function CsaWpPluginUnHoverIcon(element, iconName, pluginsDir) {
-	element.setAttribute('src', pluginsDir + '/csa-wp-plugin/icons/' + iconName +'.png');
 }
 
 function CsaWpPluginRequestDeleteProductOrder(product) {
@@ -218,7 +229,7 @@ function CsaWpPluginRequestDeleteProductOrder(product) {
 														
 					$j(productTR).remove();
 					
-					calcEditableOrderCost();
+					CsaWpPluginCalcEditableOrderCost();
 					
 					if ($j('#csa_wp_showUserOrder_table .csa-wp-plugin-user-order-product').length == 0) location.reload(true);
 			});
@@ -249,14 +260,17 @@ function CsaWpPluginRequestDeleteUserOrder(user, lastDeliveryDate) {
  * ** --- OLD - UNUSED --- **
  * **************************
  */
-/*
 
+/*
 function hideshow (which){
 	if (!document.getElementById) return;
 	if (which.style.display=="block") which.style.display="none";
 	else which.style.display="block";
+	
+	var $j = jQuery.noConflict();
+	$j(which).slideToggle("fast");
 }
-
+/*
 // Prevent a form page to autorefresh after submission  -->
 var $j = jQuery.noConflict();
 $j(document).ready(function() {

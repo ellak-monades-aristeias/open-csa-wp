@@ -127,7 +127,7 @@ function CsaWpPluginShowOrderForm($user) {
 						<td><span>".$row->variety."</span></td>
 						<td><input type='number' readonly = 'readonly' name='csa_wp_plugin_order_productPrice' value='".$row->price."' style=' width: 5em; border:none; background-color:white; text-align: center'/></td>
 						<td>€/".$row->unit."</td>
-						<td><input type='number' min='0' step='0.5' name='csa_wp_plugin_order_productQuantity' onchange='calcNewOrderCost()' onkeyup='calcNewOrderCost()' style='width:70px;background-color:LightGoldenRodYellow'></td>
+						<td><input type='number' min='0' step='0.5' name='csa_wp_plugin_order_productQuantity' onchange='CsaWpPluginCalcNewOrderCost()' onkeyup='CsaWpPluginCalcNewOrderCost()' style='width:70px;background-color:LightGoldenRodYellow'></td>
 						<td>".$row->producer."</td>";
 						if ($row->details != '')
 							echo "<td style='text-align:center'><span class='tip' title='|".$row->details."'>info</span></td>";
@@ -137,7 +137,7 @@ function CsaWpPluginShowOrderForm($user) {
 				}
 			}
 			?>
-			<TR style='background-color:#d0e4fe;'><TD><span id='totalCalc'/></TD></TR>
+			<TR style='background-color:#d0e4fe;'><TD><span id='csa-wp-plugin-totalCalc'/></TD></TR>
 		</table>  
 	
 <!--		<div style="margin-top:2%">
@@ -146,7 +146,7 @@ function CsaWpPluginShowOrderForm($user) {
 			<textarea name="notes" id="notesArea" cols="50" rows="3" maxlength="500" class='info-text'></textarea>
 		</div> -->
 		
-		<input type='button' value='Καταχώρηση' style="margin-top:3%" onclick="CsaWpPluginRequestSumbitOrderToServer('<?php echo $user->user_login; ?>')"/> 
+		<input type='button' value='Καταχώρηση' style="margin-top:3%" onclick="CsaWpPluginRequestSumbitOrderToServer('<?php echo $user->user_login; ?>', this)"/> 
 	</FORM>
 		
 	<?php
@@ -263,7 +263,7 @@ function CsaWpPluginShowEditableOrder($user, $last_delivery_date) {
 						//oTable.fnUpdate(value, aPos[0], aPos[1]);	
 					
 						if (value == 0)	CsaWpPluginRequestDeleteProductOrder(tmp);
-						else calcEditableOrderCost(tmp);
+						else CsaWpPluginCalcEditableOrderCost(tmp);
 					}
 				);
 				return(value);
@@ -332,7 +332,7 @@ function CsaWpPluginShowEditableOrder($user, $last_delivery_date) {
 				<td><div>Σύνολο: <span id='editable_product_order_TotalCost' style='font-weight:bold'><?php echo round($totalCost,1). " €" ?></span></div></td>
 				<td><div onclick="CsaWpPluginSlideToggle(document.getElementById('cancel_div'))"> 
 						<img src="<?php echo plugins_url(); ?>/csa-wp-plugin/icons/delete.png"/ height="24" width="24"> &nbsp
-						<span class='showHide_div' style='color:OrangeRed;'>Ακύρωση παραγγελίας</span> 
+						<span class='showHide_div' style='color:OrangeRed;cursor:pointer'>Ακύρωση παραγγελίας</span> 
 					</div></td></tr></tbody></table>
 	
 	<div id='cancel_div' style='display:none; '> <br/>

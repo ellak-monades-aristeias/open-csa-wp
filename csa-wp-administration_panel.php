@@ -16,7 +16,6 @@ function CsaWpPluginMenu() {
 	$parent_slug = 'csa_management';
 	add_menu_page( 'CSA Management', 'CSA', 'manage_options', $parent_slug );
 	add_submenu_page( $parent_slug, 'CSA Settings', 'Settings', 'manage_options', $parent_slug, 'CsaWpPluginSettingsMenu');
-//	add_submenu_page( $parent_slug, 'Manage CSA Teams', 'Teams', 'manage_options', $parent_slug, 'CsaWpPluginMainMenu');
 	add_submenu_page( $parent_slug, 'Manage CSA Users', 'Users', 'manage_options', 'csa_users_management', 'CsaWpPluginUsersMenu');
 	add_submenu_page( $parent_slug, 'Manage CSA Products', 'Products', 'manage_options', 'csa_products_management', 'CsaWpPluginProductsMenu');
 	add_submenu_page( $parent_slug, 'Manage CSA Orders', 'Orders', 'manage_options', 'csa_orders_management', 'CsaWpPluginOrdersMenu');		
@@ -25,9 +24,10 @@ function CsaWpPluginMenu() {
 function CsaWpPluginSettingsMenu() {
 	global $wpdb;
 
-	if ( !current_user_can( 'manage_options' ) )  {
-		wp_die( __( 'You do not have sufficient permissions to access this page.' ) );
-	}
+	if ( !current_user_can( 'administrator' ) &&
+		(!($csaData = get_user_meta( $user->ID, 'csa-wp-plugin_user', true )) || $csaData['role'] != "administrator" )
+	)	wp_die( __( 'You do not have sufficient permissions to access this page.' ) );
+	
 	echo '<div class="wrap">';
 	echo '<h2>CSA Management Panel</h2>';
 
@@ -48,15 +48,6 @@ function CsaWpPluginSettingsMenu() {
         <td><input type="date" name="csa_last_delivery_date" value="'.get_option('csa_last_delivery_date').'" /></td>
         </tr>
 		
-		<tr valign="top">
-		<th scope="row">Consumer Fee</th>
-		<td><input type="number" min=0 max=100 name="csa_consumer_fee_percentage" value="'.get_option('csa_consumer_fee_percentage').'" />%</td><br>
-		</tr>
-
-		<tr valign="top">
-		<th scope="row">Producer Fee</th>
-		<td><input type="number" min=0 max=100 name="csa_producer_fee_percentage" value="'.get_option('csa_producer_fee_percentage').'" />%</td>
-		</tr>
         </table>';
 	
 	submit_button();
@@ -66,21 +57,21 @@ function CsaWpPluginSettingsMenu() {
 }
 
 function CsaWpPluginUsersMenu() {
-	if ( !current_user_can( 'manage_options' ) )  {
-		wp_die( __( 'You do not have sufficient permissions to access this page.' ) );
-	}
-	echo '<div class="wrap">';
-	echo '<h2>CSA Management Panel</h2>';
-
-	echo '<h2>Users</h2>';
-	
-	echo '</div>';
+	if ( !current_user_can( 'administrator' ) &&
+		(!($csaData = get_user_meta( $user->ID, 'csa-wp-plugin_user', true )) || $csaData['role'] != "administrator" )
+	)	wp_die( __( 'You do not have sufficient permissions to access this page.' ) );
+	?>
+	<script>
+	window.location.replace("<?php echo admin_url("/users.php"); ?>");
+	</script>
+<?php
 }
 
 function CsaWpPluginProductsMenu() {
-	if ( !current_user_can( 'manage_options' ) )  {
-		wp_die( __( 'You do not have sufficient permissions to access this page.' ) );
-	}
+	if ( !current_user_can( 'administrator' ) &&
+		(!($csaData = get_user_meta( $user->ID, 'csa-wp-plugin_user', true )) || $csaData['role'] != "administrator" )
+	)	wp_die( __( 'You do not have sufficient permissions to access this page.' ) );
+
 	echo '<div class="wrap">';
 	echo '<h2>CSA Management Panel</h2>';
 
@@ -92,9 +83,10 @@ function CsaWpPluginProductsMenu() {
 }
 
 function CsaWpPluginOrdersMenu() {
-	if ( !current_user_can( 'manage_options' ) )  {
-		wp_die( __( 'You do not have sufficient permissions to access this page.' ) );
-	}
+	if ( !current_user_can( 'administrator' ) &&
+		(!($csaData = get_user_meta( $user->ID, 'csa-wp-plugin_user', true )) || $csaData['role'] != "administrator" )
+	)	wp_die( __( 'You do not have sufficient permissions to access this page.' ) );
+
 	echo '<div class="wrap">';
 	echo "<h2>CSA Management Panel</h2>";
 

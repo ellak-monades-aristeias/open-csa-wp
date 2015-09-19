@@ -40,6 +40,7 @@ include 'csa-wp-general-functions.php';
 global $wpdb;
 define("csaOrders", $wpdb->prefix."csa_orders");
 define("csaProducts", $wpdb->prefix."csa_products");
+define("csaUsers", $wpdb->prefix."csa_users");
 include 'csa-wp-DB_tables_creation.php';
 
 function CsaWpPluginAvtivation() {
@@ -66,13 +67,15 @@ add_action('wp_enqueue_scripts','CsaWpPluginEnqueueCsaScripts');
 */
 
 define("csaOptionsGroup", "csa-options-group");
-include 'csa-wp-administration_panel.php';
+include 'csa-wp-users.php';
 include 'csa-wp-products.php';
 include 'csa-wp-orders.php';
+include 'csa-wp-administration_panel.php';
 
 function CsaWpPluginUnistall() {
 	UnRegisterCSASettings();
 	CsaWpPluginDBTablesDrop();
+	CsaWpPluginDeleteUsers();
 }
 register_deactivation_hook(__FILE__, 'CsaWpPluginUnistall');
 

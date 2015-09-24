@@ -19,9 +19,9 @@ defined( 'ABSPATH' ) or die( 'No script kiddies please!' );
 	***************************
 */
 
-add_action('wp_head','csa_wp_plugin_ajaxurl');
+add_action('wp_head','CsaWpPluginAjaxurl');
 
-function csa_wp_plugin_ajaxurl() {
+function CsaWpPluginAjaxurl() {
 ?>
 <script type="text/javascript">
 var ajaxurl = '<?php echo admin_url('admin-ajax.php'); ?>';
@@ -41,6 +41,16 @@ global $wpdb;
 define("csaOrders", $wpdb->prefix."csa_orders");
 define("csaProducts", $wpdb->prefix."csa_products");
 define("csaUsers", $wpdb->prefix."csa_users");
+define("csaSpots", $wpdb->prefix."csa_spots");
+define("csaSpotsToUsers", $wpdb->prefix."csa_spots_to_users");
+define("csaProductCategories", $wpdb->prefix."csa_products_categories");
+
+define("enterKeyCode", "13");
+define("tabKeyCode", "9");
+
+
+$days = array ("Monday", "Tuesday", "Wednesday", "Tuesday", "Friday", "Saturday", "Sunday");
+
 include 'csa-wp-DB_tables_creation.php';
 
 function CsaWpPluginAvtivation() {
@@ -51,6 +61,7 @@ register_activation_hook( __FILE__, 'CsaWpPluginAvtivation' );
 
 function CsaWpPluginEnqueueCsaScripts() {
 	wp_register_script('CsaWpPluginScripts', plugins_url('/csa-wp-javascripts.js', __FILE__));
+	wp_register_script('CsaWpPluginSpotsScripts', plugins_url('/csa-wp-spots.js', __FILE__));
 	wp_register_script('jquery.datatables', plugins_url('/deps/jquery.datatables.js', __FILE__) );
 	wp_register_script('jquery.jeditable', plugins_url('/deps/jquery.jeditable.js', __FILE__));
 	wp_register_script('jquery.blockui', plugins_url('/deps/jquery.blockui.js', __FILE__));
@@ -68,7 +79,9 @@ add_action('wp_enqueue_scripts','CsaWpPluginEnqueueCsaScripts');
 
 define("csaOptionsGroup", "csa-options-group");
 include 'csa-wp-users.php';
+include 'csa-wp-spots.php';
 include 'csa-wp-products.php';
+include 'csa-wp-product_categories.php';
 include 'csa-wp-orders.php';
 include 'csa-wp-administration_panel.php';
 

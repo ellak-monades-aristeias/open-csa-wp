@@ -15,12 +15,14 @@ if ( is_admin() ){ // admin actions
 function CsaWpPluginMenu() {
 	$parent_slug = 'csa_management';
 	add_menu_page( 'CSA Management', 'CSA', 'manage_options', $parent_slug );
-	add_submenu_page( $parent_slug, 'CSA Settings', 'Settings', 'manage_options', $parent_slug, 'CsaWpPluginSettingsMenu');
-	add_submenu_page( $parent_slug, 'Manage CSA Users', 'Users', 'manage_options', 'csa_users_management', 'CsaWpPluginUsersMenu');
-	add_submenu_page( $parent_slug, 'Manage CSA Products', 'Products', 'manage_options', 'csa_products_management', 'CsaWpPluginProductsMenu');
+//	add_submenu_page( $parent_slug, 'CSA Settings', 'Settings', 'manage_options', $parent_slug, 'CsaWpPluginSettingsMenu');
+	add_submenu_page( $parent_slug, 'Manage CSA Products', 'Products', 'manage_options', $parent_slug, 'CsaWpPluginProductsMenu');
 	add_submenu_page( $parent_slug, 'Manage CSA Orders', 'Orders', 'manage_options', 'csa_orders_management', 'CsaWpPluginOrdersMenu');		
+	add_submenu_page( $parent_slug, 'Manage CSA Users', 'Users', 'manage_options', 'csa_users_management', 'CsaWpPluginUsersMenu');
+	add_submenu_page( $parent_slug, 'Manage CSA Spots', 'Spots', 'manage_options', 'csa_spots_management', 'CsaWpPluginSpotsMenu');
 }
 
+/*
 function CsaWpPluginSettingsMenu() {
 	global $wpdb;
 
@@ -55,6 +57,7 @@ function CsaWpPluginSettingsMenu() {
 	echo '</form>';	
 	echo '</div>';
 }
+*/
 
 function CsaWpPluginUsersMenu() {
 	if ( !current_user_can( 'administrator' ) &&
@@ -67,6 +70,26 @@ function CsaWpPluginUsersMenu() {
 <?php
 }
 
+function CsaWpPluginSpotsMenu() {
+	if ( !current_user_can( 'administrator' ) &&
+		(!($csaData = get_user_meta( $user->ID, 'csa-wp-plugin_user', true )) || $csaData['role'] != "administrator" )
+	)	wp_die( __( 'You do not have sufficient permissions to access this page.' ) );
+
+	echo '<div class="wrap">';
+	echo '<h2>CSA Management Panel</h2>';
+
+	global $wpdb;
+	if (isset($_GET["id"])) CsaWpPluginSpotForm($_GET["id"], true);
+	else if (count($wpdb->get_results("SELECT id FROM " .csaSpots)) == 0)
+		CsaWpPluginSpotForm(null, true);
+	else {
+		CsaWpPluginSpotForm(null, false);
+		CsaWpPluginShowSpots();	
+	}
+	echo '</div>';
+}
+
+
 function CsaWpPluginProductsMenu() {
 	if ( !current_user_can( 'administrator' ) &&
 		(!($csaData = get_user_meta( $user->ID, 'csa-wp-plugin_user', true )) || $csaData['role'] != "administrator" )
@@ -77,7 +100,11 @@ function CsaWpPluginProductsMenu() {
 
 	CsaWpPluginShowNewProductForm();
 	
-	CsaWpPluginShowProducts();
+	//CsaWpPluginShowProducts();
+	
+	//CsaWpPluginShowNewProductsCategoryForm();
+	
+	//CsaWpPluginShowProductsCategories();
 	
 	echo '</div>';
 }
@@ -100,7 +127,7 @@ function RegisterCSASettings() {
 	register_setting(csaOptionsGroup, 'csa_last_delivery_date');  
 	register_setting(csaOptionsGroup, 'csa_consumer_fee_percentage');
 	register_setting(csaOptionsGroup, 'csa_producer_fee_percentage');  
-	register_setting(csaOptionsGroup, 'csa_wp_plugin_db_version');  
+	register_setting(csaOptionsGroup, 'csa-wp-plugin-db_version');  
 }
 
 function UnRegisterCSASettings() {
@@ -112,7 +139,7 @@ function UnRegisterCSASettings() {
 	delete_option('csa_consumer_fee_percentage');  
 	unregister_setting(csaOptionsGroup, 'csa_producer_fee_percentage');  
 	delete_option('csa_producer_fee_percentage');  
-	unregister_setting(csaOptionsGroup, 'csa_wp_plugin_db_version');  
-	delete_option('csa_wp_plugin_db_version');  
+	unregister_setting(csaOptionsGroup, 'csa-wp-plugin-db_version');  
+	delete_option('csa-wp-plugin-db_version');  
 }
 ?>

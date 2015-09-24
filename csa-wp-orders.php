@@ -1,9 +1,5 @@
 <?php
 
-add_action( 'wp_ajax_csa_wp_plugin_update_user_order_product_quantity', 'CsaWpPluginUpdateUserOrderProductQuantity' );
-add_action( 'wp_ajax_csa_wp_plugin_delete_user_order_product', 'CsaWpPluginDeleteUserOrderProduct' );
-add_action( 'wp_ajax_csa_wp_plugin_delete_user_order', 'CsaWpPluginDeleteUserOrder' );
-
 function CsaWpPluginUserOrder($user = NULL) { 
 	wp_enqueue_script('CsaWpPluginScripts');
 	wp_enqueue_script('jquery.cluetip');
@@ -11,7 +7,6 @@ function CsaWpPluginUserOrder($user = NULL) {
 
 ?>	
 	<script type="text/javascript">
-	// clueTip code for showing product details in tooltip 
 	var $j = jQuery.noConflict();
 	$j(document).ready(function() {
 	  $j('.tip').cluetip({
@@ -61,9 +56,9 @@ add_shortcode('csa-wp-plugin-myPersonalOrder', 'CsaWpPluginUserOrder');
 
 
 function CsaWpPluginShowNewOrderForm($user) {
-	echo "<div id='csa_wp_submitOrder_formHeader' style='display:block'><span style='cursor:pointer' id='csa_wp_submitOrder_formHeader_text' onclick='slow_hideshow_submitOrderForm(\"Add new order\")'><font size='4'>Add new order (show form)</font></span></div>";
-	echo "<div id='csa_wp_submitOrder_div' style='display:none'>";
-	echo "<br/>";
+	echo "<div id='csa-wp-plugin-submitOrder_formHeader' style='display:block'><span style='cursor:pointer' id='csa-wp-plugin-submitOrder_formHeader_text' onclick='CsaWpPluginToggleForm(\"submitOrder\",\"Add new order\", \" form\")'><font size='4'>Add new order (show form)</font></span></div>";
+	echo "<div id='csa-wp-plugin-submitOrder_div' style='display:none'>";
+	//echo "<br/>";
 	echo "
 		<span 
 			class='tip' 
@@ -72,9 +67,7 @@ function CsaWpPluginShowNewOrderForm($user) {
 				| Ύστερα από την καταχώρηση της παραγγελίας, μπορείτε να την επεξεργαστείτε έως τη μέρα και ώρα που έχει συμφωνηθεί η οριστικοποίησή της.
 				| Δίπλα από κάθε προϊόν, στο πεδίο \"info\" εμπεριέχονται πληροφορίες για το κάθε προϊόν.
 			'>
-			<p style=\"width:36em;text-align:right\">
-				<i> διαβάστε εδώ πληροφορίες για την καταχώρηση της παραγγελίας </i>
-			</p>
+			<p><i> διαβάστε εδώ πληροφορίες για την καταχώρηση της παραγγελίας </i></p>
 		</span>";
 
 	CsaWpPluginShowOrderForm($user);
@@ -83,8 +76,8 @@ function CsaWpPluginShowNewOrderForm($user) {
 
 
 function CsaWpPluginShowAdditionalProductOrdersForm($user) {
-	echo "<div id='csa_wp_submitOrder_formHeader' style='display:block'><span style='cursor:pointer' id='csa_wp_submitOrder_formHeader_text' onclick='slow_hideshow_submitOrderForm(\"Add more products\")'><font size='4'>Add more products (show form)</font></span></div>";
-	echo "<div id='csa_wp_submitOrder_div' style='display:none'>";
+	echo "<div id='csa-wp-plugin-submitOrder_formHeader' style='display:block'><span style='cursor:pointer' id='csa-wp-plugin-submitOrder_formHeader_text' onclick='slow_hideshow_submitOrderForm(\"Add more products\")'><font size='4'>Add more products (show form)</font></span></div>";
+	echo "<div id='csa-wp-plugin-submitOrder_div' style='display:none'>";
 	echo "<br/>";	
 	echo "
 		<span 
@@ -111,7 +104,7 @@ function CsaWpPluginShowOrderForm($user) {
 	?>
 	<br/>
 	
-	<FORM name='csa_wp_plugin_sumbitOrder_form' id='csa_wp_plugin_sumbitOrder_form' accept-charset='utf-8' method='post'> 
+	<FORM name='csa-wp-plugin-sumbitOrder_form' id='csa-wp-plugin-sumbitOrder_form' accept-charset='utf-8' method='post'> 
 		<table id='ordersArray' class='table-bordered'> 
 			<thead class="tableHeader"><tr><th>είδος</th><th>ποικιλία</th><th>τιμή</th><th>μονάδα</th><th>ποσότητα</th><th>παραγωγός</th><th> </th> <th class='th-hidden'></th></tr></thead>
 			<?php
@@ -125,13 +118,13 @@ function CsaWpPluginShowOrderForm($user) {
 						<tr>
 						<td><span>".$row->type."</span></td>
 						<td><span>".$row->variety."</span></td>
-						<td><input type='number' readonly = 'readonly' name='csa_wp_plugin_order_productPrice' value='".$row->price."' style=' width: 5em; border:none; background-color:white; text-align: center'/></td>
+						<td><input type='number' readonly = 'readonly' name='csa-wp-plugin-order_productPrice' value='".$row->price."' style=' width: 5em; border:none; background-color:white; text-align: center'/></td>
 						<td>€/".$row->unit."</td>
-						<td><input type='number' min='0' step='0.5' name='csa_wp_plugin_order_productQuantity' onchange='CsaWpPluginCalcNewOrderCost()' onkeyup='CsaWpPluginCalcNewOrderCost()' style='width:70px;background-color:LightGoldenRodYellow'></td>
+						<td><input type='number' min='0' step='0.5' name='csa-wp-plugin-order_productQuantity' onchange='CsaWpPluginCalcNewOrderCost()' onkeyup='CsaWpPluginCalcNewOrderCost()' style='width:70px;background-color:LightGoldenRodYellow'></td>
 						<td>".$row->producer."</td>";
 						if ($row->details != '')
 							echo "<td style='text-align:center'><span class='tip' title='|".$row->details."'>info</span></td>";
-						echo "<td class='td-hidden'><input type='number' name='csa_wp_plugin_order_productID' value='".$row->id."' style='visibility:hidden'/></td>
+						echo "<td class='td-hidden'><input type='number' name='csa-wp-plugin-order_productID' value='".$row->id."' style='visibility:hidden'/></td>
 						</tr>";
 					}
 				}
@@ -152,7 +145,10 @@ function CsaWpPluginShowOrderForm($user) {
 	<?php
 }
 
-add_action( 'wp_ajax_csa_wp_plugin_add_new_order', 'CsaWpPluginAddNewOrder' );
+add_action( 'wp_ajax_csa-wp-plugin-check_spotName_validity', 'CsaWpPluginAddNewOrder' );
+
+
+add_action( 'wp_ajax_csa-wp-plugin-add_new_order', 'CsaWpPluginAddNewOrder' );
 
 function CsaWpPluginAddNewOrder() {
 
@@ -184,7 +180,7 @@ function CsaWpPluginAddNewOrder() {
 						'price'			=> 100,
 						'unit'			=> 'τεμάχιο',
 						'date'			=> current_time('mysql'),
-						'quantity'		=> $quantity,
+						'quantity'		=> $quantity
 					), 
 					array ("%s", "%s", "%s", "%d", "%s", "%d")
 			) === FALSE)
@@ -225,7 +221,7 @@ function CsaWpPluginShowEditableOrder($user, $last_delivery_date) {
 
 	// edit user product order quantity
 	$j(document).ready(function() {
-		var table = $j("#csa_wp_showUserOrder_table");
+		var table = $j("#csa-wp-plugin-showUserOrder_table");
 		var oTable = table.dataTable({
 			"bPaginate": false, 
 			"bStateSave": true, 
@@ -251,7 +247,7 @@ function CsaWpPluginShowEditableOrder($user, $last_delivery_date) {
 				var tmp = this;
 			
 				var dataPost = {
-					"action" : "csa_wp_plugin_update_user_order_product_quantity",
+					"action" : "csa-wp-plugin-update_user_order_product_quantity",
 					"value" : value,
 					"productOrderID": this.parentNode.getAttribute("id").split('_')[1]
 				};
@@ -279,7 +275,7 @@ function CsaWpPluginShowEditableOrder($user, $last_delivery_date) {
 	</span>
 	
 	
-	<table class='table-bordered' id="csa_wp_showUserOrder_table"> 
+	<table class='table-bordered' id="csa-wp-plugin-showUserOrder_table"> 
 	<thead class="tableHeader">
 		<tr>
 			<th>ποσότητα</th>
@@ -307,7 +303,7 @@ function CsaWpPluginShowEditableOrder($user, $last_delivery_date) {
 			$pCost = $row->price * $row->quantity;
 			$productOrderID = $row->id;
 			echo "
-			<tr class='csa-wp-plugin-user-order-product' id='productOrderID_$productOrderID'>			
+			<tr class='csa-wp-plugin-user-order-product' id='csa-wp-plugin-productOrderID_$productOrderID'>			
 				<td id='quantity$productOrderID' class='editable_product_order_quantity' style='text-align:center'>$row->quantity</td>
 				<td>".$row->type."</TD>
 				<td>".$row->variety."</td>
@@ -344,6 +340,7 @@ function CsaWpPluginShowEditableOrder($user, $last_delivery_date) {
 }
 //add_shortcode('orderVerification', 'verifyOrder');
 
+add_action( 'wp_ajax_csa-wp-plugin-update_user_order_product_quantity', 'CsaWpPluginUpdateUserOrderProductQuantity' );
 
 function CsaWpPluginUpdateUserOrderProductQuantity() {
 	if(isset($_POST['value']) && isset($_POST['productOrderID'])) {
@@ -369,7 +366,9 @@ function CsaWpPluginUpdateUserOrderProductQuantity() {
 
 }
 
-function CsaWpPluginDeleteUserOrderProduct() {
+add_action( 'wp_ajax_csa-wp-plugin-delete_user_order_product', 'CsaWpPluginDeleteUserProductOrder' );
+
+function CsaWpPluginDeleteUserProductOrder() {
 	if(isset($_POST['productOrderID'])) {
 		$productOrderID = intval(clean_input($_POST['productOrderID']));
 		if(!empty($productOrderID)) {
@@ -391,6 +390,8 @@ function CsaWpPluginDeleteUserOrderProduct() {
 	wp_die(); 	// this is required to terminate immediately and return a proper response
 
 }
+
+add_action( 'wp_ajax_csa-wp-plugin-delete_user_order', 'CsaWpPluginDeleteUserOrder' );
 
 function CsaWpPluginDeleteUserOrder() {
 	if(isset($_POST['userLogin']) && isset($_POST['lastDeliveryDate'])) {

@@ -14,17 +14,53 @@ function CsaWpPluginDBTablesCreation () {
 	
 	$sql = "	
 	
-	CREATE TABLE ". csaProducts ." (
-		id int(11) NOT NULL AUTO_INCREMENT,
-		type varchar(40) NOT NULL,
-		variety text,
-		price float DEFAULT NULL,
-		unit tinytext,
-		producer text,
-		category tinytext,
-		details text,
-		available tinytext,
+	CREATE TABLE ". csaSpots ." (
+		id int(11) NOT NULL UNIQUE AUTO_INCREMENT,
+		spotName varchar(30) NOT NULL,
+		streetName varchar(30) NOT NULL,
+		streetNumber varchar(5) NOT NULL,
+		city varchar(20) NOT NULL,
+		region varchar(30) NOT NULL,
+		description varchar(100) DEFAULT NULL,
+		isDeliverySpot boolean NOT NULL,
+		close_order enum('manual','automatic'),
+		default_order_deadline_day enum('0','1','2','3','4','5','6') NOT NULL,
+		default_order_deadline_time time NOT NULL,
+		default_delivery_day enum('0','1','2','3','4','5','6') NOT NULL,
+		default_delivery_strart_time time NOT NULL,
+		default_delivery_end_time  time NOT NULL,
+		has_refrigerator boolean DEFAULT NULL,
+		parking enum('easy','possible','hard','impossible') DEFAULT NULL,
 		PRIMARY KEY  (id)
+	) $charset_collate;
+	
+	CREATE TABLE ". csaSpotsToUsers ." (
+		spot_id  int(4) NOT NULL, 
+		user_id  int(4) NOT NULL, 
+		type enum('production','delivery','home') NOT NULL,
+		PRIMARY KEY  (spot_id, user_id, type)
+	) $charset_collate;	
+	
+	CREATE TABLE ". csaProductCategories ." (
+		pc_id  int(4) NOT NULL AUTO_INCREMENT, 
+		name varchar(20) NOT NULL, 
+		description varchar(100),
+		PRIMARY KEY  (pc_id)
+	) $charset_collate;
+
+	CREATE TABLE ". csaProducts ." (
+		p_id int(10) NOT NULL AUTO_INCREMENT,
+		name varchar(30) NOT NULL,
+		category int(4) NOT NULL,
+		producer int(4) NOT NULL,
+		variety varchar(30) DEFAULT NULL,		
+		measurement_unit enum('piece', 'litre', 'kilogram', 'bunch') NOT NULL,
+		current_price_in_euro float(5) NOT NULL,
+		description varchar(500),
+		isFrail tinyint(1),
+		isExchangeable tinyint(1),
+		isAvailable tinyint(1),
+		PRIMARY KEY  (p_id)
 	) $charset_collate;
 
 	CREATE TABLE ". csaOrders ." (
@@ -42,20 +78,10 @@ function CsaWpPluginDBTablesCreation () {
 	
 	";
 		
-/*	$sql = "CREATE TABLE $table_name (
-	  id mediumint(9) NOT NULL AUTO_INCREMENT,
-	  time datetime DEFAULT '0000-00-00 00:00:00' NOT NULL,
-	  name tinytext NOT NULL,
-	  text text NOT NULL,
-	  url varchar(55) DEFAULT '' NOT NULL,
-	  UNIQUE KEY id (id)
-	) $charset_collate;";
-*/
-
 	require_once( ABSPATH . 'wp-admin/includes/upgrade.php' );
 	dbDelta( $sql );
 
-	update_option( 'csa_wp_plugin_db_version', '1.0' );
+	update_option( 'csa-wp-plugin-db_version', '1.0' );
 }
 
 /*	************************************
@@ -66,13 +92,23 @@ function CsaWpPluginDBTablesCreation () {
 function CsaWpPluginDBAddElements() {
 	global $wpdb;
 	
-	$wpdb->insert( 
+/*	
+		name 
+		variety varchar(30) DEFAULT NULL,		
+		measurement_unit enum('piece', 'litre', 'kilogram', 'bunch') NOT NULL,
+		current_price_in_euro float(5) NOT NULL,
+		description varchar(500),
+		isFrail tinyint(1),
+		isExchangeable tinyint(1),
+		isAvailable tinyint(1),
+		
+/*	$wpdb->insert( 
 		csaProducts, 
 		array( 
-			'type' => "Πατάτες",
+			'name' => "Πατάτες",
 			'variety' => "spunta",
-			'price' => 1,
-			'unit' => "κιλό",
+			'current_price_in_euro' => 1,
+			'measurement_unit' => "κιλό",
 			'producer' => "Πάρης Πατατούδης",
 			'category' => "Λαχανικά",
 			'details' => "",
@@ -108,7 +144,7 @@ function CsaWpPluginDBAddElements() {
 			'quantity' => 5 
 		) 
 	);
-
+*/
 	
 	$wpdb->insert( 
 		csaOrders, 
@@ -151,8 +187,14 @@ function CsaWpPluginDBTablesDrop() {
 
 	global $wpdb; 
 
+	$wpdb->query("DROP TABLE IF EXISTS ". csaSpots);
+	$wpdb->query("DROP TABLE IF EXISTS ". csaSpotsToUsers);
 	$wpdb->query("DROP TABLE IF EXISTS ". csaOrders);
 	$wpdb->query("DROP TABLE IF EXISTS ". csaProducts);
+	$wpdb->query("DROP TABLE IF EXISTS ". csaProductCategories);
+	
+	
+
 }
 
 

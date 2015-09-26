@@ -79,16 +79,6 @@ $j(document).ready(function() {
 				$j.post(ajaxurl, dataPost, 
 					function(response) { 
 						//console.log ("Server returned:["+response+"]");						
-						
-						if (column==0) {
-							CsaWpPluginRequestSpotNameValidity(value, null, 1,
-								function() {
-									alert ("invalid! spot name already exists. please choose a unique one...")
-									CsaWpPluginRequestSpotUpdate(spotID,oldValue,column);
-									$j(field).html(oldValue);
-								}
-							);
-						}
 					}
 				);
 			
@@ -108,7 +98,6 @@ $j(document).ready(function() {
 			openSpeed: 'slow'
 		});
 	}
-	else console.log("spotsListDiv empty!");
 	
 	var showNewSpotDiv = $j("#csa-wp-plugin-showNewSpot_div .csa-wp-plugin-tip_spots");
 	if(showNewSpotDiv) {
@@ -123,7 +112,7 @@ $j(document).ready(function() {
 	
 });
 
-function CsaWpPluginRequestSpotUpdate(spotID,value,column) {
+function CsaWpPluginRequestSpotUpdate(spotID, value, column) {
 	var dataPost = {
 		"action" : "csa-wp-plugin-update_spot",
 		"value" : value,
@@ -180,6 +169,10 @@ function CsaWpPluginNewSpotFieldsValidation(btn, spotID, urlAddress) {
 	
 	if (!form.checkValidity()) btn.click();
 	else {
+		document.getElementById("csa-wp-plugin-delivery_spot_owner_disabled_id").disabled = false;
+		document.getElementById("csa-wp-plugin-spots_order_deadline_day_disabled_id").disabled = false;
+		document.getElementById("csa-wp-plugin-spots_delivery_day_disabled_id").disabled = false;
+		document.getElementById("csa-wp-plugin-spots_close_disabled_id").disabled = false;
 		document.getElementById("csa-wp-plugin-spots_parking_disabled_id").disabled = false;
 		document.getElementById("csa-wp-plugin-spots_refrigerator_disabled_id").disabled = false;
 		
@@ -206,7 +199,7 @@ function CsaWpPluginNewSpotFieldsValidation(btn, spotID, urlAddress) {
 		
 		if (serializedFormData[6].value == 'no') validity = true;
 		
-		if (validity == true) CsaWpPluginRequestSendRequestForSpotToServer(btn, spotID, urlAddress);
+		if (validity == true) CsaWpPluginRequestRequestAddOrUpdateSpot(btn, spotID, urlAddress);
 		else {
 			CsaWpPluginYouForgotThisOne (document.getElementById(arraySpanElements[i]));
 			event.preventDefault();
@@ -214,7 +207,7 @@ function CsaWpPluginNewSpotFieldsValidation(btn, spotID, urlAddress) {
 	}
 }
 
-function CsaWpPluginRequestSendRequestForSpotToServer(btn, spotID, urlAddress) {
+function CsaWpPluginRequestRequestAddOrUpdateSpot(btn, spotID, urlAddress) {
 
 	btn.disabled = true;
 
@@ -223,7 +216,7 @@ function CsaWpPluginRequestSendRequestForSpotToServer(btn, spotID, urlAddress) {
 	serializedFormData = JSON.stringify(serializedFormData);
 			
 	var data = {
-		'action': 'csa-wp-plugin-spot_request',
+		'action': 'csa-wp-plugin-spot_add_or_update_request',
 		'spotID': spotID,
 		'data'	: serializedFormData
 	}
@@ -231,6 +224,7 @@ function CsaWpPluginRequestSendRequestForSpotToServer(btn, spotID, urlAddress) {
 	$j.post(ajaxurl, data ,
 		function(response){
 			//console.log("Server returned: [" + response + "]");
+			btn.disabled = false;
 			if (spotID == null) location.reload(true);
 			else window.location.replace(urlAddress);
 	});
@@ -254,6 +248,9 @@ function CsaWpPluginRequestDeleteSpot(spot) {
 			
 			$j(spotTR).fadeOut(200,function() {
 					$j(spotTR).remove();
+					
+					if ($j('#csa-wp-plugin-showSpotsList_table .csa-wp-plugin-showSpotsSpotID-spot').length == 0) 
+						location.reload(true);
 			});
 		}
 	);

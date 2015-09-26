@@ -21,11 +21,9 @@ function CsaWpPluginNonEditableUserProperties( $user ) {
 		$type = "Your account's type in CSA has not yet been defined";
 		$role = "Your account's role in CSA has not yet been defined";
 	} else {
-	
 		$type = "Consumer";
 		if ($csaData['type'] == "producer") $type = "Producer";
 		else if ($csaData['type'] == "both") $type = "Producer and Consumer";
-		
 		$role = "Simple User";
 		if ($csaData['role'] == "responsible") $role = "You can become responsible for some delivery";
 		else if ($csaData['role'] == "adminisrator") $role = "Administrator";
@@ -45,10 +43,6 @@ function CsaWpPluginNonEditableUserProperties( $user ) {
 		</tr>
 		</table>
 	";
-}
-
-
-function CsaWpPluginAdminShowUserProperties( $user ) {
 }
 
 function CsaWpPluginAdminShowDefaultUserProperties ( $user) {
@@ -249,4 +243,57 @@ function CsaWpPluginDeleteUsers() {
 	
     foreach($csaUsers as $csaUser) CsaWpPluginDeleteUser($csaUser);
 }
+
+// -----------------------------------
+// ------------ NEW STUFF ------------
+// -----------------------------------
+
+function CsaWpPluginSelectUsers($selectedUserID, $message) {
+	$users = get_users();
+	CsaWpPluginBuildUsersSelection($users, $selectedUserID, $message);
+}
+
+function CsaWpPluginSelectProducers($selectedUserID, $message) {
+	$csaProducers = CsaWpPluginGetProducers() ;
+	CsaWpPluginBuildUsersSelection($csaProducers, $selectedUserID, $message);
+}
+
+function CsaWpPluginGetProducers() {
+	$csaUsers = get_users();
+	
+	foreach ($csaUsers as $i => $user) {
+		echo "USER: [$user->user_login]";
+		$csaUserData = get_user_meta( $user->ID, 'csa-wp-plugin_user', true );
+		if ($csaUserData == "" || $csaUserData['type'] == "consumer")
+			unset($csaUsers[$i]);
+	}
+	
+	return $csaUsers;
+}
+
+function CsaWpPluginBuildUsersSelection($usersToSelect, $selectedUserID, $message) {
+						
+	foreach ($usersToSelect as $user) {
+		$text = "";
+		$firstName = get_user_meta( $user->ID, 'first_name', true );
+		$lastName = get_user_meta( $user->ID, 'last_name', true );
+		
+		if ($firstName != null) {
+			$text = $firstName; 
+			if ($lastName != null) $text = $text." ".$lastName;
+			$text.=" ";
+		}
+		else if ($lastName != null)
+			$text .= $lastName . " ";
+			
+		$text .= "(".$user->user_login.")";
+		
+		if ($selectedUserID != null && $user->ID == $selectedUserID) 								
+			echo "<option value='".$user->ID."' selected='selected' style='color:black'>". $message.$text."</option>";
+		else
+			echo "<option value='".$user->ID."' style='color:black'>".$text."</option>";
+
+	}
+}
+
 ?>

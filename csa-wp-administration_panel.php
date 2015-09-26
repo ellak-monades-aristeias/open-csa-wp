@@ -97,15 +97,28 @@ function CsaWpPluginProductsMenu() {
 
 	echo '<div class="wrap">';
 	echo '<h2>CSA Management Panel</h2>';
-
-	CsaWpPluginShowNewProductForm();
 	
-	//CsaWpPluginShowProducts();
 	
-	//CsaWpPluginShowNewProductsCategoryForm();
-	
-	//CsaWpPluginShowProductsCategories();
-	
+	if (isset($_GET["id"])) 
+		CsaWpPluginShowNewProductForm($_GET["id"], true);
+	else {
+		global $wpdb;
+		if (count($wpdb->get_results("SELECT id FROM " .csaProductCategories)) == 0) {
+			
+			CsaWpPluginShowNewProductCategoryForm(true);
+		}
+		else {
+			CsaWpPluginShowNewProductCategoryForm(false);
+			CsaWpPluginShowProductCategories(false);
+			
+			if (count($wpdb->get_results("SELECT id FROM " .csaProducts)) == 0)
+				CsaWpPluginShowNewProductForm(null, true);
+			else { 
+				CsaWpPluginShowNewProductForm(null, false);
+				CsaWpPluginShowProducts(true);
+			}
+		}
+	}
 	echo '</div>';
 }
 

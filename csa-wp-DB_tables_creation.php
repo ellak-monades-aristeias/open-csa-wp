@@ -42,25 +42,23 @@ function CsaWpPluginDBTablesCreation () {
 	) $charset_collate;	
 	
 	CREATE TABLE ". csaProductCategories ." (
-		pc_id  int(4) NOT NULL AUTO_INCREMENT, 
+		id  int(4) NOT NULL AUTO_INCREMENT, 
 		name varchar(20) NOT NULL, 
 		description varchar(100),
-		PRIMARY KEY  (pc_id)
+		PRIMARY KEY  (id)
 	) $charset_collate;
 
 	CREATE TABLE ". csaProducts ." (
-		p_id int(10) NOT NULL AUTO_INCREMENT,
+		id int(10) NOT NULL AUTO_INCREMENT,
 		name varchar(30) NOT NULL,
 		category int(4) NOT NULL,
-		producer int(4) NOT NULL,
 		variety varchar(30) DEFAULT NULL,		
-		measurement_unit enum('piece', 'litre', 'kilogram', 'bunch') NOT NULL,
 		current_price_in_euro float(5) NOT NULL,
+		measurement_unit enum('piece', 'litre', 'kilogram', 'bunch') NOT NULL,
+		producer int(4) NOT NULL,
 		description varchar(500),
-		isFrail tinyint(1),
-		isExchangeable tinyint(1),
-		isAvailable tinyint(1),
-		PRIMARY KEY  (p_id)
+		isAvailable boolean NOT NULL,
+		PRIMARY KEY  (id)
 	) $charset_collate;
 
 	CREATE TABLE ". csaOrders ." (

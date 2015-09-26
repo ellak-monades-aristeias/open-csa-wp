@@ -23,13 +23,17 @@ for each record it retrieves (1) the <key_field_name> and stores it as a value o
 and (2) an array of <field_names> that create the value of the option
 ******************************************************** */
 
-function CsaWpPluginSelectOptionsFromDB($field_names, $key_field_name, $table_name){
+function CsaWpPluginSelectOptionsFromDB($field_names, $key_field_name, $table_name, $selected_val, $message){
 	global $wpdb;
 	
 	$options = $wpdb->get_results("SELECT * FROM ". $table_name);
 	$result = "";
 	foreach($options as $rownum => $row) {	  
-		$result .= '<option value ="'. $row-> $key_field_name . '">';
+		$result .= '<option value ="'. $row-> $key_field_name . '" style="color:black"'; 
+		if ($selected_val != null && $selected_val == $row->$key_field_name) $result .= 'selected = "selected"';
+		$result .= '>';
+		if ($selected_val != null && $selected_val == $row->$key_field_name)
+			$result .= $message;
 		for($x = 0; $x < count($field_names); $x++) {
   		  $result .=  $row-> $field_names[$x];
 		}       

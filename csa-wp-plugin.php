@@ -43,7 +43,7 @@ define("csaProducts", $wpdb->prefix."csa_products");
 define("csaUsers", $wpdb->prefix."csa_users");
 define("csaSpots", $wpdb->prefix."csa_spots");
 define("csaSpotsToUsers", $wpdb->prefix."csa_spots_to_users");
-define("csaProductCategories", $wpdb->prefix."csa_products_categories");
+define("csaProductCategories", $wpdb->prefix."csa_product_categories");
 
 define("enterKeyCode", "13");
 define("tabKeyCode", "9");
@@ -62,6 +62,8 @@ register_activation_hook( __FILE__, 'CsaWpPluginAvtivation' );
 function CsaWpPluginEnqueueCsaScripts() {
 	wp_register_script('CsaWpPluginScripts', plugins_url('/csa-wp-javascripts.js', __FILE__));
 	wp_register_script('CsaWpPluginSpotsScripts', plugins_url('/csa-wp-spots.js', __FILE__));
+	wp_register_script('CsaWpPluginProductCategoriesScripts', plugins_url('/csa-wp-product_categories.js', __FILE__));
+	wp_register_script('CsaWpPluginProductsScripts', plugins_url('/csa-wp-products.js', __FILE__));
 	wp_register_script('jquery.datatables', plugins_url('/deps/jquery.datatables.js', __FILE__) );
 	wp_register_script('jquery.jeditable', plugins_url('/deps/jquery.jeditable.js', __FILE__));
 	wp_register_script('jquery.blockui', plugins_url('/deps/jquery.blockui.js', __FILE__));

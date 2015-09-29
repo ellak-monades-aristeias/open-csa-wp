@@ -27,7 +27,7 @@ function CsaWpPluginDBTablesCreation () {
 		default_order_deadline_day enum('0','1','2','3','4','5','6') NOT NULL,
 		default_order_deadline_time time NOT NULL,
 		default_delivery_day enum('0','1','2','3','4','5','6') NOT NULL,
-		default_delivery_strart_time time NOT NULL,
+		default_delivery_start_time time NOT NULL,
 		default_delivery_end_time  time NOT NULL,
 		has_refrigerator boolean DEFAULT NULL,
 		parking enum('easy','possible','hard','impossible') DEFAULT NULL,
@@ -60,6 +60,19 @@ function CsaWpPluginDBTablesCreation () {
 		isAvailable boolean NOT NULL,
 		PRIMARY KEY  (id)
 	) $charset_collate;
+	
+	CREATE TABLE ". csaDeliveries ." (
+		id int(11) NOT NULL AUTO_INCREMENT,
+		spot_id int(4) NOT NULL,
+		order_deadline_date date NOT NULL,
+		order_deadline_time time NOT NULL,
+		delivery_date date NOT NULL,
+		delivery_start_time time NOT NULL,
+		delivery_end_time time NOT NULL,		
+		userInCharge int(4) default NULL,
+		areOrdersOpen boolean NOT NULL,
+		PRIMARY KEY  (id)
+	) $charset_collate;
 
 	CREATE TABLE ". csaOrders ." (
 		id int(11) NOT NULL AUTO_INCREMENT,
@@ -82,100 +95,6 @@ function CsaWpPluginDBTablesCreation () {
 	update_option( 'csa-wp-plugin-db_version', '1.0' );
 }
 
-/*	************************************
-	ADDING ELEMENTS INTO DATABASE TABLES
-	************************************
-*/
-
-function CsaWpPluginDBAddElements() {
-	global $wpdb;
-	
-/*	
-		name 
-		variety varchar(30) DEFAULT NULL,		
-		measurement_unit enum('piece', 'litre', 'kilogram', 'bunch') NOT NULL,
-		current_price_in_euro float(5) NOT NULL,
-		description varchar(500),
-		isFrail tinyint(1),
-		isExchangeable tinyint(1),
-		isAvailable tinyint(1),
-		
-/*	$wpdb->insert( 
-		csaProducts, 
-		array( 
-			'name' => "Πατάτες",
-			'variety' => "spunta",
-			'current_price_in_euro' => 1,
-			'measurement_unit' => "κιλό",
-			'producer' => "Πάρης Πατατούδης",
-			'category' => "Λαχανικά",
-			'details' => "",
-			'available' => "true"
-		) 
-	);
-
-	$wpdb->insert( 
-		csaProducts, 
-		array( 
-			'type' => "Αυγά",
-			'variety' => "Ντόπιας Κότας",
-			'price' => 0.3,
-			'unit' => "τεμάχιο",
-			'producer' => "Αυγή Λαχανούλα",
-			'category' => "Γαλακτοκομικά",
-			'details' => "αυτά...",
-			'available' => "true"
-		) 
-	);
-	
-	
-	$wpdb->insert( 
-		csaOrders, 
-		array( 
-			'user_login' => "ekosmas",
-			'product_id' => 1,
-			'type' => "Πατάτες",
-			'variety' => "spunta",
-			'price' => 1,
-			'unit' => "κιλό",
-			'date' => "2015-09-01",
-			'quantity' => 5 
-		) 
-	);
-*/
-	
-	$wpdb->insert( 
-		csaOrders, 
-		array( 
-			'user_login' => "ekosmas",
-			'product_id' => 2,
-			'type' => "Αυγά",
-			'variety' => "Ντόπιας Κότας",
-			'price' => 0.3,
-			'unit' => "τεμάχιο",
-			'date' => "2015-09-01",
-			'quantity' => 100
-		) 
-	);
-	
-	$wpdb->insert( 
-		csaOrders, 
-		array( 
-			'user_login' => "haridimos",
-			'product_id' => 2,
-			'type' => "Αυγά",
-			'variety' => "Ντόπιας Κότας",
-			'price' => 0.3,
-			'unit' => "τεμάχιο",
-			'date' => "2015-09-01",
-			'quantity' => 50
-		) 
-	);
-	
-
-}
-
-
 /*	***************************
 	DELETION OF DATABASE TABLES
 	***************************
@@ -187,12 +106,10 @@ function CsaWpPluginDBTablesDrop() {
 
 	$wpdb->query("DROP TABLE IF EXISTS ". csaSpots);
 	$wpdb->query("DROP TABLE IF EXISTS ". csaSpotsToUsers);
-	$wpdb->query("DROP TABLE IF EXISTS ". csaOrders);
-	$wpdb->query("DROP TABLE IF EXISTS ". csaProducts);
 	$wpdb->query("DROP TABLE IF EXISTS ". csaProductCategories);
-	
-	
-
+	$wpdb->query("DROP TABLE IF EXISTS ". csaProducts);
+	$wpdb->query("DROP TABLE IF EXISTS ". csaDeliveries);
+	$wpdb->query("DROP TABLE IF EXISTS ". csaOrders);
 }
 
 

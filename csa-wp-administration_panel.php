@@ -15,80 +15,13 @@ if ( is_admin() ){ // admin actions
 function CsaWpPluginMenu() {
 	$parent_slug = 'csa_management';
 	add_menu_page( 'CSA Management', 'CSA', 'manage_options', $parent_slug );
-//	add_submenu_page( $parent_slug, 'CSA Settings', 'Settings', 'manage_options', $parent_slug, 'CsaWpPluginSettingsMenu');
 	add_submenu_page( $parent_slug, 'Manage CSA Products', 'Products', 'manage_options', $parent_slug, 'CsaWpPluginProductsMenu');
+	add_submenu_page( $parent_slug, 'Manage CSA Spots', 'Spots', 'manage_options', 'csa_spots_management', 'CsaWpPluginSpotsMenu');
+	add_submenu_page( $parent_slug, 'Manage CSA Deliveries', 'Deliveries', 'manage_options', 'csa_deliveries_management', 'CsaWpPluginDeliveriesMenu');
 	add_submenu_page( $parent_slug, 'Manage CSA Orders', 'Orders', 'manage_options', 'csa_orders_management', 'CsaWpPluginOrdersMenu');		
 	add_submenu_page( $parent_slug, 'Manage CSA Users', 'Users', 'manage_options', 'csa_users_management', 'CsaWpPluginUsersMenu');
-	add_submenu_page( $parent_slug, 'Manage CSA Spots', 'Spots', 'manage_options', 'csa_spots_management', 'CsaWpPluginSpotsMenu');
+
 }
-
-/*
-function CsaWpPluginSettingsMenu() {
-	global $wpdb;
-
-	if ( !current_user_can( 'administrator' ) &&
-		(!($csaData = get_user_meta( $user->ID, 'csa-wp-plugin_user', true )) || $csaData['role'] != "administrator" )
-	)	wp_die( __( 'You do not have sufficient permissions to access this page.' ) );
-	
-	echo '<div class="wrap">';
-	echo '<h2>CSA Management Panel</h2>';
-
-	echo '<h2>Settings</h2>';
-	echo '<form method="post" action="options.php">';
-	settings_fields(csaOptionsGroup);
-	do_settings_sections(csaOptionsGroup);
-	
-	echo '
-		<table class="form-table">
-		<tr valign="top">
-        <th scope="row">Delivery day</th>
-        <td><input type="text" name="csa_delivery_day" value="'.get_option('csa_delivery_day').'" /></td>
-        </tr>
-         
-		<tr valign="top">
-        <th scope="row">Last delivery date</th>
-        <td><input type="date" name="csa_last_delivery_date" value="'.get_option('csa_last_delivery_date').'" /></td>
-        </tr>
-		
-        </table>';
-	
-	submit_button();
-
-	echo '</form>';	
-	echo '</div>';
-}
-*/
-
-function CsaWpPluginUsersMenu() {
-	if ( !current_user_can( 'administrator' ) &&
-		(!($csaData = get_user_meta( $user->ID, 'csa-wp-plugin_user', true )) || $csaData['role'] != "administrator" )
-	)	wp_die( __( 'You do not have sufficient permissions to access this page.' ) );
-	?>
-	<script>
-	window.location.replace("<?php echo admin_url("/users.php"); ?>");
-	</script>
-<?php
-}
-
-function CsaWpPluginSpotsMenu() {
-	if ( !current_user_can( 'administrator' ) &&
-		(!($csaData = get_user_meta( $user->ID, 'csa-wp-plugin_user', true )) || $csaData['role'] != "administrator" )
-	)	wp_die( __( 'You do not have sufficient permissions to access this page.' ) );
-
-	echo '<div class="wrap">';
-	echo '<h2>CSA Management Panel</h2>';
-
-	global $wpdb;
-	if (isset($_GET["id"])) CsaWpPluginSpotForm($_GET["id"], true);
-	else if (count($wpdb->get_results("SELECT id FROM " .csaSpots)) == 0)
-		CsaWpPluginSpotForm(null, true);
-	else {
-		CsaWpPluginSpotForm(null, false);
-		CsaWpPluginShowSpots();	
-	}
-	echo '</div>';
-}
-
 
 function CsaWpPluginProductsMenu() {
 	if ( !current_user_can( 'administrator' ) &&
@@ -122,6 +55,81 @@ function CsaWpPluginProductsMenu() {
 	echo '</div>';
 }
 
+function CsaWpPluginSpotsMenu() {
+	if ( !current_user_can( 'administrator' ) &&
+		(!($csaData = get_user_meta( $user->ID, 'csa-wp-plugin_user', true )) || $csaData['role'] != "administrator" )
+	)	wp_die( __( 'You do not have sufficient permissions to access this page.' ) );
+
+	echo '<div class="wrap">';
+	echo '<h2>CSA Management Panel</h2>';
+
+	global $wpdb;
+	if (isset($_GET["id"])) 
+		CsaWpPluginSpotForm($_GET["id"], true);
+	else if (count($wpdb->get_results("SELECT id FROM " .csaSpots)) == 0)
+		CsaWpPluginSpotForm(null, true);
+	else {
+		CsaWpPluginSpotForm(null, false);
+		CsaWpPluginShowSpots();	
+	}
+	echo '</div>';
+}
+
+function CsaWpPluginDeliveriesMenu() {
+	if ( !current_user_can( 'administrator' ) &&
+		(!($csaData = get_user_meta( $user->ID, 'csa-wp-plugin_user', true )) || $csaData['role'] != "administrator" )
+	)	wp_die( __( 'You do not have sufficient permissions to access this page.' ) );
+
+	echo '<div class="wrap">';
+	echo '<h2>CSA Management Panel</h2>';
+
+	global $wpdb;
+	
+	if (count($wpdb->get_results("SELECT id FROM " .csaSpots. " WHERE isDeliverySpot = 1")) == 0)
+		echo "
+			<h3 style='color:orangeorange'>sorry... no spots found...!</h3> 
+			<h4 style='color:gray'>You must create at least one delivery spot, before you initiate a delivery (for some spot).</h4>
+			<h4 style='color:gray'>To do so, use the corresponding menu of CSA Managemement Panel or simply click 
+			<a href='".
+				admin_url('/admin.php?page=csa_spots_management')
+			."'>here </a></h4>
+		";
+	else {
+		if (isset($_GET["id"])){
+			$spotID = $_GET["id"];
+			CsaWpPluginNewDeliveryForm($spotID, null, array(), null, true);
+		}
+		else if (isset($_GET["deliveryID"])){
+			$deliveryID = $_GET["deliveryID"];
+			$spotID = $wpdb->get_var($wpdb->prepare("SELECT spot_id FROM ".csaDeliveries." WHERE id=%d", $deliveryID));
+			CsaWpPluginNewDeliveryForm($spotID, null, array(), $deliveryID, true);
+		}
+		else if (isset($_POST["csa-wp-plugin-newDelivery_spotID_choice"])) {
+			
+			$spotID = $_POST["csa-wp-plugin-newDelivery_spotID_choice"];
+			
+			$customValues = array();
+			if (isset($_POST["csa-wp-plugin-newDelivery_orderDeadlineDate_choice"]))
+				$customValues = CsaWpPluginReturnCustomValuesForNewDelivery($spotID);
+			
+			$deliveryID = null;
+			if (isset($_POST["csa-wp-plugin-newDelivery_deliveryID_choice"]))
+				$deliveryID = $_POST["csa-wp-plugin-newDelivery_deliveryID_choice"];
+
+			$orderDeadlineDate = null;
+			if (isset($_POST["csa-wp-plugin-newDelivery_orderDeadlineDate_choice"]))
+				$orderDeadlineDate = explode(";",$_POST["csa-wp-plugin-newDelivery_orderDeadlineDate_choice"])[0];
+
+			CsaWpPluginNewDeliveryForm($spotID, $orderDeadlineDate, $customValues, $deliveryID, true);
+		}
+		else if (count($wpdb->get_results("SELECT id FROM " .csaDeliveries)) > 0) {
+			CsaWpPluginNewDeliveryForm(null, null, array(), false, null);  // i.e. CsaWpPluginNewDeliveryForm(null, $deliveryID, $orderDeadlineDate, false, array());
+			CsaWpPluginShowDeliveries(true);
+		}
+		else CsaWpPluginNewDeliveryForm(null, null, array(), true, null);  // i.e. CsaWpPluginNewDeliveryForm(null, $deliveryID, $orderDeadlineDate, true, array());
+	}
+}
+
 function CsaWpPluginOrdersMenu() {
 	if ( !current_user_can( 'administrator' ) &&
 		(!($csaData = get_user_meta( $user->ID, 'csa-wp-plugin_user', true )) || $csaData['role'] != "administrator" )
@@ -134,6 +142,18 @@ function CsaWpPluginOrdersMenu() {
 	
 	echo '</div>';
 }
+
+function CsaWpPluginUsersMenu() {
+	if ( !current_user_can( 'administrator' ) &&
+		(!($csaData = get_user_meta( $user->ID, 'csa-wp-plugin_user', true )) || $csaData['role'] != "administrator" )
+	)	wp_die( __( 'You do not have sufficient permissions to access this page.' ) );
+	?>
+	<script>
+	window.location.replace("<?php echo admin_url("/users.php"); ?>");
+	</script>
+<?php
+}
+
 
 function RegisterCSASettings() {
 	register_setting(csaOptionsGroup, 'csa_delivery_day');

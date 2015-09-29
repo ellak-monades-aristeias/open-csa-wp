@@ -175,8 +175,8 @@ function CsaWpPluginAddNewOrder() {
 					array(
 						'user_login'	=> $_POST['user_login'],
 						'product_id' 	=> $productID,
-						'type' 			=> 'oti na nai',
-						'variety' 		=> 'oti na nai leme',
+						'type' 			=> 'type1',
+						'variety' 		=> 'variety1',
 						'price'			=> 100,
 						'unit'			=> 'τεμάχιο',
 						'date'			=> current_time('mysql'),
@@ -184,7 +184,7 @@ function CsaWpPluginAddNewOrder() {
 					), 
 					array ("%s", "%s", "%s", "%d", "%s", "%d")
 			) === FALSE)
-				echo "<span style='color:red'>Κάτι δε δούλεψε σωστά. Παρακαλώ αναφέρετε τις λεπτομέρειες της ενέργειάς σας στο διαχειριστή </span>";												
+				echo "error, sql request failed";												
 			else
 				echo 'success, product order added.';
 		}
@@ -355,7 +355,7 @@ function CsaWpPluginUpdateUserOrderProductQuantity() {
 				array('quantity' => $new_value), 
 				array('id' => $productOrderID )
 			) === FALSE) 
-				echo '<span style="color:red">Κάτι δε δούλεψε σωστά. Παρακαλώ αναφέρετε τις λεπτομέρειες της ενέργειάς σας στο διαχειριστή.</span>';												
+				echo 'error, sql request failed';												
 			else echo 'success,'.$new_value;
 		} 
 		else echo 'error,Empty values.';
@@ -380,7 +380,7 @@ function CsaWpPluginDeleteUserProductOrder() {
 				array('id' => $productOrderID ),
 				array ('%d')
 			) === FALSE) 
-				echo '<span style="color:red">Κάτι δε δούλεψε σωστά. Παρακαλώ αναφέρετε τις λεπτομέρειες της ενέργειάς σας στο διαχειριστή.</span>';												
+				echo 'error, sql request failed';												
 			else echo 'success';
 		} 
 		else echo 'error,Empty values.';
@@ -417,7 +417,7 @@ function CsaWpPluginDeleteUserOrder() {
 					$sucsess = false;
 			}
 			if ($success) echo 'success';
-			else echo '<span style="color:red">Κάτι δε δούλεψε σωστά. Παρακαλώ αναφέρετε τις λεπτομέρειες της ενέργειάς σας στο διαχειριστή.</span>';												
+			else echo 'error, sql request failed';												
 		} 
 		else echo 'error,Empty values.';
 	} 

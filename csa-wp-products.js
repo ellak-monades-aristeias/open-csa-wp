@@ -1,5 +1,5 @@
 
-var $j = jQuery.noConflict();	
+var $j = jQuery.noConflict();
 
 $j(document).ready(function() {
 	var productsListTable = $j("#csa-wp-plugin-showProductsList_table");
@@ -99,15 +99,12 @@ function CsaWpPluginNewProductFieldsValidation(btn, productID, urlAddress) {
 	
 	if (!form.checkValidity()) btn.click();
 	else {
-		console.log ("Mphke...");
 		document.getElementById("csa-wp-plugin-newProductForm_category_input_disabled_id").disabled = false;
-		console.log ("Mphke 1...");
 		document.getElementById("csa-wp-plugin-newProductForm_producer_input_disabled_id").disabled = false;
-		console.log ("Mphke 2...");
 		document.getElementById("csa-wp-plugin-newProductForm_unit_input_disabled_id").disabled = false;
-		console.log ("Mphke 3...");
 		document.getElementById("csa-wp-plugin-newProductForm_availability_input_disabled_id").disabled = false;
-		console.log ("Perase...");
+		
+		var $j = jQuery.noConflict();
 		var serializedFormData = $j('#csa-wp-plugin-showNewProduct_form').serializeArray();
 		var arraySpanElements = [
 			"",

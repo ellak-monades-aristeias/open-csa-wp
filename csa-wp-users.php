@@ -188,9 +188,6 @@ add_action( 'user_register', 'CsaWpPluginSaveUserProperties');
 
 
 function CsaWpPluginSaveUserProperties( $user_id ) {
-    update_user_meta( $user_id, 'csa-wp-plugin_user_role', sanitize_text_field( $_POST['csa-wp-plugin_user_role'] ) );
-	
-	
 	$csaData = array();
 
 	if(!empty( $_POST['csa-wp-plugin_user_type'] ))	
@@ -253,18 +250,17 @@ function CsaWpPluginSelectUsers($selectedUserID, $message) {
 	CsaWpPluginBuildUsersSelection($users, $selectedUserID, $message);
 }
 
-function CsaWpPluginSelectProducers($selectedUserID, $message) {
-	$csaProducers = CsaWpPluginGetProducers() ;
+function CsaWpPluginSelectUsersOfType($userType, $selectedUserID, $message) {
+	$csaProducers = CsaWpPluginGetUserExcluding($userType=="consumer"?"producer":"consumer") ;
 	CsaWpPluginBuildUsersSelection($csaProducers, $selectedUserID, $message);
 }
 
-function CsaWpPluginGetProducers() {
+function CsaWpPluginGetUserExcluding($userType) {
 	$csaUsers = get_users();
 	
 	foreach ($csaUsers as $i => $user) {
-		echo "USER: [$user->user_login]";
 		$csaUserData = get_user_meta( $user->ID, 'csa-wp-plugin_user', true );
-		if ($csaUserData == "" || $csaUserData['type'] == "consumer")
+		if ($csaUserData == "" || $csaUserData['type'] == $userType)
 			unset($csaUsers[$i]);
 	}
 	
@@ -288,7 +284,7 @@ function CsaWpPluginBuildUsersSelection($usersToSelect, $selectedUserID, $messag
 			
 		$text .= "(".$user->user_login.")";
 		
-		if ($selectedUserID != null && $user->ID == $selectedUserID) 								
+		if ($user->ID == $selectedUserID) 								
 			echo "<option value='".$user->ID."' selected='selected' style='color:black'>". $message.$text."</option>";
 		else
 			echo "<option value='".$user->ID."' style='color:black'>".$text."</option>";

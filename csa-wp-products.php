@@ -1,8 +1,5 @@
 <?php
 
-/* ****************************************************
-function that creates the form for adding a new product
-******************************************************** */
 function CsaWpPluginShowNewProductForm($productID, $display) { 
 	
 	wp_enqueue_script( 'CsaWpPluginScripts' );
@@ -100,7 +97,7 @@ function CsaWpPluginShowNewProductForm($productID, $display) {
 							disabled='disabled'
 							id = "csa-wp-plugin-newProductForm_producer_input_disabled_id"
 						>Producer *</option>
-						<?php echo CsaWpPluginSelectProducers($productInfo[0]->producer, "Producer is "); ?>
+						<?php echo CsaWpPluginSelectUsersOfType("producer", ($productID!=null)?$productInfo[0]->producer:null, "Producer is "); ?>
 					</select>
 					<span id="csa-wp-plugin-newProductForm_producer_input_span_id"></span>
 				</td></tr>
@@ -190,7 +187,7 @@ function CsaWpPluginShowNewProductForm($productID, $display) {
 					<?php 
 						if ($productID == null) echo "style='color:#999'";
 						else if ($productInfo[0]->isAvailable == 1) echo "style='color:green'";
-						else echo "style='color:red'";
+						else echo "style='color:brown'";
 					?>
 					onfocus = '
 							getElementById("csa-wp-plugin-newProductForm_availability_input_span_id").style.display = "none";
@@ -201,7 +198,7 @@ function CsaWpPluginShowNewProductForm($productID, $display) {
 							this.options[this.selectedIndex].text = "Currently, it is available"
 						}
 						else {
-							this.style.color = "red";
+							this.style.color = "brown";
 							this.options[this.selectedIndex].text = "Currently, it not is available"
 						}
 						'
@@ -216,13 +213,13 @@ function CsaWpPluginShowNewProductForm($productID, $display) {
 						if ($productID != null) {
 							echo '
 								<option value="yes" style="color:green". '. ($productInfo[0]->isAvailable == 1?"selected='selected'> Currently, it is available":">yes") .' </option>
-								<option value="no" style="color:red"'. ($productInfo[0]->isAvailable == 0?"selected='selected'> Currently, it is not available":">no") .' </option>
+								<option value="no" style="color:brown"'. ($productInfo[0]->isAvailable == 0?"selected='selected'> Currently, it is not available":">no") .' </option>
 							';
 						}
 						else {
 						?>
 							<option value="yes" style="color:green">yes</option>
-							<option value="no" style="color:red">no</option>
+							<option value="no" style="color:brown">no</option>
 						<?php
 						}
 					?>					
@@ -397,7 +394,7 @@ function CsaWpPluginShowProducts($display) {
 		<span class='csa-wp-plugin-tip_products' title='
 			If you want to update one among the name, variety, and description fields, click on it, write the new value, and then press ENTER.
 			| To change the availilability of a product, you can either click on its field or press the "eye" icon.
-			| If you want to edit all the product details, press the "pen" icon.
+			| If you want to edit some of the other product details, press the "pen" icon.
 			| If you want to delete some product, press the "x" icon.
 			'>
 		<p style="color:green;font-style:italic; font-size:13px">
@@ -538,7 +535,7 @@ add_action( 'wp_ajax_csa-wp-plugin-update_product_availability', 'CsaWpPluginUpd
 			array("isAvailable" => $availability), 
 			array('id' => $productID)
 		) === FALSE) 
-			echo '<span style="color:red">Κάτι δε δούλεψε σωστά. Παρακαλώ αναφέρετε τις λεπτομέρειες της ενέργειάς σας στο διαχειριστή ,['.$new_value.']['.$columnNum.']['.$id.']['.$columnName.']</span>';												
+			echo 'error, sql request failed';												
 		else echo 'success, Availability has been updated.';
 	} else {
 		echo 'error,Invalid request made.';

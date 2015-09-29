@@ -155,7 +155,7 @@ function CsaWpPluginRequestSpotNameValidity(name, spotID, numEntriesExist, inval
 				}			
 				else if (invalidFunction != null) invalidFunction();
 				else {
-					$j('#csa-wp-plugin-showNewSpot_name_span_id')[0].style.color = "red";
+					$j('#csa-wp-plugin-showNewSpot_name_span_id')[0].style.color = "brown";
 					$j('#csa-wp-plugin-showNewSpot_name_span_id')[0].style.display = "inline";
 					$j('#csa-wp-plugin-showNewSpot_name_span_id')[0].innerHTML = "invalid! name already exists";
 				}
@@ -175,7 +175,8 @@ function CsaWpPluginNewSpotFieldsValidation(btn, spotID, urlAddress) {
 		document.getElementById("csa-wp-plugin-spots_close_disabled_id").disabled = false;
 		document.getElementById("csa-wp-plugin-spots_parking_disabled_id").disabled = false;
 		document.getElementById("csa-wp-plugin-spots_refrigerator_disabled_id").disabled = false;
-		
+
+		var $j = jQuery.noConflict();
 		var serializedFormData = $j('#csa-wp-plugin-showNewSpot_form').serializeArray();
 		var arraySpanElements = [
 			"csa-wp-plugin-showNewSpotForm_deliverySpot_span",
@@ -254,30 +255,6 @@ function CsaWpPluginRequestDeleteSpot(spot) {
 			});
 		}
 	);
-}
-
-function CsaWpPluginValidateDeliveryTimePeriod () {
-	var obj1 = document.getElementById("csa-wp-plugin-spots_delivery_start_time_input_id");
-	var text1 = obj1.value;
-	var obj2 = document.getElementById("csa-wp-plugin-spots_delivery_end_time_input_id");
-	var text2 = obj2.value;
-		
-	var message = document.getElementById("csa-wp-plugin-showNewSpotForm_invalidDeliveryTime_span");
-	
-	if (text1 == "" && text2 != "")
-		message.innerHTML = "&nbsp; invalid delivery period! start of period in not defined";
-		
-	else if (text2 != "") {
-		var time1 = text1.split(" ")[1];	
-		var time2 = text2.split(" ")[1];	
-
-		if (time2 <= time1 ) {
-			obj2.value = "";
-			message.innerHTML = "&nbsp; invalid delivery period! please fill in for end time some value > " + time1;
-			message.style.color='red';
-			message.style.display='inline';
-		}
-	}
 }
 
 function CsaWpPluginShowNewSpotIsDeliverySelection(selectObj, spotID) {

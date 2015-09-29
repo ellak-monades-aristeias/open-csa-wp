@@ -189,7 +189,9 @@ function CsaWpPluginSpotForm ($spotID, $display){
 							this.style.color="black";
 							if (this.options[this.selectedIndex].text.split(" ")[0] != "Delivery")
 								this.options[this.selectedIndex].text = "Delivery day is " + this.options[this.selectedIndex].text;
-							getElementById("csa-wp-plugin-spots_delivery_start_time_input_id").style.display = "inline"'
+							getElementById("csa-wp-plugin-showNewSpotForm_delivery_start_time_input_id").style.display = "inline"
+							getElementById("csa-wp-plugin-showNewSpotForm_delivery_end_time_input_id").style.display = "inline";
+						'
 						<?php if (!$isDeliverySpot) echo "style='color:#999'";?>>
 					<option value="" disabled="disabled" 
 						<?php if (!$isDeliverySpot) echo "selected='selected'"; ?>
@@ -202,9 +204,9 @@ function CsaWpPluginSpotForm ($spotID, $display){
 					}
 					?>
 					</select> 
-					<input id="csa-wp-plugin-spots_delivery_start_time_input_id"
+					<input id="csa-wp-plugin-showNewSpotForm_delivery_start_time_input_id"
 						<?php 
-							if ($isDeliverySpot && $spotInfo[0]->default_delivery_strart_time != "" && $spotInfo[0]->default_delivery_strart_time != null) echo "value='from ".CsaWpPluginRemoveSeconds($spotInfo[0]->default_delivery_strart_time)."'";
+							if ($isDeliverySpot && $spotInfo[0]->default_delivery_start_time != "" && $spotInfo[0]->default_delivery_start_time != null) echo "value='from ".CsaWpPluginRemoveSeconds($spotInfo[0]->default_delivery_start_time)."'";
 							if (!$isDeliverySpot) echo "style='display:none'";
 						?>
 						placeholder="from... *"
@@ -217,16 +219,16 @@ function CsaWpPluginSpotForm ($spotID, $display){
 						onblur='
 							this.type="text";
 							if (this.value == "") {
-								getElementById("csa-wp-plugin-spots_delivery_end_time_input_id").style.display = "none";
-								getElementById("csa-wp-plugin-spots_delivery_end_time_input_id").value = "";
+								//getElementById("csa-wp-plugin-showNewSpotForm_delivery_end_time_input_id").style.display = "none";
+								getElementById("csa-wp-plugin-showNewSpotForm_delivery_end_time_input_id").value = "";
 							}
 							else {
 								this.style.color="black";
 								this.value = "from " + this.value;
-								getElementById("csa-wp-plugin-spots_delivery_end_time_input_id").style.display = "inline";
-								CsaWpPluginValidateDeliveryTimePeriod();
+								//getElementById("csa-wp-plugin-showNewSpotForm_delivery_end_time_input_id").style.display = "inline";
+								CsaWpPluginValidateDeliveryTimePeriod("showNewSpotForm");
 							}'>
-					<input id="csa-wp-plugin-spots_delivery_end_time_input_id"
+					<input id="csa-wp-plugin-showNewSpotForm_delivery_end_time_input_id"
 						<?php 
 							if ($isDeliverySpot && $spotInfo[0]->default_delivery_end_time != "" && $spotInfo[0]->default_delivery_end_time != null) echo "value='to ".CsaWpPluginRemoveSeconds($spotInfo[0]->default_delivery_end_time)."'";
 							if (!$isDeliverySpot) echo "style='display:none'";
@@ -243,7 +245,7 @@ function CsaWpPluginSpotForm ($spotID, $display){
 							if (this.value != "") {
 								this.style.color="black";
 								this.value = "to " + this.value;
-								CsaWpPluginValidateDeliveryTimePeriod();
+								CsaWpPluginValidateDeliveryTimePeriod("showNewSpotForm");
 							}
 						'>
 					<span id="csa-wp-plugin-showNewSpotForm_invalidDeliveryTime_span"> </span>
@@ -306,7 +308,7 @@ function CsaWpPluginSpotForm ($spotID, $display){
 							else if ($spotInfo[0]->parking == "easy") $styleAttributes = $styleAttributes."blue'";
 							else if ($spotInfo[0]->parking =="possible") $styleAttributes = $styleAttributes."green'";
 							else if ($spotInfo[0]->parking =="hard") $styleAttributes = $styleAttributes."orange'";
-							else if ($spotInfo[0]->parking =="impossible") $styleAttributes = $styleAttributes."red'";
+							else if ($spotInfo[0]->parking =="impossible") $styleAttributes = $styleAttributes."brown'";
 							echo $styleAttributes;
 						?>						
 						onfocus='getElementById("csa-wp-plugin-showNewSpotForm_parkingSpace_span_id").style.display = "none";'
@@ -334,7 +336,7 @@ function CsaWpPluginSpotForm ($spotID, $display){
 							hard :(</option>
 						<option value="impossible" 
 							<?php if ($isDeliverySpot && $spotInfo[0]->parking !="" && $spotInfo[0]->parking =="impossible") echo "selected='selected'";?> 
-							style="color:red">
+							style="color:brown">
 							<?php if ($isDeliverySpot && $spotInfo[0]->parking !="" && $spotInfo[0]->parking =="impossible") echo "Finding parking space is "; ?>
 							impossible :(</option>
 					</select>
@@ -348,7 +350,7 @@ function CsaWpPluginSpotForm ($spotID, $display){
 							$styleAttributes = "style='color:";
 							if (!$isDeliverySpot || $spotInfo[0]->has_refrigerator =="" ) $styleAttributes = $styleAttributes."#999'";
 							else if ($spotInfo[0]->has_refrigerator == "1") $styleAttributes = $styleAttributes."green'";
-							else if ($spotInfo[0]->has_refrigerator == "0") $styleAttributes = $styleAttributes."red'";
+							else if ($spotInfo[0]->has_refrigerator == "0") $styleAttributes = $styleAttributes."brown'";
 							echo $styleAttributes;
 						?>						
 						onfocus='getElementById("csa-wp-plugin-showNewSpotForm_hasRefrigerator_span_id").style.display = "none";'
@@ -365,7 +367,7 @@ function CsaWpPluginSpotForm ($spotID, $display){
 							>
 							<?php if ($isDeliverySpot && $spotInfo[0]->has_refrigerator !="" && $spotInfo[0]->has_refrigerator =="1") echo "It has refrigerator to store products! :) "; 
 							else echo "yes";?> </option>
-						<option value="no" style="color:red"
+						<option value="no" style="color:brown"
 							<?php if ($isDeliverySpot && $spotInfo[0]->has_refrigerator !="" && $spotInfo[0]->has_refrigerator =="0") echo "selected='selected'";?> 
 							>
 							<?php if ($isDeliverySpot && $spotInfo[0]->has_refrigerator !="" && $spotInfo[0]->has_refrigerator =="0") echo "It does not have refrigerator to store products! :( "; 
@@ -470,7 +472,7 @@ function CsaWpPluginAddOrUpdateSpot() {
 						'default_order_deadline_day' 	=> $dataReceived[8]['value'],
 						'default_order_deadline_time' 	=> explode(' ', $dataReceived[9]['value'])[2],
 						'default_delivery_day' 			=> $dataReceived[10]['value'],
-						'default_delivery_strart_time' 	=> explode(' ', $dataReceived[11]['value'])[1],
+						'default_delivery_start_time' 	=> explode(' ', $dataReceived[11]['value'])[1],
 						'default_delivery_end_time'		=> explode(' ', $dataReceived[12]['value'])[1],
 						'close_order'					=> $dataReceived[13]['value'],
 						'parking'						=> $dataReceived[14]['value'],
@@ -560,8 +562,10 @@ function CsaWpPluginShowSpots() {
 	<div id="csa-wp-plugin-showSpotsList_div" style="display:block">		
 
 		<span class='csa-wp-plugin-tip_spots' title='
-			If you want to update a field, click on it, write the new value, and then press ENTER.
-			| If you want to delete a spot, press the icon at the end of the corresponding row.'>
+			If you want to update a field (except the last one), click on it, write the new value, and then press ENTER.
+			| If you want to edit some of the other spot details, press the "pen" icon.
+			| If you want to delete some spot, press the "x" icon.
+		'>
 		<p style="color:green;font-style:italic; font-size:13px">
 			By pointing here you can read additional information.</p></span>
 			
@@ -595,7 +599,7 @@ function CsaWpPluginShowSpots() {
 					<td class='editable'>$row->city</td>
 					<td class='editable'>$row->region</td>
 					<td class='editable'>$row->description</td>
-					<td class='editable_select'>".($row->isDeliverySpot==1?'yes':($row->isDeliverySpot==NULL?'unknown':'no'))."</td>
+					<td>".($row->isDeliverySpot==1?'yes':($row->isDeliverySpot==NULL?'unknown':'no'))."</td>
 					<td style='text-align:center'> 
 						<img 
 							width='24' height='24'  

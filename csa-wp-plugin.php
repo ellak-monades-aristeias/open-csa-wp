@@ -38,24 +38,28 @@ include 'csa-wp-general-functions.php';
 
 
 global $wpdb;
-define("csaOrders", $wpdb->prefix."csa_orders");
-define("csaProducts", $wpdb->prefix."csa_products");
-define("csaUsers", $wpdb->prefix."csa_users");
-define("csaSpots", $wpdb->prefix."csa_spots");
-define("csaSpotsToUsers", $wpdb->prefix."csa_spots_to_users");
-define("csaProductCategories", $wpdb->prefix."csa_product_categories");
+
+
+define("csaSpots", $wpdb->prefix."csa_wp_plugin_spots");
+define("csaSpotsToUsers", $wpdb->prefix."csa_wp_plugin_spots_to_users");
+define("csaProductCategories", $wpdb->prefix."csa_wp_plugin_product_categories");
+define("csaProducts", $wpdb->prefix."csa_wp_plugin_products");
+define("csaDeliveries", $wpdb->prefix."csa_wp_plugin_deliveries");
+define("csaOrders", $wpdb->prefix."csa_wp_plugin_orders");
 
 define("enterKeyCode", "13");
 define("tabKeyCode", "9");
 
+define("csa_wp_plugin_date_format", "Y-m-d");
+define("csa_wp_plugin_date_format_readable", "d-M-Y");
 
-$days = array ("Monday", "Tuesday", "Wednesday", "Tuesday", "Friday", "Saturday", "Sunday");
+
+$days = array("Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday");
 
 include 'csa-wp-DB_tables_creation.php';
 
 function CsaWpPluginAvtivation() {
 	CsaWpPluginDBTablesCreation();
-	CsaWpPluginDBAddElements();
 }
 register_activation_hook( __FILE__, 'CsaWpPluginAvtivation' );
 
@@ -64,6 +68,7 @@ function CsaWpPluginEnqueueCsaScripts() {
 	wp_register_script('CsaWpPluginSpotsScripts', plugins_url('/csa-wp-spots.js', __FILE__));
 	wp_register_script('CsaWpPluginProductCategoriesScripts', plugins_url('/csa-wp-product_categories.js', __FILE__));
 	wp_register_script('CsaWpPluginProductsScripts', plugins_url('/csa-wp-products.js', __FILE__));
+	wp_register_script('CsaWpPluginDeliveriesScripts', plugins_url('/csa-wp-deliveries.js', __FILE__));	
 	wp_register_script('jquery.datatables', plugins_url('/deps/jquery.datatables.js', __FILE__) );
 	wp_register_script('jquery.jeditable', plugins_url('/deps/jquery.jeditable.js', __FILE__));
 	wp_register_script('jquery.blockui', plugins_url('/deps/jquery.blockui.js', __FILE__));
@@ -84,6 +89,7 @@ include 'csa-wp-users.php';
 include 'csa-wp-spots.php';
 include 'csa-wp-products.php';
 include 'csa-wp-product_categories.php';
+include 'csa-wp-deliveries.php';
 include 'csa-wp-orders.php';
 include 'csa-wp-administration_panel.php';
 

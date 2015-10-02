@@ -270,19 +270,7 @@ function CsaWpPluginGetUserExcluding($userType) {
 function CsaWpPluginBuildUsersSelection($usersToSelect, $selectedUserID, $message) {
 						
 	foreach ($usersToSelect as $user) {
-		$text = "";
-		$firstName = get_user_meta( $user->ID, 'first_name', true );
-		$lastName = get_user_meta( $user->ID, 'last_name', true );
-		
-		if ($firstName != null) {
-			$text = $firstName; 
-			if ($lastName != null) $text = $text." ".$lastName;
-			$text.=" ";
-		}
-		else if ($lastName != null)
-			$text .= $lastName . " ";
-			
-		$text .= "(".$user->user_login.")";
+		$text = CsaWpPluginUserReadable($user);
 		
 		if ($user->ID == $selectedUserID) 								
 			echo "<option value='".$user->ID."' selected='selected' style='color:black'>". $message.$text."</option>";
@@ -292,4 +280,53 @@ function CsaWpPluginBuildUsersSelection($usersToSelect, $selectedUserID, $messag
 	}
 }
 
+function CsaWpPluginUserReadable ($user) {
+	$text = "";
+	$firstName = get_user_meta( $user->ID, 'first_name', true );
+	$lastName = get_user_meta( $user->ID, 'last_name', true );
+	
+	if ($firstName != null) {
+		$text = $firstName; 
+		if ($lastName != null) $text = $text." ".$lastName;
+		$text.=" ";
+	}
+	else if ($lastName != null)
+		$text .= $lastName . " ";
+		
+	$text .= "(".$user->user_login.")";
+	
+	return $text;
+}
+
+function CsaWpPluginUserReadableWithoutLogin ($user) {
+	$text = "";
+	$firstName = get_user_meta( $user->ID, 'first_name', true );
+	$lastName = get_user_meta( $user->ID, 'last_name', true );
+	
+	if ($firstName != null) {
+		$text = $firstName; 
+		if ($lastName != null) $text = $text." ".$lastName;
+		$text.=" ";
+	}
+	else if ($lastName != null)
+		$text .= $lastName . " ";
+		
+	if ($text == "")	
+		$text = $user->user_login;
+	
+	return $text;
+}
+
+function CsaWpPluginProducersMapArray () {
+	$producersMap = array ();
+	
+	$csaUsers = get_users();
+	foreach ($csaUsers as $user) {
+		$csaUserData = get_user_meta( $user->ID, 'csa-wp-plugin_user', true );
+		if ($csaUserData != "" && ($csaUserData['type'] == "producer" || $csaUserData['type'] == "both"))
+			$producersMap[$user->ID] = CsaWpPluginUserReadableWithoutLogin($user);
+	}
+	
+	return $producersMap;
+}
 ?>

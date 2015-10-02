@@ -15,14 +15,14 @@ function CsaWpPluginDBTablesCreation () {
 	$sql = "	
 	
 	CREATE TABLE ". csaSpots ." (
-		id int(11) NOT NULL UNIQUE AUTO_INCREMENT,
-		spotName varchar(30) NOT NULL,
-		streetName varchar(30) NOT NULL,
-		streetNumber varchar(5) NOT NULL,
+		id int(4) NOT NULL UNIQUE AUTO_INCREMENT,
+		spot_name varchar(30) NOT NULL,
+		street_name varchar(30) NOT NULL,
+		street_number varchar(5) NOT NULL,
 		city varchar(20) NOT NULL,
 		region varchar(30) NOT NULL,
 		description varchar(100) DEFAULT NULL,
-		isDeliverySpot boolean NOT NULL,
+		is_delivery_spot boolean NOT NULL,
 		close_order enum('manual','automatic'),
 		default_order_deadline_day enum('0','1','2','3','4','5','6') NOT NULL,
 		default_order_deadline_time time NOT NULL,
@@ -35,8 +35,8 @@ function CsaWpPluginDBTablesCreation () {
 	) $charset_collate;
 	
 	CREATE TABLE ". csaSpotsToUsers ." (
-		spot_id  int(4) NOT NULL, 
-		user_id  int(4) NOT NULL, 
+		spot_id  int(10) NOT NULL, 
+		user_id  int(10) NOT NULL, 
 		type enum('production','delivery','home') NOT NULL,
 		PRIMARY KEY  (spot_id, user_id, type)
 	) $charset_collate;	
@@ -44,7 +44,7 @@ function CsaWpPluginDBTablesCreation () {
 	CREATE TABLE ". csaProductCategories ." (
 		id  int(4) NOT NULL AUTO_INCREMENT, 
 		name varchar(20) NOT NULL, 
-		description varchar(100),
+		description varchar(100) DEFAULT NULL,
 		PRIMARY KEY  (id)
 	) $charset_collate;
 
@@ -56,8 +56,8 @@ function CsaWpPluginDBTablesCreation () {
 		current_price_in_euro float(5) NOT NULL,
 		measurement_unit enum('piece', 'litre', 'kilogram', 'bunch') NOT NULL,
 		producer int(4) NOT NULL,
-		description varchar(500),
-		isAvailable boolean NOT NULL,
+		description varchar(500) DEFAULT NULL,
+		is_available boolean NOT NULL,
 		PRIMARY KEY  (id)
 	) $charset_collate;
 	
@@ -69,24 +69,32 @@ function CsaWpPluginDBTablesCreation () {
 		delivery_date date NOT NULL,
 		delivery_start_time time NOT NULL,
 		delivery_end_time time NOT NULL,		
-		userInCharge int(4) default NULL,
+		user_in_charge int(4) DEFAULT NULL,
 		areOrdersOpen boolean NOT NULL,
 		PRIMARY KEY  (id)
 	) $charset_collate;
 
-	CREATE TABLE ". csaOrders ." (
-		id int(11) NOT NULL AUTO_INCREMENT,
-		user_login varchar(30) DEFAULT NULL,
+	CREATE TABLE ". csaProductOrders ." (
+		delivery_id int(11) NOT NULL,
+		user_id int(11) NOT NULL,
 		product_id int(11) NOT NULL,
-		type text,
-		variety varchar(30) DEFAULT NULL,
-		price float DEFAULT NULL,
-		unit text,
-		date datetime DEFAULT NULL,
-		quantity float DEFAULT NULL,
-		PRIMARY KEY  (id)
+		quantity int(4) NOT NULL,
+		status enum('pending', 'accomplished', 'cancelled') DEFAULT 'pending', 
+		custom_price float(5) DEFAULT NULL,
+		comments varchar(100) DEFAULT NULL,
+		submission_or_last_edit_datetime datetime DEFAULT NULL,
+		PRIMARY KEY  (delivery_id, user_id, product_id)
 	) $charset_collate;
 	
+	CREATE TABLE ". csaUserOrders ." (
+		delivery_id int(11) NOT NULL,
+		user_id int(11) NOT NULL,
+		time_of_arrival time DEFAULT NULL,
+		comments varchar(500) DEFAULT NULL,
+		submission_datetime datetime DEFAULT NOW(),
+		last_edit_datetime datetime DEFAULT NULL,
+		PRIMARY KEY  (delivery_id, user_id)
+	) $charset_collate;
 	";
 		
 	require_once( ABSPATH . 'wp-admin/includes/upgrade.php' );
@@ -109,7 +117,8 @@ function CsaWpPluginDBTablesDrop() {
 	$wpdb->query("DROP TABLE IF EXISTS ". csaProductCategories);
 	$wpdb->query("DROP TABLE IF EXISTS ". csaProducts);
 	$wpdb->query("DROP TABLE IF EXISTS ". csaDeliveries);
-	$wpdb->query("DROP TABLE IF EXISTS ". csaOrders);
+	$wpdb->query("DROP TABLE IF EXISTS ". csaProductOrders);
+	$wpdb->query("DROP TABLE IF EXISTS ". csaUserOrders);
 }
 
 

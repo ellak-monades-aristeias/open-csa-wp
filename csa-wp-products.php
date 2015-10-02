@@ -1,6 +1,6 @@
 <?php
 
-function CsaWpPluginShowNewProductForm($productID, $display) { 
+function CsaWpPluginShowNewProductForm($productID, $display, $pageURL) { 
 	
 	wp_enqueue_script( 'CsaWpPluginScripts' );
 	wp_enqueue_script( 'CsaWpPluginProductsScripts' );
@@ -186,7 +186,7 @@ function CsaWpPluginShowNewProductForm($productID, $display) {
 					id="csa-wp-plugin-newProductForm_availability_input_id"
 					<?php 
 						if ($productID == null) echo "style='color:#999'";
-						else if ($productInfo[0]->isAvailable == 1) echo "style='color:green'";
+						else if ($productInfo[0]->is_available == 1) echo "style='color:green'";
 						else echo "style='color:brown'";
 					?>
 					onfocus = '
@@ -212,8 +212,8 @@ function CsaWpPluginShowNewProductForm($productID, $display) {
 					<?php 
 						if ($productID != null) {
 							echo '
-								<option value="yes" style="color:green". '. ($productInfo[0]->isAvailable == 1?"selected='selected'> Currently, it is available":">yes") .' </option>
-								<option value="no" style="color:brown"'. ($productInfo[0]->isAvailable == 0?"selected='selected'> Currently, it is not available":">no") .' </option>
+								<option value="yes" style="color:green". '. ($productInfo[0]->is_available == 1?"selected='selected'> Currently, it is available":">yes") .' </option>
+								<option value="no" style="color:brown"'. ($productInfo[0]->is_available == 0?"selected='selected'> Currently, it is not available":">no") .' </option>
 							';
 						}
 						else {
@@ -235,11 +235,11 @@ function CsaWpPluginShowNewProductForm($productID, $display) {
 			<?php 
 				if ($productID == null) {
 					echo "value='Add Product'";
-					echo "onclick='CsaWpPluginNewProductFieldsValidation(this, null, \"". admin_url("/admin.php?page=csa_management") ."\")'";
+					echo "onclick='CsaWpPluginNewProductFieldsValidation(this, null, \"$pageURL\")'";
 				}
 				else { 
 					echo "value='Update Product'";
-					echo "onclick='CsaWpPluginNewProductFieldsValidation(this, $productID, \"". admin_url("/admin.php?page=csa_management") ."\")'";
+					echo "onclick='CsaWpPluginNewProductFieldsValidation(this, $productID, \"$pageURL\")'";
 				}
 				
 			?>
@@ -254,7 +254,7 @@ function CsaWpPluginShowNewProductForm($productID, $display) {
 				onclick='CsaWpPluginResetProductForm();'";
 			else echo "
 				value='Cancel'
-				onclick='window.location.replace(\"". admin_url('/admin.php?page=csa_management')."\")'
+				onclick='window.location.replace(\"$pageURL\")'
 				'";
 			?>
 		/>
@@ -266,7 +266,6 @@ function CsaWpPluginShowNewProductForm($productID, $display) {
 <?php
 
 }
-add_shortcode('csa-wp-plugin-addNewProductForm', 'CsaWpPluginShowNewProductForm');
 
 function CsaWpPluginSelectMeasurementUnit($productID, $productInfo) {
 ?>
@@ -327,7 +326,7 @@ function CsaWpPluginAddOrUpdateProduct() {
 					'current_price_in_euro'		=> $price,
 					'measurement_unit'	 		=> $dataReceived[5]['value'],
 					'description'				=> $dataReceived[6]['value'],
-					'isAvailable' 				=> $dataReceived[7]['value'] == "yes"?1:0
+					'is_available' 				=> $dataReceived[7]['value'] == "yes"?1:0
 				);
 		$dataTypes = array ("%s", "%d", "%d", "%s", "%f", "%s", "%s", "%d");
 		
@@ -366,12 +365,13 @@ function CsaWpPluginAddOrUpdateProduct() {
 
 }
 
-function CsaWpPluginShowProducts($display) {
+function CsaWpPluginShowProducts($display, $pageURL) {
 	wp_enqueue_script('CsaWpPluginScripts');
 	wp_enqueue_script('CsaWpPluginProductsScripts');
 	wp_enqueue_script('jquery.datatables');
 	wp_enqueue_script('jquery.jeditable'); 
-	wp_enqueue_script('jquery.blockui'); ?>
+	wp_enqueue_script('jquery.blockui'); 	
+?>
 		
 	<br />
 	<div id="csa-wp-plugin-showProductsList_header">
@@ -398,7 +398,7 @@ function CsaWpPluginShowProducts($display) {
 			| If you want to delete some product, press the "x" icon.
 			'>
 		<p style="color:green;font-style:italic; font-size:13px">
-			By pointing here you can read additional information.</p></span>
+			by pointing here you can read additional information...</p></span>
 
 
 		<table 
@@ -425,22 +425,25 @@ function CsaWpPluginShowProducts($display) {
 		<tbody> <?php
 			global $wpdb;
 			$pluginsDir = plugins_url();
+			
+			$productCategoriesMap = $wpdb->get_results("SELECT id,name FROM ".csaProductCategories, OBJECT_K);
+			$producersMap = CsaWpPluginProducersMapArray();
+
 
 			$products = $wpdb->get_results("SELECT * FROM ". csaProducts);
 			foreach($products as $row) 
 			{
-				$productID = $row->id;
-				$categoryID = $row->category;
-				$category = $wpdb->get_var($wpdb->prepare("SELECT name FROM ". csaProductCategories ." WHERE id=%d", $categoryID));
+				$productID = $row->id;				
+				$category = $productCategoriesMap[$row->category]->name;
 				$producerID = $wpdb->get_var($wpdb->prepare("SELECT producer FROM ". csaProducts ." WHERE id=%d", $productID));
-				$producer = get_user_by('id', $producerID) -> user_login;
+				$producer = $producersMap[$producerID];
 				
 				echo "
 					<tr 
 						valign='top' 
 						id='csa-wp-plugin-showProductsProductID_$productID'  
 						class='csa-wp-plugin-showProducts-product'
-						style='color:". (($row->isAvailable == '1')?"black":"gray") ."'
+						style='color:". (($row->is_available == '1')?"black":"gray") ."'
 					>
 					<td class='editable'>$row->name </td>
 					<td>$category </td>
@@ -452,13 +455,13 @@ function CsaWpPluginShowProducts($display) {
 					<td 
 						class='editable_boolean'
 						id = 'csa-wp-plugin-showProductsAvailabilityID_$productID'
-					>".(($row->isAvailable == 1)?"yes":"no")."</td>
+					>".(($row->is_available == 1)?"yes":"no")."</td>
 					<td style='text-align:center'><img 
 							style='cursor:pointer' 
-							src='".plugins_url()."/csa-wp-plugin/icons/".(($row->isAvailable == 1)?"visible":"nonVisible").".png' 
+							src='".plugins_url()."/csa-wp-plugin/icons/".(($row->is_available == 1)?"visible":"nonVisible").".png' 
 							height='24' width='24' 
 							id = 'csa-wp-plugin-showProductsAvailabilityIconID_$productID'
-							title='mark it as ".(($row->isAvailable == 1)?"unavailable":"available")."'
+							title='mark it as ".(($row->is_available == 1)?"unavailable":"available")."'
 							onclick='CsaWpPluginRequestToggleProductVisibility(this,\"$pluginsDir\")'></td>
 					<td style='text-align:center'> 
 						<img 
@@ -466,7 +469,7 @@ function CsaWpPluginShowProducts($display) {
 							class='delete no-underline' 
 							src='$pluginsDir/csa-wp-plugin/icons/edit.png' 
 							style='cursor:pointer;padding-left:10px;' 
-							onclick='CsaWpPluginEditProduct(this, \"". admin_url('/admin.php?page=csa_management')."\")' 
+							onclick='CsaWpPluginEditProduct(this, \"$pageURL\")' 
 							title='click to edit this product'/></td>
 					<td style='text-align:center'> <img 
 						style='cursor:pointer' 
@@ -486,7 +489,6 @@ function CsaWpPluginShowProducts($display) {
 	</div>	
 <?php
 }
-add_shortcode('csa-wp-plugin-showProductsList', 'CsaWpPluginShowProducts');
 
 add_action( 'wp_ajax_csa-wp-plugin-update_product', 'CsaWpPluginUpdateProduct' );
 
@@ -532,7 +534,7 @@ add_action( 'wp_ajax_csa-wp-plugin-update_product_availability', 'CsaWpPluginUpd
 		global $wpdb;		
 		if(	$wpdb->update(
 			csaProducts,
-			array("isAvailable" => $availability), 
+			array("is_available" => $availability), 
 			array('id' => $productID)
 		) === FALSE) 
 			echo 'error, sql request failed';												
@@ -567,4 +569,15 @@ function CsaWpPluginDeleteProduct() {
 	
 	wp_die(); 	// this is required to terminate immediately and return a proper response
 
+}
+
+function  CsaWpPluginDeliveryProductsExist (){
+	global $wpdb;
+	if (count($wpdb->get_results("SELECT id FROM " .csaProducts. " WHERE is_available = 1")) == 0) {
+		echo "
+			<h3 style='color:brown'>sorry... no available products found... be patient, soon they will have grown enough... !</h3> 
+		";
+		return false;
+	}
+	else return true;	
 }

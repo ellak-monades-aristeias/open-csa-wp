@@ -108,7 +108,8 @@ function CsaWpPluginShowProductCategories($display) {
 		<span class='csa-wp-plugin-tip_categories' 
 			title='If you want to update a field, click on it, write the new value, and then press ENTER.
 			| If you want to delete a product, press the icon at the end of the corresponding row.'>
-			<p style="color:green;font-style:italic; font-size:13px">By pointing here you can read additional information.</p>
+			<p style="color:green;font-style:italic; font-size:13px">
+			by pointing here you can read additional information...p>
 		</span>
 			
 			
@@ -146,7 +147,6 @@ function CsaWpPluginShowProductCategories($display) {
 	</div>	
 <?php 
 }
-add_shortcode('csa-wp-plugin-showProductsCategoryList', 'CsaWpPluginShowCategories');
 
 add_action( 'wp_ajax_csa-wp-plugin-update_category', 'CsaWpPluginUpdateProductCategory');
 

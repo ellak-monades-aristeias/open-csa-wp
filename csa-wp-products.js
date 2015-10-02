@@ -35,7 +35,7 @@ $j(document).ready(function() {
 				};
 				$j.post(ajaxurl, dataPost, 
 					function(response) { 
-						console.log ("Server returned:["+response+"]");
+						//console.log ("Server returned:["+response+"]");
 						
 						//var fetch = response.split(",");
 						//var aPos = oTable.fnGetPosition(tmp);
@@ -146,7 +146,7 @@ function CsaWpPluginSendRequestAddOrUpdateProductToServer(btn, productID, urlAdd
 		'action': 'csa-wp-plugin-product_add_or_update_request',
 		'productID': productID,
 		'data'	: serializedFormData
-	}
+	};
 		
 	$j.post(ajaxurl, data ,
 		function(response){

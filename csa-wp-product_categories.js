@@ -35,7 +35,7 @@ $j(document).ready(function() {
 				};
 				$j.post(ajaxurl, dataPost, 
 					function(response) { 
-						console.log ("Server returned:["+response+"]");
+						//console.log ("Server returned:["+response+"]");
 						
 						//var fetch = response.split(",");
 						//var aPos = oTable.fnGetPosition(tmp);
@@ -129,7 +129,7 @@ function CsaWpPluginRequestDeleteProductCategory(category) {
 	
 	$j.post(ajaxurl, data, 
 		function(response) { 
-			console.log ("Server returned:["+response+"]");
+			//console.log ("Server returned:["+response+"]");
 			
 			$j(productCategoryTR).fadeOut(200,function() {
 					$j(productCategoryTR).remove();

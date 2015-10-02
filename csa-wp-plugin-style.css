@@ -1,0 +1,244 @@
+.info-text{
+	color:green;
+	font-style:italic; 
+	font-size:13px
+}
+
+.simple-text{
+	font-size:13px;
+	font-family: calibri;
+}
+
+.tip{
+	color:blue;
+	font-style:italic; 
+	cursor:pointer
+}
+
+.x-delete{
+	color:red;
+	font-weight:bold;
+	cursor:pointer
+}
+
+.showHide_div{
+	color: Blue  ;
+	font-weight:bold; 
+	font-family:calibri;
+	font-size:17px;
+}
+
+.total {
+	text-align:left;
+	font-size: 14px;
+	font-weight: bold;
+	color: Blue;
+}
+
+.producer{
+	color:rgb(150,0,0);
+	font-weight:bold; 
+	font-size:16px;
+}
+
+.panel{
+	margin: 1% 0;
+	border-style: dotted;
+	border-color:green;
+	border-width: 0 0 1px 0;
+	padding: 1px 5px;
+}
+
+.sum-border {
+	border-width: 3px 0 0 0; 
+	border-style:double;
+	border-color:Blue;
+	padding: 3px;
+}
+
+.emphasis-box {
+	border-width: 2px; 
+	border-style:solid;
+	border-color:green;
+	padding: 5px;
+}
+
+.th-hidden {
+	border-width: 0px;
+}
+
+.td-hidden {
+	border-width:0px;
+}
+
+.td-bordered {
+	border-width: 1px;
+}
+
+.table-straight { margin:0px; font-family:calibri }
+.table-straight th { border-width: 0; }
+.table-straight td { border-width: 0; } 
+
+.table-bordered{
+    border-collapse: separate;
+    border-spacing: 0;
+    border-width: 0;
+    margin-bottom: 24px;
+    width: 100%;
+}
+.table-bordered th { 
+	border-width: 0 0 1px 0 ;
+    font-weight: bold;
+}
+.table-bordered td { border-width: 0 0 1px 0 ; }
+
+.tableHeader{
+	color:brown;
+	font-family:calibri;
+	font-weight:bold;
+}
+.tableHeader th{
+	min-width:55px;
+}
+
+.container {
+	height:80px;
+}
+.left {
+    float:left;
+    width:58px;
+    /*height: 20px;
+    background: #ff0000; 
+	border: 1px solid rgba(0, 0, 0, 0.1); */
+}
+.div_tr {
+	height:35px;
+	text-align:center;
+	border-bottom: 1px solid rgba(0, 0, 0, 0.1); 
+}
+
+input, textarea {
+    border: 1px solid rgba(0, 0, 0, 0.1);
+    border-radius: 2px;
+    color: #2B2B2B;
+    padding: 8px 10px 7px;
+	background-color:LightGoldenRodYellow;
+}
+
+
+
+/* to un-set uppercase letters on menus, titles, etc. */
+.entry-title {
+    font-size: 33px;
+    font-weight: 300;
+    line-height: 1.09091;
+    margin: 0 0 12px;
+    text-transform: none;
+}
+
+.site-navigation a {
+    font-size: 14px;
+	color: #FFFFFF;
+    display: block;
+    text-transform: none;
+}
+
+.entry-content th, .comment-content th {
+    font-weight: 700;
+    padding: 1px;
+    text-transform: none; 
+}
+
+button,
+.contributor-posts-link,
+input[type="button"],
+input[type="reset"],
+input[type="submit"] {
+	text-transform: none;
+}
+
+/* keeps jump-links after the navigational bar after clicked*/
+a.anchored{display: block; position: relative; top: -90px; visibility: hidden;}
+
+
+/* to correct spacing between header and content */
+.masthead-fixed .site-main {
+		/*s margin-top: 23px; */
+		margin-top: 50px;
+	}
+
+/* to disable table margin by default */
+table {
+	border-width: 0px;
+}
+.entry-content table {
+    margin-bottom: 0px;
+}
+/* to change the font of page titles*/
+.entry-title {
+	font-family: cambria;
+}
+
+/* to keep smaller text*/
+html, body, div, span, applet, object, iframe, h1, h2, h3, h4, h5, h6, p, blockquote, pre, a, abbr, acronym, address, big, cite, code, del, dfn, em, font, ins, kbd, q, s, samp, small, strike, strong, sub, sup, tt, var, dl, dt, dd, ol, ul, li, fieldset, form, label, legend, table, caption, tbody, tfoot, thead, tr, th, td {
+font-size: 99%;
+}
+
+
+
+
+/* Colors */
+
+
+.site-header {
+	background-color: SaddleBrown; /*#A73636; #000;*/
+}
+
+#secondary { /*left-menu div*/
+	background-color: rgba(64,57,54,1); /*#000;*/
+}
+
+body, input, select, textarea {
+    color: rgba(64,57,54,1); /*#2B2B2B; */
+    font-family: "Trebuchet MS", Helvetica, sans-serif; /*Lato,sans-serif;*/
+}
+
+
+.site-navigation .current_page_item > a,
+.site-navigation .current_page_ancestor > a,
+.site-navigation .current-menu-item > a,
+.site-navigation .current-menu-ancestor > a {
+	color: orange; /*lightblue*/;
+}
+.primary-navigation li:hover > a,
+.primary-navigation li.focus > a {
+	background-color: #c4a500;
+	color: #fff;
+}
+.primary-navigation ul ul a:hover,
+.primary-navigation ul ul li.focus > a {
+	background-color: #c4a500;
+}
+.secondary-navigation li:hover > a,
+.secondary-navigation li.focus > a {
+	background-color: #c4a500;
+	color: #fff;
+}
+.secondary-navigation ul ul a:hover,
+.secondary-navigation ul ul li.focus > a {
+	background-color: #c4a500;
+}	
+
+.site-footer {
+	background-color: rgba(115,98,91,1);
+	font-size: 14px;
+}
+	
+/* align content to the left	
+.hentry {
+    margin: 0 auto 48px -20%;
+}*/
+/* to bring content on top close to the navigation bar 
+.content-area, .content-sidebar {
+	padding-top: 2px;
+}*/

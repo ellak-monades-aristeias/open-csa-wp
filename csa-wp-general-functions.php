@@ -48,4 +48,9 @@ function CsaWpPluginRemoveSeconds($time) {
 	return ($parts[0].":".$parts[1]);
 }
 
+function CsaWpPluginGetRedirectionURL($backEndBool) {
+	global $wp;
+	return ($backEndBool===true)?admin_url('/admin.php?page=csa_management'):add_query_arg( $wp->query_string, '', home_url( $wp->request ));
+}
+
 ?>

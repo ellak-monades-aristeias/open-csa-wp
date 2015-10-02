@@ -42,7 +42,7 @@ $j(document).ready(function() {
 						//console.log ("Server returned:["+response+"]");						
 						
 						if (column==0) {
-							CsaWpPluginRequestSpotNameValidity(value, null, 1,
+							CsaWpPluginRequestspot_nameValidity(value, null, 1,
 								function() {
 									alert ("invalid! spot name already exists. please choose a unique one...")
 									CsaWpPluginRequestSpotUpdate(spotID,oldValue,column);
@@ -126,7 +126,7 @@ function CsaWpPluginRequestSpotUpdate(spotID, value, column) {
 	);
 }
 
-function CsaWpPluginRequestSpotNameValidity(name, spotID, numEntriesExist, invalidFunction) {
+function CsaWpPluginRequestspot_nameValidity(name, spotID, numEntriesExist, invalidFunction) {
 	var $j = jQuery.noConflict();
 
 	if (name!= "") {
@@ -134,8 +134,8 @@ function CsaWpPluginRequestSpotNameValidity(name, spotID, numEntriesExist, inval
 		if (invalidFunction == null) btn.disabled = true;
 		
 		var data = {
-			'action': 'csa-wp-plugin-check_spotName_validity',
-			'spotName': name,
+			'action': 'csa-wp-plugin-check_spot_name_validity',
+			'spot_name': name,
 			'spotID' : spotID,
 			'numEntriesExist': numEntriesExist
 		}
@@ -282,7 +282,7 @@ function CsaWpPluginShowNewSpotIsDeliverySelection(selectObj, spotID) {
 
 function CsaWpPluginResetSpotForm(){
 	document.getElementById("csa-wp-plugin-showNewSpot_form").reset();
-	document.getElementById("csa-wp-plugin-spots_isDeliverySpot_input_id").style.color = "#999";
+	document.getElementById("csa-wp-plugin-spots_is_delivery_spot_input_id").style.color = "#999";
 	document.getElementById("csa-wp-plugin-spots_order_deadline_day_input_id").style.color = "#999";
 	document.getElementById("csa-wp-plugin-spots_delivery_day_input_id").style.color = "#999";
 	document.getElementById("csa-wp-plugin-spots_close_input_id").style.color = "#999";

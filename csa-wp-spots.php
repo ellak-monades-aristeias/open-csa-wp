@@ -39,25 +39,25 @@ function CsaWpPluginSpotForm ($spotID, $display){
 			<table class="form-table">
 				<tr valign="top"><td>
 					<input type="text" 
-						<?php if ($spotID != null && $spotInfo[0]->spotName != "" && $spotInfo[0]->spotName != null) echo "value='".$spotInfo[0]->spotName."'"; ?>
+						<?php if ($spotID != null && $spotInfo[0]->spot_name != "" && $spotInfo[0]->spot_name != null) echo "value='".$spotInfo[0]->spot_name."'"; ?>
 						placeholder="Spot Name *"
 						required 
-						name="csa-wp-plugin-spots_spotName_input" 
-						onchange="CsaWpPluginRequestSpotNameValidity(this.value, <?php echo ($spotID!=null?$spotID:"null");?> , 0, null)">
+						name="csa-wp-plugin-spots_spot_name_input" 
+						onchange="CsaWpPluginRequestspot_nameValidity(this.value, <?php echo ($spotID!=null?$spotID:"null");?> , 0, null)">
 					<span id="csa-wp-plugin-showNewSpot_name_span_id" style="display:none"></span></td></tr>
 				<tr valign="top"><td>
 					<input 
 						type="text" 
-						<?php if ($spotID != null && $spotInfo[0]->streetName != "" && $spotInfo[0]->streetName != null) echo "value='".$spotInfo[0]->streetName."'"; ?>
+						<?php if ($spotID != null && $spotInfo[0]->street_name != "" && $spotInfo[0]->street_name != null) echo "value='".$spotInfo[0]->street_name."'"; ?>
 						placeholder="Street Name *"
 						required 
-						name="csa-wp-plugin-spots_streetName_input">
+						name="csa-wp-plugin-spots_street_name_input">
 					<input 
 						type="text" 
-						<?php if ($spotID != null && $spotInfo[0]->streetNumber != "" && $spotInfo[0]->streetNumber != null) echo "value='".$spotInfo[0]->streetNumber."'"; ?>
+						<?php if ($spotID != null && $spotInfo[0]->street_number != "" && $spotInfo[0]->street_number != null) echo "value='".$spotInfo[0]->street_number."'"; ?>
 						placeholder="Street Number *"
 						required 
-						name="csa-wp-plugin-spots_streetNumber_input"></td></tr>
+						name="csa-wp-plugin-spots_street_number_input"></td></tr>
 				<tr valign="top"><td>
 					<input 
 						type="text" 
@@ -76,14 +76,14 @@ function CsaWpPluginSpotForm ($spotID, $display){
 						><?php if ($spotID != null) echo $spotInfo[0]->description; ?></textarea></td></tr>
 				
 				<tr valign="top"><td>
-					<select name="csa-wp-plugin-spots_isDeliverySpot_input" id="csa-wp-plugin-spots_isDeliverySpot_input_id"  onchange='CsaWpPluginShowNewSpotIsDeliverySelection(this,<?php echo ($spotID?$spotID:"null")?>)'
+					<select name="csa-wp-plugin-spots_is_delivery_spot_input" id="csa-wp-plugin-spots_is_delivery_spot_input_id"  onchange='CsaWpPluginShowNewSpotIsDeliverySelection(this,<?php echo ($spotID?$spotID:"null")?>)'
 					<?php if ($spotID == null) echo "style='color:#999'"?>>
 						<?php 
 						if ($spotID != null) {
 							echo '
 								<option value="" style="color:#999" disabled="disabled">Is this a delivery spot? *</option>
-								<option value="yes" style="color:black". '. ($spotInfo[0]->isDeliverySpot == 1?"selected='selected'> it is a delivery spot":">yes") .' </option>
-								<option value="no" style="color:black"'. ($spotInfo[0]->isDeliverySpot == 0?"selected='selected'> it is not a delivery spot":">no") .' </option>
+								<option value="yes" style="color:black". '. ($spotInfo[0]->is_delivery_spot == 1?"selected='selected'> it is a delivery spot":">yes") .' </option>
+								<option value="no" style="color:black"'. ($spotInfo[0]->is_delivery_spot == 0?"selected='selected'> it is not a delivery spot":">no") .' </option>
 								';
 						}
 						else {
@@ -102,8 +102,8 @@ function CsaWpPluginSpotForm ($spotID, $display){
 			</table> 
 			<div id = "csa-wp-plugin-spots_deliverySpot_div" 
 				<?php 
-					$isDeliverySpot = ($spotID != null && $spotInfo[0]->isDeliverySpot == 1)?1:0;
-					if ($isDeliverySpot) "style='display:block'";
+					$is_delivery_spot = ($spotID != null && $spotInfo[0]->is_delivery_spot == 1)?1:0;
+					if ($is_delivery_spot) "style='display:block'";
 					else echo "style='display:none'"; 
 				?>>
 				<table class="form-table">		
@@ -112,7 +112,7 @@ function CsaWpPluginSpotForm ($spotID, $display){
 					<select 
 						name="csa-wp-plugin-delivery_spot_owner_input" 
 						id="csa-wp-plugin-delivery_spot_owner_input_id"
-						<?php if (!$isDeliverySpot) echo "style='color:#999'";?>						
+						<?php if (!$is_delivery_spot) echo "style='color:#999'";?>						
 						onfocus='getElementById("csa-wp-plugin-delivery_spot_owner_span_id").style.display = "none";'
 						onchange='
 							if (this.options[this.selectedIndex].text.split(" ")[0]!= "The") 
@@ -120,12 +120,12 @@ function CsaWpPluginSpotForm ($spotID, $display){
 							(this.style.color=this.options[this.selectedIndex].style.color);'
 					>
 						<option value="" 
-							<?php if (!$isDeliverySpot) echo "selected='selected'";?> 
+							<?php if (!$is_delivery_spot) echo "selected='selected'";?> 
 							disabled="disabled" id="csa-wp-plugin-delivery_spot_owner_disabled_id">Owner of this delivery spot... *
 						</option>
 						<?php 
 						$spotOwner = null;
-						if ($isDeliverySpot)
+						if ($is_delivery_spot)
 							$spotOwnerID = $wpdb->get_var($wpdb->prepare("SELECT user_id FROM ".csaSpotsToUsers." WHERE spot_id=%d AND type='delivery' ", $spotID), 0, 0);
 							
 						CsaWpPluginSelectUsers($spotOwnerID, "The owner of this delivery spot is: ");
@@ -146,14 +146,14 @@ function CsaWpPluginSpotForm ($spotID, $display){
 								this.options[this.selectedIndex].text = "Order deadline is on " + this.options[this.selectedIndex].text;
 							getElementById("csa-wp-plugin-spots_order_deadline_time_input_id").style.display = "inline"
 							'
-						<?php if (!$isDeliverySpot) echo "style='color:#999'"?>
+						<?php if (!$is_delivery_spot) echo "style='color:#999'"?>
 					>
 					<option value="" 
-						<?php if (!$isDeliverySpot) echo "selected='selected'"; ?>
+						<?php if (!$is_delivery_spot) echo "selected='selected'"; ?>
 						disabled="disabled" id="csa-wp-plugin-spots_order_deadline_day_disabled_id">Order deadline day ... *</option>
 					<?php 
 					for ($i=0; $i<7; $i++) {
-						if ($isDeliverySpot && $spotInfo[0]->default_order_deadline_day == $i)
+						if ($is_delivery_spot && $spotInfo[0]->default_order_deadline_day == $i)
 							echo "<option value='$i' selected='selected'> Order deadline is on $days[$i] </option>";
 						else echo "<option value='$i'>".$days[$i]."</option>";
 					}
@@ -161,8 +161,8 @@ function CsaWpPluginSpotForm ($spotID, $display){
 					</select> 
 					<input 
 						<?php 
-							if ($isDeliverySpot && $spotInfo[0]->default_order_deadline_time != "" && $spotInfo[0]->default_order_deadline_time != null) echo "value='up to ".CsaWpPluginRemoveSeconds($spotInfo[0]->default_order_deadline_time)."'";
-							if (!$isDeliverySpot) echo "style='display:none'";
+							if ($is_delivery_spot && $spotInfo[0]->default_order_deadline_time != "" && $spotInfo[0]->default_order_deadline_time != null) echo "value='up to ".CsaWpPluginRemoveSeconds($spotInfo[0]->default_order_deadline_time)."'";
+							if (!$is_delivery_spot) echo "style='display:none'";
 						?>
 						placeholder="up to... *"
 						id="csa-wp-plugin-spots_order_deadline_time_input_id"
@@ -192,13 +192,13 @@ function CsaWpPluginSpotForm ($spotID, $display){
 							getElementById("csa-wp-plugin-showNewSpotForm_delivery_start_time_input_id").style.display = "inline"
 							getElementById("csa-wp-plugin-showNewSpotForm_delivery_end_time_input_id").style.display = "inline";
 						'
-						<?php if (!$isDeliverySpot) echo "style='color:#999'";?>>
+						<?php if (!$is_delivery_spot) echo "style='color:#999'";?>>
 					<option value="" disabled="disabled" 
-						<?php if (!$isDeliverySpot) echo "selected='selected'"; ?>
+						<?php if (!$is_delivery_spot) echo "selected='selected'"; ?>
 						id="csa-wp-plugin-spots_delivery_day_disabled_id">Delivery day ... *</option>
 					<?php 
 					for ($i=0; $i<7; $i++) {
-						if ($isDeliverySpot && $spotInfo[0]->default_delivery_day == $i)
+						if ($is_delivery_spot && $spotInfo[0]->default_delivery_day == $i)
 							echo "<option value='$i' selected='selected'> Delivery day is $days[$i] </option>";
 						else echo "<option value='$i'>".$days[$i]."</option>";
 					}
@@ -206,8 +206,8 @@ function CsaWpPluginSpotForm ($spotID, $display){
 					</select> 
 					<input id="csa-wp-plugin-showNewSpotForm_delivery_start_time_input_id"
 						<?php 
-							if ($isDeliverySpot && $spotInfo[0]->default_delivery_start_time != "" && $spotInfo[0]->default_delivery_start_time != null) echo "value='from ".CsaWpPluginRemoveSeconds($spotInfo[0]->default_delivery_start_time)."'";
-							if (!$isDeliverySpot) echo "style='display:none'";
+							if ($is_delivery_spot && $spotInfo[0]->default_delivery_start_time != "" && $spotInfo[0]->default_delivery_start_time != null) echo "value='from ".CsaWpPluginRemoveSeconds($spotInfo[0]->default_delivery_start_time)."'";
+							if (!$is_delivery_spot) echo "style='display:none'";
 						?>
 						placeholder="from... *"
 						class="textbox-n" type="text" size="10" name="csa-wp-plugin-spots_delivery_start_time_input"
@@ -230,8 +230,8 @@ function CsaWpPluginSpotForm ($spotID, $display){
 							}'>
 					<input id="csa-wp-plugin-showNewSpotForm_delivery_end_time_input_id"
 						<?php 
-							if ($isDeliverySpot && $spotInfo[0]->default_delivery_end_time != "" && $spotInfo[0]->default_delivery_end_time != null) echo "value='to ".CsaWpPluginRemoveSeconds($spotInfo[0]->default_delivery_end_time)."'";
-							if (!$isDeliverySpot) echo "style='display:none'";
+							if ($is_delivery_spot && $spotInfo[0]->default_delivery_end_time != "" && $spotInfo[0]->default_delivery_end_time != null) echo "value='to ".CsaWpPluginRemoveSeconds($spotInfo[0]->default_delivery_end_time)."'";
+							if (!$is_delivery_spot) echo "style='display:none'";
 						?>
 						placeholder="to... *"					
 						class="textbox-n" type="text" size="10" name="csa-wp-plugin-spots_delivery_end_time_input"
@@ -255,7 +255,7 @@ function CsaWpPluginSpotForm ($spotID, $display){
 				<select 
 					name="csa-wp-plugin-spots_close_input" 
 					id="csa-wp-plugin-spots_close_input_id"
-					<?php if (!$isDeliverySpot) echo "style='color:#999'";?>
+					<?php if (!$is_delivery_spot) echo "style='color:#999'";?>
 					onfocus='getElementById("csa-wp-plugin-showNewSpotForm_ordersClose_span_id").innerHTML = "";'
 					onchange='
 						this.style.color="black";
@@ -264,22 +264,22 @@ function CsaWpPluginSpotForm ($spotID, $display){
 						getElementById("csa-wp-plugin-spots_close_"+ this.options[this.selectedIndex].value).style.display= "inline";
 						getElementById("csa-wp-plugin-spots_close_"+ this.options[((this.selectedIndex-1)+1)%2+1].value).style.display="none"'>
 					<option value="" 
-						<?php if (!$isDeliverySpot) echo "selected='selected'";?> 
+						<?php if (!$is_delivery_spot) echo "selected='selected'";?> 
 						disabled="disabled" id="csa-wp-plugin-spots_close_disabled_id">Orders close... *</option>
 					<option value="automatic" 
-						<?php if ($isDeliverySpot && $spotInfo[0]->close_order =="automatic") echo "selected='selected'";?> 
+						<?php if ($is_delivery_spot && $spotInfo[0]->close_order =="automatic") echo "selected='selected'";?> 
 						title="Orders' submission will be closed automatically when order submission deadline is reached">
-						<?php if ($isDeliverySpot && $spotInfo[0]->close_order =="automatic") echo "Orders close "; ?>
+						<?php if ($is_delivery_spot && $spotInfo[0]->close_order =="automatic") echo "Orders close "; ?>
 						automatically</option>
 					<option value="manual" 
-						<?php if ($isDeliverySpot && $spotInfo[0]->close_order =="manual") echo "selected='selected'";?> 
+						<?php if ($is_delivery_spot && $spotInfo[0]->close_order =="manual") echo "selected='selected'";?> 
 						title="Orders' submission will be closed manually by the user that is responsible for the delivery">
-						<?php if ($isDeliverySpot && $spotInfo[0]->close_order =="manual") echo "Orders close "; ?>
+						<?php if ($is_delivery_spot && $spotInfo[0]->close_order =="manual") echo "Orders close "; ?>
 						manually</option>
 				</select>
 				<span 
 					<?php 
-						if (!$isDeliverySpot || $spotInfo[0]->close_order !="automatic") echo "style='display:none;color:gray'";
+						if (!$is_delivery_spot || $spotInfo[0]->close_order !="automatic") echo "style='display:none;color:gray'";
 						else echo "style='color:gray'";
 					?> 
 					id="csa-wp-plugin-spots_close_automatic" 
@@ -288,7 +288,7 @@ function CsaWpPluginSpotForm ($spotID, $display){
 				>&nbsp;i.e. ... (point here)</span>
 				<span 
 					<?php 
-						if (!$isDeliverySpot || $spotInfo[0]->close_order !="manual") echo "style='display:none;color:gray'";
+						if (!$is_delivery_spot || $spotInfo[0]->close_order !="manual") echo "style='display:none;color:gray'";
 						else echo "style='color:gray'";
 					?> 
 					id="csa-wp-plugin-spots_close_manual"
@@ -304,7 +304,7 @@ function CsaWpPluginSpotForm ($spotID, $display){
 						id="csa-wp-plugin-spots_parking_input_id"
 						<?php 
 							$styleAttributes = "style='color:";
-							if (!$isDeliverySpot || $spotInfo[0]->parking =="" ) $styleAttributes = $styleAttributes."#999'";
+							if (!$is_delivery_spot || $spotInfo[0]->parking =="" ) $styleAttributes = $styleAttributes."#999'";
 							else if ($spotInfo[0]->parking == "easy") $styleAttributes = $styleAttributes."blue'";
 							else if ($spotInfo[0]->parking =="possible") $styleAttributes = $styleAttributes."green'";
 							else if ($spotInfo[0]->parking =="hard") $styleAttributes = $styleAttributes."orange'";
@@ -317,27 +317,27 @@ function CsaWpPluginSpotForm ($spotID, $display){
 							if (this.options[this.selectedIndex].text.split(" ")[0] != "Finding")
 								this.options[this.selectedIndex].text = "Finding parking space is " + this.options[this.selectedIndex].text;'>
 						<option value="" 
-						<?php if (!$isDeliverySpot || $spotInfo[0]->parking =="") echo "selected='selected'";?> 
+						<?php if (!$is_delivery_spot || $spotInfo[0]->parking =="") echo "selected='selected'";?> 
 							disabled="disabled" id="csa-wp-plugin-spots_parking_disabled_id">Finding parking space is ...</option>
 						<option value="easy" 
-							<?php if ($isDeliverySpot && $spotInfo[0]->parking !="" && $spotInfo[0]->parking =="easy") echo "selected='selected'";?> 
+							<?php if ($is_delivery_spot && $spotInfo[0]->parking !="" && $spotInfo[0]->parking =="easy") echo "selected='selected'";?> 
 							style="color:blue">
-							<?php if ($isDeliverySpot && $spotInfo[0]->parking !="" && $spotInfo[0]->parking =="easy") echo "Finding parking space is "; ?>
+							<?php if ($is_delivery_spot && $spotInfo[0]->parking !="" && $spotInfo[0]->parking =="easy") echo "Finding parking space is "; ?>
 							easy :)</option>
 						<option value="possible" 
-							<?php if ($isDeliverySpot && $spotInfo[0]->parking !="" && $spotInfo[0]->parking =="possible") echo "selected='selected'";?> 
+							<?php if ($is_delivery_spot && $spotInfo[0]->parking !="" && $spotInfo[0]->parking =="possible") echo "selected='selected'";?> 
 							style="color:green">
-							<?php if ($isDeliverySpot && $spotInfo[0]->parking !="" && $spotInfo[0]->parking =="possible") echo "Finding parking space is "; ?>
+							<?php if ($is_delivery_spot && $spotInfo[0]->parking !="" && $spotInfo[0]->parking =="possible") echo "Finding parking space is "; ?>
 							possible :)</option>
 						<option value="hard" 
-							<?php if ($isDeliverySpot && $spotInfo[0]->parking !="" && $spotInfo[0]->parking =="hard") echo "selected='selected'";?> 
+							<?php if ($is_delivery_spot && $spotInfo[0]->parking !="" && $spotInfo[0]->parking =="hard") echo "selected='selected'";?> 
 							style="color:orange">
-							<?php if ($isDeliverySpot && $spotInfo[0]->parking !="" && $spotInfo[0]->parking =="hard") echo "Finding parking space is "; ?>
+							<?php if ($is_delivery_spot && $spotInfo[0]->parking !="" && $spotInfo[0]->parking =="hard") echo "Finding parking space is "; ?>
 							hard :(</option>
 						<option value="impossible" 
-							<?php if ($isDeliverySpot && $spotInfo[0]->parking !="" && $spotInfo[0]->parking =="impossible") echo "selected='selected'";?> 
+							<?php if ($is_delivery_spot && $spotInfo[0]->parking !="" && $spotInfo[0]->parking =="impossible") echo "selected='selected'";?> 
 							style="color:brown">
-							<?php if ($isDeliverySpot && $spotInfo[0]->parking !="" && $spotInfo[0]->parking =="impossible") echo "Finding parking space is "; ?>
+							<?php if ($is_delivery_spot && $spotInfo[0]->parking !="" && $spotInfo[0]->parking =="impossible") echo "Finding parking space is "; ?>
 							impossible :(</option>
 					</select>
 					<span style="display:none;color:blue" id="csa-wp-plugin-showNewSpotForm_parkingSpace_span_id"></span>
@@ -348,7 +348,7 @@ function CsaWpPluginSpotForm ($spotID, $display){
 						id="csa-wp-plugin-spots_refrigerator_input_id"
 						<?php 
 							$styleAttributes = "style='color:";
-							if (!$isDeliverySpot || $spotInfo[0]->has_refrigerator =="" ) $styleAttributes = $styleAttributes."#999'";
+							if (!$is_delivery_spot || $spotInfo[0]->has_refrigerator =="" ) $styleAttributes = $styleAttributes."#999'";
 							else if ($spotInfo[0]->has_refrigerator == "1") $styleAttributes = $styleAttributes."green'";
 							else if ($spotInfo[0]->has_refrigerator == "0") $styleAttributes = $styleAttributes."brown'";
 							echo $styleAttributes;
@@ -360,17 +360,17 @@ function CsaWpPluginSpotForm ($spotID, $display){
 								this.options[this.selectedIndex].text = "It has refrigerator to store products! :)";
 							else this.options[this.selectedIndex].text = "It does not have refrigerator to store products! :("'>
 						<option value="" 
-							<?php if (!$isDeliverySpot || $spotInfo[0]->has_refrigerator =="") echo "selected='selected'";?> 
+							<?php if (!$is_delivery_spot || $spotInfo[0]->has_refrigerator =="") echo "selected='selected'";?> 
 							disabled="disabled" id="csa-wp-plugin-spots_refrigerator_disabled_id">Does it have refrigerator to store products...?</option>
 						<option value="yes" style="color:green"
-							<?php if ($isDeliverySpot && $spotInfo[0]->has_refrigerator !="" && $spotInfo[0]->has_refrigerator =="1") echo "selected='selected'";?> 
+							<?php if ($is_delivery_spot && $spotInfo[0]->has_refrigerator !="" && $spotInfo[0]->has_refrigerator =="1") echo "selected='selected'";?> 
 							>
-							<?php if ($isDeliverySpot && $spotInfo[0]->has_refrigerator !="" && $spotInfo[0]->has_refrigerator =="1") echo "It has refrigerator to store products! :) "; 
+							<?php if ($is_delivery_spot && $spotInfo[0]->has_refrigerator !="" && $spotInfo[0]->has_refrigerator =="1") echo "It has refrigerator to store products! :) "; 
 							else echo "yes";?> </option>
 						<option value="no" style="color:brown"
-							<?php if ($isDeliverySpot && $spotInfo[0]->has_refrigerator !="" && $spotInfo[0]->has_refrigerator =="0") echo "selected='selected'";?> 
+							<?php if ($is_delivery_spot && $spotInfo[0]->has_refrigerator !="" && $spotInfo[0]->has_refrigerator =="0") echo "selected='selected'";?> 
 							>
-							<?php if ($isDeliverySpot && $spotInfo[0]->has_refrigerator !="" && $spotInfo[0]->has_refrigerator =="0") echo "It does not have refrigerator to store products! :( "; 
+							<?php if ($is_delivery_spot && $spotInfo[0]->has_refrigerator !="" && $spotInfo[0]->has_refrigerator =="0") echo "It does not have refrigerator to store products! :( "; 
 							else echo "no";?></option>
 					</select> 
 					<span style="display:none;color:blue" id="csa-wp-plugin-showNewSpotForm_hasRefrigerator_span_id"></span>
@@ -423,18 +423,18 @@ function CsaWpPluginSpotFormInputValue ($spotID, $value, $info, $placeholder) {
 	echo "placeholder='$placeholder'";
 }
 
-add_action( 'wp_ajax_csa-wp-plugin-check_spotName_validity', 'CsaWpPluginCkeckSpotNameValidity' );
+add_action( 'wp_ajax_csa-wp-plugin-check_spot_name_validity', 'CsaWpPluginCkeckspot_nameValidity' );
 
-function CsaWpPluginCkeckSpotNameValidity() {
+function CsaWpPluginCkeckspot_nameValidity() {
 
-	if( isset($_POST['spotName']) && isset($_POST['spotID']) && isset($_POST['numEntriesExist'])) {
-		$newSpotName = clean_input($_POST['spotName']);
+	if( isset($_POST['spot_name']) && isset($_POST['spotID']) && isset($_POST['numEntriesExist'])) {
+		$newspot_name = clean_input($_POST['spot_name']);
 		$spotID = clean_input($_POST['spotID']);
 		if ($spotID) $spotID = intval($spotID);
 		$numEntriesExist = intval(clean_input($_POST['numEntriesExist']));
 		
 		global $wpdb;
-		$results = $wpdb->get_results( $wpdb->prepare("SELECT id FROM ".csaSpots." WHERE spotName=%s", $newSpotName));
+		$results = $wpdb->get_results( $wpdb->prepare("SELECT id FROM ".csaSpots." WHERE spot_name=%s", $newspot_name));
 		if ($wpdb->num_rows > $numEntriesExist && $results[0]->id != $spotID)
 			echo 'invalid spot name';
 		else if  ($wpdb->num_rows > $numEntriesExist && $results[0]->id == $spotID)
@@ -455,18 +455,18 @@ function CsaWpPluginAddOrUpdateSpot() {
 		$dataReceived = json_decode(stripslashes($_POST['data']),true);
 		
 		$dataVals = array(
-					'spotName' 						=> $dataReceived[0]['value'],
-					'streetName' 					=> $dataReceived[1]['value'],
-					'streetNumber' 					=> $dataReceived[2]['value'],
+					'spot_name' 						=> $dataReceived[0]['value'],
+					'street_name' 					=> $dataReceived[1]['value'],
+					'street_number' 					=> $dataReceived[2]['value'],
 					'city' 							=> $dataReceived[3]['value'],
 					'region' 						=> $dataReceived[4]['value'],
 					'description' 					=> $dataReceived[5]['value'],
-					'isDeliverySpot'				=> $dataReceived[6]['value'] == "yes"?1:0
+					'is_delivery_spot'				=> $dataReceived[6]['value'] == "yes"?1:0
 				);
 		$dataTypes = array ("%s", "%s", "%s", "%s", "%s", "%s", "%s");
 		
 		$ownerID;
-		if ($dataVals['isDeliverySpot']) {
+		if ($dataVals['is_delivery_spot']) {
 			$ownerID = $dataReceived[7]['value'];
 			$dataVals += array(
 						'default_order_deadline_day' 	=> $dataReceived[8]['value'],
@@ -496,7 +496,7 @@ function CsaWpPluginAddOrUpdateSpot() {
 					$dataTypes
 				) === FALSE) echo 'error, sql request failed.';												
 			else { 		
-				if ($dataVals['isDeliverySpot']) {
+				if ($dataVals['is_delivery_spot']) {
 					if($wpdb->update(
 						csaSpotsToUsers,
 						array(
@@ -523,7 +523,7 @@ function CsaWpPluginAddOrUpdateSpot() {
 				$dataTypes
 			) === FALSE) echo 'error, sql request failed.';
 			else { 
-				if ($dataVals['isDeliverySpot']) {
+				if ($dataVals['is_delivery_spot']) {
 					if($wpdb->insert(
 						csaSpotsToUsers,
 						array(
@@ -567,7 +567,7 @@ function CsaWpPluginShowSpots() {
 			| If you want to delete some spot, press the "x" icon.
 		'>
 		<p style="color:green;font-style:italic; font-size:13px">
-			By pointing here you can read additional information.</p></span>
+			by pointing here you can read additional information...</p></span>
 			
 		<table class='table-bordered' id="csa-wp-plugin-showSpotsList_table" style='border-spacing:1em'> 
 		<thead class='tableHeader'>
@@ -593,13 +593,13 @@ function CsaWpPluginShowSpots() {
 				$spotID = $row->id;
 				echo "
 					<tr valign='top' id='csa-wp-plugin-showSpotsSpotID_$spotID' class = 'csa-wp-plugin-showSpotsSpotID-spot'>
-					<td class='editable'>$row->spotName </td>
-					<td class='editable'>$row->streetName </td>
-					<td class='editable'>$row->streetNumber</td>
+					<td class='editable'>$row->spot_name </td>
+					<td class='editable'>$row->street_name </td>
+					<td class='editable'>$row->street_number</td>
 					<td class='editable'>$row->city</td>
 					<td class='editable'>$row->region</td>
 					<td class='editable'>$row->description</td>
-					<td>".($row->isDeliverySpot==1?'yes':($row->isDeliverySpot==NULL?'unknown':'no'))."</td>
+					<td>".($row->is_delivery_spot==1?'yes':($row->is_delivery_spot==NULL?'unknown':'no'))."</td>
 					<td style='text-align:center'> 
 						<img 
 							width='24' height='24'  
@@ -681,5 +681,36 @@ function CsaWpPluginDeleteSpot() {
 	wp_die(); 	// this is required to terminate immediately and return a proper response
 
 }
+
+function  CsaWpPluginDeliverySpotsExist ($personalOrder){
+	global $wpdb;
+	if (count($wpdb->get_results("SELECT id FROM " .csaSpots. " WHERE is_delivery_spot = 1")) == 0) {
+		echo "<h3 style='color:brown'>sorry... no spots found...!</h3>";
+		if ($personalOrder === false)
+			echo "<h4 style='color:gray'>You must create at least one delivery spot, before you initiate a delivery (for some spot).</h4>
+				<h4 style='color:gray'>To do so, use the corresponding menu of CSA Managemement Panel or simply click 
+				<a href='".
+					admin_url('/admin.php?page=csa_spots_management')
+				."'>here </a></h4>
+			";
+		else echo "<h4 style='color:gray'>In case something goes wrong, please contant one of your team's administrators...</h4>";
+			
+		return false;
+	}
+	else return true;	
+}
+
+function CsaWpPluginSelectDeliverySpots($selectedSpotID, $message) {
+	global $wpdb;
+	$deliverySpots = $wpdb->get_results("SELECT id,spot_name FROM ".csaSpots." WHERE is_delivery_spot=1");
+	
+	foreach ($deliverySpots as $deliverySpot) {
+		if ($deliverySpot->id == $selectedSpotID) 								
+			echo "<option value='".$deliverySpot->id."' selected='selected' style='color:black'>". $message. $deliverySpot->spot_name ."</option>";
+		else
+			echo "<option value='".$deliverySpot->id."' style='color:black'>". $deliverySpot->spot_name ."</option>";
+	}
+}
+
 
 ?>

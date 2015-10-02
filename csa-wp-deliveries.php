@@ -17,12 +17,12 @@ function CsaWpPluginNewDeliveryForm($spotID, $orderDeadlineDate, $customValues, 
 		if ($deliveryID != null) {
 			$deliveryInfo = $wpdb->get_results($wpdb->prepare("SELECT * FROM ". csaDeliveries ." WHERE id=%d", $deliveryID))[0];
 
-			$inCharge = $deliveryInfo->userInCharge;
+			$inCharge = $deliveryInfo->user_in_charge;
 			
 			$orderDeadlineDay = (date("w", strtotime($orderDeadlineDate)) - 1) % 7;
 			if ($orderDeadlineDay == -1) $orderDeadlineDay = 6;									// So that the 'if' below (for customBool) is executed correctly
 			$orderDeadlineTime = CsaWpPluginRemoveSeconds($deliveryInfo->order_deadline_time);
-			$deliveryDay = (date("w", strtotime($deliveryInfo->delivery_day)) - 1) % 7;
+			$deliveryDay = (date("w", strtotime($deliveryInfo->delivery_date)) - 1) % 7;
 			if ($deliveryDay == -1) $deliveryDay = 6;											// So that the 'if' below (for customBool) is executed correctly
 			$deliveryStartTime = CsaWpPluginRemoveSeconds($deliveryInfo->delivery_start_time);
 			$deliveryEndTime = CsaWpPluginRemoveSeconds($deliveryInfo->delivery_end_time);
@@ -113,7 +113,7 @@ function CsaWpPluginNewDeliveryForm($spotID, $orderDeadlineDate, $customValues, 
 						id = "csa-wp-plugin-newDelivery_spotDetails_spotID_input_disabled_id"
 					>Select Spot *</option>
  					<?php echo CsaWpPluginSelectOptionsFromDB(
-									array("spotName"), 
+									array("spot_name"), 
 									"id", 
 									csaSpots, 
 									($spotID != null)?$spotID:null,
@@ -580,23 +580,23 @@ function CsaWpPluginInitiateOrUpdateNewDelivery() {
 		$deliveryStartTime = $parts[1];
 		$deliveryEndTime = $parts[3];
 
-		$userInCharge = $dataReceived[3]['value'];
+		$user_in_charge = $dataReceived[3]['value'];
 		
 		$dataVals = array(
 					'spot_id' 				=> intval(clean_input($dataReceived[0]['value'])),
 					'order_deadline_date' 	=> $orderDeadlineDate,
 					'order_deadline_time' 	=> $orderDeadlineTime,
-					'delivery_day'			=> $deliveryDate,
+					'delivery_date'			=> $deliveryDate,
 					'delivery_start_time'	=> $deliveryStartTime,
 					'delivery_end_time'	 	=> $deliveryEndTime,
-					'areOrdersOpen' 		=> $dataReceived[4]['value'] == "yes"?1:0
+					'areOrdersOpen' 		=> ($dataReceived[4]['value'] == "yes" || $dataReceived[4]['value'] =="")?1:0
 				);
 
 		$dataTypes = array ("%d", "%s", "%s", "%s", "%s", "%s");
 				
 		
-		if ($userInCharge!=null) {
-			$dataVals['userInCharge'] = $userInCharge;
+		if ($user_in_charge!=null) {
+			$dataVals['user_in_charge'] = $user_in_charge;
 			$dataTypes[6] = "%d";
 		}
 
@@ -664,12 +664,15 @@ function CsaWpPluginShowDeliveries($display) {
 		<?php if ($display == false) echo 'style="display:none"' ?>	
 	>
 		<span class='csa-wp-plugin-tip_deliveries' title='
-			To change the ability of new order sumbission, you can press the "envelope" icon.
+			Deliveries in "green" are pending and still accept new orders.
+			| Deliveries in "brown" are pending and do not accept new orders.
+			| Deliveries in "grey" are accomplished.
+			| To change the ability of new order sumbission, you can press the "envelope" icon.
 			| If you want to edit delivery details, press the "pen" icon.
 			| If you want to delete some delivery, press the "x" icon.
 			'>
 		<p style="color:green;font-style:italic; font-size:13px">
-			By pointing here you can read additional information.</p></span>
+			by pointing here you can read additional information.</p></span>
 
 
 		<table 
@@ -700,11 +703,11 @@ function CsaWpPluginShowDeliveries($display) {
 			foreach($deliveries as $delivery) 
 			{
 				$deliveryID = $delivery->id;
-				$spotName = $wpdb->get_var($wpdb->prepare("SELECT spotName FROM ". csaSpots ." WHERE id=%d", $delivery->spot_id));
+				$spot_name = $wpdb->get_var($wpdb->prepare("SELECT spot_name FROM ". csaSpots ." WHERE id=%d", $delivery->spot_id));
 				 
-				$userInCharge_login = "";
-				if ($delivery->userInCharge != null )
-					$userInCharge_login = get_user_by('id', $delivery->userInCharge)->user_login;
+				$user_in_charge_login = "";
+				if ($delivery->user_in_charge != null )
+					$user_in_charge_login = get_user_by('id', $delivery->user_in_charge)->user_login;
 				
 				$pastDelivery = false;
 				$currentDateTime = current_time('mysql');
@@ -718,13 +721,13 @@ function CsaWpPluginShowDeliveries($display) {
 						class='csa-wp-plugin-showDeliveries-delivery'
 						style='color:". (($pastDelivery === true)?"gray": ($delivery->areOrdersOpen == 1?"green":"brown")) ."'
 					>
-					<td style='text-align:center' class='editable'>$spotName </td>
+					<td style='text-align:center' class='editable'>$spot_name </td>
 					<td style='text-align:center'>".date(csa_wp_plugin_date_format_readable, strtotime($delivery->order_deadline_date))."</td>
 					<td style='text-align:center' class='editable'>".CsaWpPluginRemoveSeconds($delivery->order_deadline_time)."</td>
-					<td style='text-align:center'>".date(csa_wp_plugin_date_format_readable, strtotime($delivery->delivery_day))."</td>
+					<td style='text-align:center'>".date(csa_wp_plugin_date_format_readable, strtotime($delivery->delivery_date))."</td>
 					<td style='text-align:center'>".CsaWpPluginRemoveSeconds($delivery->delivery_start_time)."</td>
 					<td style='text-align:center'>".CsaWpPluginRemoveSeconds($delivery->delivery_end_time)."</td>
-					<td style='text-align:center' class='editable'>$userInCharge_login</td>
+					<td style='text-align:center' class='editable'>$user_in_charge_login</td>
 					<td style='text-align:center'
 						class='editable_boolean'
 						id = 'csa-wp-plugin-showDeliveriesOpenOrdersID_$deliveryID'
@@ -808,6 +811,111 @@ function CsaWpPluginDeleteDelivery() {
 	
 	wp_die(); 	// this is required to terminate immediately and return a proper response
 
+}
+
+function CsaWpPluginActiveDeliveriesExist() {
+
+	global $wpdb;
+	if (count($wpdb->get_results("
+			SELECT id 
+			FROM " .csaDeliveries. " 
+			WHERE 
+				delivery_date > CURDATE() AND
+				areOrdersOpen = 1
+		")) == 0) {
+		
+		echo "
+			<h4 style='color:gray'>You are not able to sumbit new order, since there is no delivery accepting new order submissions</h4> 
+			<h4 style='color:gray'>You can create new deliveries
+			<a href='".
+				admin_url('/admin.php?page=csa_deliveries_management')
+			."'>here </a></h4>
+		";
+		return false;
+	}
+	else return true;	
+
+}
+
+
+function CsaWpPluginActiveDeliveriesExistForSpot($spotID) {
+
+	global $wpdb;
+	if (count($wpdb->get_results($wpdb->prepare("
+			SELECT id 
+			FROM " .csaDeliveries. " 
+			WHERE 
+				spot_id = %d AND
+				delivery_date > CURDATE() AND
+				areOrdersOpen = 1
+		", $spotID))) == 0) {
+		return false;
+	}
+	else return true;	
+
+}
+
+function CsaWpPluginSelectDeliveries($spotID, $selectedDeliveryID, $message) {
+	global $wpdb;
+	$deliveries = $wpdb->get_results($wpdb->prepare("
+			SELECT 
+				id, 
+				order_deadline_date, 
+				order_deadline_time, 
+				delivery_date,
+				delivery_start_time,
+				delivery_end_time
+			FROM ".csaDeliveries." 
+			WHERE 
+				spot_id = %d AND
+				delivery_date > CURDATE() AND
+				areOrdersOpen = 1
+		",$spotID));
+	
+	foreach ($deliveries as $delivery) {
+		global $days;
+		$deadlineDay = $days[($deadlineDayInt = (date('w', strtotime($delivery->order_deadline_date)) - 1)) == -1?6:$deadlineDayInt];
+		$deliveryDay = $days[($deliveryDayInt = (date('w', strtotime($delivery->delivery_date)) - 1)) == -1?6:$deliveryDayInt];
+		
+		$textToShow = 	"deadline on $deadlineDay, " .date(csa_wp_plugin_date_format_readable, strtotime($delivery->order_deadline_date)) .", " .  CsaWpPluginRemoveSeconds($delivery->order_deadline_time) . 
+						" and delivery on $deliveryDay, " . date(csa_wp_plugin_date_format_readable, strtotime($delivery->delivery_date)) ." between ". 
+							 CsaWpPluginRemoveSeconds($delivery->delivery_start_time) ." and ". 
+							CsaWpPluginRemoveSeconds($delivery->delivery_end_time);
+	
+		if ($delivery->id == $selectedDeliveryID) 								
+			echo "<option value='".$delivery->id."' selected='selected' style='color:black'>". $message. $textToShow. "</option>";
+		else
+			echo "<option value='".$delivery->id."' style='color:black'>". $textToShow ."</option>";
+	}
+}
+
+function CsaWpPluginGetReadableDeliveryInfo ($deliveryID) {
+
+	global $days, $wpdb;
+	
+	$deliveryInfo = $wpdb->get_results($wpdb->prepare("SELECT * FROM ". csaDeliveries ." WHERE id=%d", $deliveryID))[0];
+	$spotName = $wpdb->get_var($wpdb->prepare("
+									SELECT DISTINCT ".csaSpots.".spot_name 
+									FROM ". csaDeliveries ." LEFT JOIN ".csaSpots." ON ".csaDeliveries.".spot_id = ".csaSpots.".id
+									WHERE ".csaDeliveries.".id = %d
+								", $deliveryID));
+	
+	$deadlineDate = $deliveryInfo->order_deadline_date;
+	$orderDeadlineDay = (date("w", strtotime($deadlineDate)) - 1) % 7;
+	$deadlineDay = $days[$orderDeadlineDay];
+	
+	$deliveryDate = $deliveryInfo->delivery_date;
+	$deliveryDay = (date("w", strtotime($deliveryDate)) - 1) % 7;
+	$deliveryDay = $days[$deliveryDay];
+	
+	$deliveryInfo_readable = "Delivery for spot $spotName with
+		deadline on $deadlineDay ,". date(csa_wp_plugin_date_format_readable, strtotime($deadlineDate)) . ", 
+			up to ". CsaWpPluginRemoveSeconds($deliveryInfo->order_deadline_time). ",
+		and delivery on $deliveryDay,". date(csa_wp_plugin_date_format_readable, strtotime($deliveryDate)) . ", 
+			from ". CsaWpPluginRemoveSeconds($deliveryInfo->delivery_start_time). "
+			up to ". CsaWpPluginRemoveSeconds($deliveryInfo->delivery_end_time);
+
+	return $deliveryInfo_readable;
 }
 
 ?>

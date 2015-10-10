@@ -6,7 +6,7 @@
 Το open-CSA βασίζεται στην πλατφόρμα WordPress, ως προς τις βασικές λειτουργίες της ιστοσελίδας, 
 επεκτείνοντάς την για τις διαδικασίες ανοιχτής διαχείρισης παραγγελιών.
 
-# CSA-WP-plugin
+# Open-CSA-WP Plugin
 
 Στο project CSA-WP-Plugin στοχεύουμε 
 (1) στη βελτίωση της ευχρηστίας και στην επέκταση της λειτουργικότητας του open-CSA, βάσει της συσσωρευμένης 
@@ -18,5 +18,9 @@
 μπορούν να βρεθούν στην αναφορά [2].
 
 [1] - http://open-csa.tolabaki.gr/
-
 [2] - https://github.com/ellak-monades-aristeias/csa-wp-plugin/blob/master/CSA-WP-Plugin_report_of_D1_and_D2.pdf
+
+# English Version
+
+See the <a href="https://github.com/ellak-monades-aristeias/csa-wp-plugin/wiki/">Wiki page</a> for details.
+

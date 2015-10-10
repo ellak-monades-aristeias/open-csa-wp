@@ -1,14 +1,16 @@
 <?php
+defined( 'ABSPATH' ) or die( 'No script kiddies please!' );
 
-function CsaWpPluginShowNewProductForm($productID, $display, $pageURL) { 
+function csa_wp_plugin_show_new_product_form($product_id, $display, $page_url) { 
 	
-	wp_enqueue_script( 'CsaWpPluginScripts' );
-	wp_enqueue_script( 'CsaWpPluginProductsScripts' );
+	wp_enqueue_script( 'csa-wp-plugin-enqueue-csa-scripts' );
+	wp_enqueue_script( 'csa-wp-plugin-products-scripts' );
 	
-	global $days,$wpdb;
-	$productInfo;
-	if ($productID != null) 
-		$productInfo = $wpdb->get_results($wpdb->prepare("SELECT * FROM ".csaProducts." WHERE id=%d", $productID));
+	global $days_of_week,$wpdb;
+	$product_info;
+	if ($product_id != null) {
+		$product_info = $wpdb->get_results($wpdb->prepare("SELECT * FROM ".CSA_WP_PLUGIN_TABLE_PRODUCTS." WHERE id=%d", $product_id));
+	}
 ?>
 
 	<br/>
@@ -16,25 +18,30 @@ function CsaWpPluginShowNewProductForm($productID, $display, $pageURL) {
 		<span 
 			id="csa-wp-plugin-addProduct_formHeader_text" 
 			<?php 
-				if ($productID == null) {
+				if ($product_id == null) {
 					echo 'style="cursor:pointer"';
-					echo 'onclick="CsaWpPluginToggleForm(\'addProduct\',\'Add New Product\', \' form\')"';
+					echo 'onclick="csa_wp_plugin_toggle_form(\'addProduct\',\'Add New Product\', \' form\')"';
 				}
 			?>>
 			<font size='4'>
 			<?php 
-			if ($productID == null) {
+			if ($product_id == null) {
 				if ($display == false) echo 'Add New Product (show form)';
 				else echo 'Add New Product (hide form)';
+			} else {
+				echo 'Edit Product #'.$product_id;
 			}
-			else echo 'Edit Product #'.$productID;
 			?>
 
 			</font>
 		</span>
 	</div>
 	<div id="csa-wp-plugin-addProduct_div" 
-		<?php if ($display == false) echo 'style="display:none"' ?>	
+		<?php 
+			if ($display == false) {
+				echo 'style="display:none"';
+			}
+		?>	
 	>
 		<form method="POST" id='csa-wp-plugin-showNewProduct_form'>
 			<table class="form-table">
@@ -42,7 +49,11 @@ function CsaWpPluginShowNewProductForm($productID, $display, $pageURL) {
 					<td>
 					<input 
 						type='text' 
-						<?php if ($productID != null && $productInfo[0]->name != "" && $productInfo[0]->name != null) echo "value='".$productInfo[0]->name."'"; ?>
+						<?php 
+							if ($product_id != null && $product_info[0]->name != "" && $product_info[0]->name != null) {
+								echo "value='".$product_info[0]->name."'"; 
+							}
+						?>
 						placeholder='Product Name *' 
 						name="csa-wp-plugin-product_name_input" 
 						required></td></tr>
@@ -50,14 +61,19 @@ function CsaWpPluginShowNewProductForm($productID, $display, $pageURL) {
 					<select 
 						name="csa-wp-plugin-product_category_input" 
 						id="csa-wp-plugin-newProductForm_category_input_id"
-						<?php if ($productID == null) echo "style='color:#999'"?>
+						<?php 
+							if ($product_id == null) {
+								echo "style='color:#999'";
+							}		
+						?>
 						onfocus = '
 							getElementById("csa-wp-plugin-newProductForm_category_input_span_id").style.display = "none";
 						'
 						onchange = '
 							this.style.color="black"
-							if (this.options[this.selectedIndex].text.split(" ")[0] != "Category")
+							if (this.options[this.selectedIndex].text.split(" ")[0] != "Category") {
 								this.options[this.selectedIndex].text = "Category is " + this.options[this.selectedIndex].text;
+							}
 						'
 					>
 					<option 
@@ -66,11 +82,11 @@ function CsaWpPluginShowNewProductForm($productID, $display, $pageURL) {
 						disabled='disabled'
 						id = "csa-wp-plugin-newProductForm_category_input_disabled_id"
 					>Category *</option>
- 					<?php echo CsaWpPluginSelectOptionsFromDB(
+ 					<?php echo csa_wp_plugin_select_options_from_db(
 									array("name"), 
 									"id", 
-									csaProductCategories, 
-									($productID != null)?$productInfo[0]->category:null,
+									CSA_WP_PLUGIN_TABLE_PRODUCT_CATEGORIES, 
+									($product_id != null)?$product_info[0]->category:null,
 									"Category is "
 								); ?>
                   	</select>
@@ -86,18 +102,26 @@ function CsaWpPluginShowNewProductForm($productID, $display, $pageURL) {
 						'					
 						onchange = '
 							this.style.color="black"
-							if (this.options[this.selectedIndex].text.split(" ")[0] != "Producer")
+							if (this.options[this.selectedIndex].text.split(" ")[0] != "Producer") {
 								this.options[this.selectedIndex].text = "Producer is " + this.options[this.selectedIndex].text;
+							}
 						'
-						<?php if ($productID == null) echo "style='color:#999'"?>
+						<?php 
+							if ($product_id == null) { 
+								echo "style='color:#999'";
+							}
+						?>
 					>
 						<option 
 							value="" 
-							<?php if ($productID == null) echo "selected='selected'"?>
+							<?php 
+								if ($product_id == null) 
+									echo "selected='selected'";
+							?>
 							disabled='disabled'
 							id = "csa-wp-plugin-newProductForm_producer_input_disabled_id"
 						>Producer *</option>
-						<?php echo CsaWpPluginSelectUsersOfType("producer", ($productID!=null)?$productInfo[0]->producer:null, "Producer is "); ?>
+						<?php echo csa_wp_plugin_select_users_of_type("producer", ($product_id!=null)?$product_info[0]->producer:null, "Producer is "); ?>
 					</select>
 					<span id="csa-wp-plugin-newProductForm_producer_input_span_id"></span>
 				</td></tr>
@@ -108,13 +132,21 @@ function CsaWpPluginShowNewProductForm($productID, $display, $pageURL) {
 						type='text' 
 						onfocus = ' 
 							getElementById ("csa-wp-plugin-showNewProduct_button_id").disabled=true;
-							if (this.value != "") this.value = (this.value.split(" ").slice(2)).join(" ");
+							if (this.value != "") {
+								this.value = (this.value.split(" ").slice(2)).join(" ");
+							}
 						'
 						onblur = '
 							getElementById ("csa-wp-plugin-showNewProduct_button_id").disabled=false;
-							if (this.value != "") this.value = "Variety is "+ this.value;
+							if (this.value != "") {
+								this.value = "Variety is "+ this.value;
+							}
 						'
-						<?php if ($productID != null && $productInfo[0]->variety != "" && $productInfo[0]->variety != null) echo "value='Variety is ".$productInfo[0]->variety."'"; ?>
+						<?php 
+							if ($product_id != null && $product_info[0]->variety != "" && $product_info[0]->variety != null) {
+								echo "value='Variety is ".$product_info[0]->variety."'"; 
+							}
+						?>
 						placeholder='Variety *' 
 						required 
 						name="csa-wp-plugin-product_variety_input">
@@ -125,13 +157,11 @@ function CsaWpPluginShowNewProductForm($productID, $display, $pageURL) {
 					<input 
 						min='0' step='0.1'
 						<?php 
-							if ($productID != null && $productInfo[0]->current_price_in_euro != "" && $productInfo[0]->current_price_in_euro != null) {
+							if ($product_id != null && $product_info[0]->current_price_in_euro != "" && $product_info[0]->current_price_in_euro != null) {
 								echo "type='text'";
 								echo "style='width:8em; text-align:right'";
-								echo 'value = "it costs '. $productInfo[0]->current_price_in_euro. '"';
-								
-							}
-							else {
+								echo 'value = "it costs '. $product_info[0]->current_price_in_euro. '"';
+							} else {
 								echo "type='number'";
 								echo "style='width:8em'";
 							}
@@ -145,8 +175,9 @@ function CsaWpPluginShowNewProductForm($productID, $display, $pageURL) {
 						onblur = '
 							getElementById ("csa-wp-plugin-showNewProduct_button_id").disabled=false;
 							this.type = "text";
-							if (this.value == "") this.style.textAlign="left";
-							else {
+							if (this.value == "") {
+								this.style.textAlign="left";
+							} else {
 								this.value = "It costs " + this.value;
 								this.style.textAlign="right";
 							}
@@ -155,29 +186,42 @@ function CsaWpPluginShowNewProductForm($productID, $display, $pageURL) {
 					<select 
 						name="csa-wp-plugin-product_unit_input" 
 						id="csa-wp-plugin-newProductForm_unit_input_id"
-						<?php if ($productID == null) echo "style='color:#999'"?>
+						<?php 
+							if ($product_id == null) {
+								echo "style='color:#999'";
+							}
+						?>
 						onfocus = '
 							getElementById("csa-wp-plugin-newProductForm_unit_input_span_id").style.display = "none";
 						'
 						onchange = '
 							this.style.color="black";
-							if (this.options[this.selectedIndex].text.split(" ")[0] != "per")
+							if (this.options[this.selectedIndex].text.split(" ")[0] != "per") {
 								this.options[this.selectedIndex].text = "per " + this.options[this.selectedIndex].text;
+							}
 					'>
 						<option 
 							value="" 
-							<?php if ($productID == null) echo "selected='selected'"; ?>
+							<?php 
+								if ($product_id == null) {
+									echo "selected='selected'"; 
+								}
+							?>
 							disabled='disabled'
 							id = "csa-wp-plugin-newProductForm_unit_input_disabled_id"
 						>per... *</option>
-						<?php echo CsaWpPluginSelectMeasurementUnit($productID, $productInfo); ?>
+						<?php echo csa_wp_plugin_select_measurement_unit($product_id, $product_info); ?>
 					</select> 
 					<span id="csa-wp-plugin-newProductForm_unit_input_span_id"></span>
 				</td></tr>
 				<tr valign="top">
 					<td>
 						<textarea placeholder='Description' rows="3" cols="30" name="csa-wp-plugin-product_descritpion_input"
-						><?php if ($productID != null && $productInfo[0]->description != "" && $productInfo[0]->description != null) echo $productInfo[0]->description; ?></textarea></td></tr>
+						><?php 
+							if ($product_id != null && $product_info[0]->description != "" && $product_info[0]->description != null) {
+								echo $product_info[0]->description; 
+							}
+						?></textarea></td></tr>
 
 
 				<tr valign="top"><td>
@@ -185,9 +229,13 @@ function CsaWpPluginShowNewProductForm($productID, $display, $pageURL) {
 					name="csa-wp-plugin-product_availability_input" 
 					id="csa-wp-plugin-newProductForm_availability_input_id"
 					<?php 
-						if ($productID == null) echo "style='color:#999'";
-						else if ($productInfo[0]->is_available == 1) echo "style='color:green'";
-						else echo "style='color:brown'";
+						if ($product_id == null) {
+							echo "style='color:#999'";
+						} else if ($product_info[0]->is_available == 1) {
+							echo "style='color:green'";
+						} else {
+							echo "style='color:brown'";
+						}
 					?>
 					onfocus = '
 							getElementById("csa-wp-plugin-newProductForm_availability_input_span_id").style.display = "none";
@@ -196,8 +244,7 @@ function CsaWpPluginShowNewProductForm($productID, $display, $pageURL) {
 						if (this.options[this.selectedIndex].value == "yes") {
 							this.style.color = "green";
 							this.options[this.selectedIndex].text = "Currently, it is available"
-						}
-						else {
+						} else {
 							this.style.color = "brown";
 							this.options[this.selectedIndex].text = "Currently, it not is available"
 						}
@@ -205,18 +252,21 @@ function CsaWpPluginShowNewProductForm($productID, $display, $pageURL) {
 				>
 					<option 
 						value="" 
-						<?php if ($productID == null) echo "selected='selected'"; ?>
+						<?php 
+							if ($product_id == null) {
+								echo "selected='selected'"; 
+							}
+						?>
 						disabled='disabled'
 						id = "csa-wp-plugin-newProductForm_availability_input_disabled_id"
 					>Available? *</option>
 					<?php 
-						if ($productID != null) {
+						if ($product_id != null) {
 							echo '
-								<option value="yes" style="color:green". '. ($productInfo[0]->is_available == 1?"selected='selected'> Currently, it is available":">yes") .' </option>
-								<option value="no" style="color:brown"'. ($productInfo[0]->is_available == 0?"selected='selected'> Currently, it is not available":">no") .' </option>
+								<option value="yes" style="color:green". '. ($product_info[0]->is_available == 1?"selected='selected'> Currently, it is available":">yes") .' </option>
+								<option value="no" style="color:brown"'. ($product_info[0]->is_available == 0?"selected='selected'> Currently, it is not available":">no") .' </option>
 							';
-						}
-						else {
+						} else {
 						?>
 							<option value="yes" style="color:green">yes</option>
 							<option value="no" style="color:brown">no</option>
@@ -233,13 +283,12 @@ function CsaWpPluginShowNewProductForm($productID, $display, $pageURL) {
 			class="button button-primary"
 			id="csa-wp-plugin-showNewProduct_button_id"
 			<?php 
-				if ($productID == null) {
+				if ($product_id == null) {
 					echo "value='Add Product'";
-					echo "onclick='CsaWpPluginNewProductFieldsValidation(this, null, \"$pageURL\")'";
-				}
-				else { 
+					echo "onclick='csa_wp_plugin_new_product_fields_validation(this, null, \"$page_url\")'";
+				} else { 
 					echo "value='Update Product'";
-					echo "onclick='CsaWpPluginNewProductFieldsValidation(this, $productID, \"$pageURL\")'";
+					echo "onclick='csa_wp_plugin_new_product_fields_validation(this, $product_id, \"$page_url\")'";
 				}
 				
 			?>
@@ -248,14 +297,17 @@ function CsaWpPluginShowNewProductForm($productID, $display, $pageURL) {
 			type="button"
 			class="button button-secondary"
 			<?php 
-			if ($productID == null) 
+			if ($product_id == null) {
 				echo "
 				value='Reset Info'
-				onclick='CsaWpPluginResetProductForm();'";
-			else echo "
+				onclick='csa_wp_plugin_reset_product_form();'";
+			}
+			else {
+				echo "
 				value='Cancel'
-				onclick='window.location.replace(\"$pageURL\")'
+				onclick='window.location.replace(\"$page_url\")'
 				'";
+			}
 			?>
 		/>
 		
@@ -267,96 +319,108 @@ function CsaWpPluginShowNewProductForm($productID, $display, $pageURL) {
 
 }
 
-function CsaWpPluginSelectMeasurementUnit($productID, $productInfo) {
+function csa_wp_plugin_select_measurement_unit($product_id, $product_info) {
 ?>
 	<option 
 		value='kilogram'
 		<?php
-			if ($productID != null && $productInfo[0]->measurement_unit == "kilogram" ) 
+			if ($product_id != null && $product_info[0]->measurement_unit == "kilogram" ) {
 				echo "selected='selected' >per kilogram"; 
-			else echo ">kilogram";
+			} else {
+				echo ">kilogram";
+			}
 		?>
 	</option>
 	<option 
 		value='piece'
 		<?php 
-			if ($productID != null && $productInfo[0]->measurement_unit == "piece" ) 
+			if ($product_id != null && $product_info[0]->measurement_unit == "piece" ) {
 				echo "selected='selected' >per piece"; 
-			else echo ">piece";
+			} else {
+				echo ">piece";
+			}
 		?>
 	</option>
 	<option 
 		value='bunch'
 		<?php 
-			if ($productID != null && $productInfo[0]->measurement_unit == "bunch" ) 
+			if ($product_id != null && $product_info[0]->measurement_unit == "bunch" ) {
 				echo "selected='selected' >per bunch"; 
-			else echo ">bunch";
+			} else {
+				echo ">bunch";
+			}
 		?>
 	</option>
 	<option 
 		value='litre'
 		<?php 
-			if ($productID != null && $productInfo[0]->measurement_unit == "litre" ) 
+			if ($product_id != null && $product_info[0]->measurement_unit == "litre" ) {
 				echo "selected='selected' >per litre"; 
-			else echo ">litre";
+			} else {
+				echo ">litre";
+			}
 		?>
 	</option>
 <?php
 }
 
 
-add_action( 'wp_ajax_csa-wp-plugin-product_add_or_update_request', 'CsaWpPluginAddOrUpdateProduct' );
+add_action( 'wp_ajax_csa-wp-plugin-product_add_or_update_request', 'csa_wp_plugin_add_or_update_product' );
 
-function CsaWpPluginAddOrUpdateProduct() {
+function csa_wp_plugin_add_or_update_product() {
 
-	if( isset($_POST['data']) && isset($_POST['productID'])) {
+	if( isset($_POST['data']) && isset($_POST['product_id'])) {
 
-		$dataReceived = json_decode(stripslashes($_POST['data']),true);
+		$data_received = json_decode(stripslashes($_POST['data']),true);
 		
-		$varietyMessage = "Variety is ";
-		$variety = substr($dataReceived[3]['value'], strlen($varietyMessage)); 
-		$priceMessage = "it costs ";
-		$price = substr($dataReceived[4]['value'], strlen($priceMessage)); 
+		$variety_message = "Variety is ";
+		$variety = substr($data_received[3]['value'], strlen($variety_message)); 
+		$price_message = "it costs ";
+		$price = substr($data_received[4]['value'], strlen($price_message)); 
 		
-		$dataVals = array(
-					'name' 						=> $dataReceived[0]['value'],
-					'category' 					=> $dataReceived[1]['value'],
-					'producer' 					=> $dataReceived[2]['value'],
+		$data_vals = array(
+					'name' 						=> $data_received[0]['value'],
+					'category' 					=> $data_received[1]['value'],
+					'producer' 					=> $data_received[2]['value'],
 					'variety'					=> $variety,
 					'current_price_in_euro'		=> $price,
-					'measurement_unit'	 		=> $dataReceived[5]['value'],
-					'description'				=> $dataReceived[6]['value'],
-					'is_available' 				=> $dataReceived[7]['value'] == "yes"?1:0
+					'measurement_unit'	 		=> $data_received[5]['value'],
+					'description'				=> $data_received[6]['value'],
+					'is_available' 				=> $data_received[7]['value'] == "yes"?1:0
 				);
-		$dataTypes = array ("%s", "%d", "%d", "%s", "%f", "%s", "%s", "%d");
+		$data_types = array ("%s", "%d", "%d", "%s", "%f", "%s", "%s", "%d");
 		
 		global $wpdb;
 	
-		$productID = intval(clean_input($_POST['productID']));
+		$product_id = intval(csa_wp_plugin_clean_input($_POST['product_id']));
 	
-		if ($productID != null) {
-			$productID = intval($productID);
+		if ($product_id != null) {
+			$product_id = intval($product_id);
 			
 			//update product (query)
 			if(	$wpdb->update(
-				csaProducts, 
-				$dataVals, 
-				array('id' => $productID), 
-				$dataTypes
-			) === FALSE) echo 'error, sql request failed.';
-			
-			else echo 'Success, product is updated.';
+				CSA_WP_PLUGIN_TABLE_PRODUCTS, 
+				$data_vals, 
+				array('id' => $product_id), 
+				$data_types
+			) === FALSE) {
+				echo 'error, sql request failed.';
+			} else {
+				echo 'Success, product is updated.';
+			}
 		
 		}
 		else { 
 			//insert product (query)
 			if(	$wpdb->insert(
-				csaProducts, 
-				$dataVals, 
-				$dataTypes
-			) === FALSE) echo 'error, sql request failed.';
-			
-			else echo 'Success, product is added.';
+				CSA_WP_PLUGIN_TABLE_PRODUCTS, 
+				$data_vals, 
+				$data_types
+			) === FALSE) {
+				echo 'error, sql request failed.';
+			} else {
+				echo 'Success, product is added.';
+			}
 		}
 	}
 	else echo 'error,Bad request.';
@@ -365,9 +429,9 @@ function CsaWpPluginAddOrUpdateProduct() {
 
 }
 
-function CsaWpPluginShowProducts($display, $pageURL) {
-	wp_enqueue_script('CsaWpPluginScripts');
-	wp_enqueue_script('CsaWpPluginProductsScripts');
+function csa_wp_plugin_show_products($display, $page_url) {
+	wp_enqueue_script('csa-wp-plugin-enqueue-csa-scripts');
+	wp_enqueue_script('csa-wp-plugin-products-scripts');
 	wp_enqueue_script('jquery.datatables');
 	wp_enqueue_script('jquery.jeditable'); 
 	wp_enqueue_script('jquery.blockui'); 	
@@ -378,24 +442,31 @@ function CsaWpPluginShowProducts($display, $pageURL) {
 		<span 
 			style="cursor:pointer" 
 			id="csa-wp-plugin-showProductsList_formHeader_text" 
-			onclick="CsaWpPluginToggleForm('showProductsList','Product List', '')">
+			onclick="csa_wp_plugin_toggle_form('showProductsList','Product List', '')">
 			<font size='4'>
 			<?php 
-				if ($display == false) echo 'Product List (show)';
-				else echo 'Product List (hide)'
+				if ($display == false) {
+					echo 'Product List (show)';
+				} else {
+					echo 'Product List (hide)';
+				}
 			?>
 			</font>
 		</span>
 	</div>
 	<div id="csa-wp-plugin-showProductsList_div" 
-		<?php if ($display == false) echo 'style="display:none"' ?>	
+		<?php 
+			if ($display == false) {
+				echo 'style="display:none"';
+			}
+		?>	
 	>
 		
 		<span class='csa-wp-plugin-tip_products' title='
 			If you want to update one among the name, variety, and description fields, click on it, write the new value, and then press ENTER.
-			| To change the availilability of a product, you can either click on its field or press the "eye" icon.
-			| If you want to edit some of the other product details, press the "pen" icon.
-			| If you want to delete some product, press the "x" icon.
+			| To change the availilability of a product, you can either click on its field or click the "eye" icon.
+			| If you want to edit some of the other product details, click on the "pen" icon.
+			| If you want to delete some product, click on the "x" icon.
 			'>
 		<p style="color:green;font-style:italic; font-size:13px">
 			by pointing here you can read additional information...</p></span>
@@ -424,26 +495,26 @@ function CsaWpPluginShowProducts($display, $pageURL) {
 		</thead> 
 		<tbody> <?php
 			global $wpdb;
-			$pluginsDir = plugins_url();
+			$plugins_dir = plugins_url();
 			
-			$productCategoriesMap = $wpdb->get_results("SELECT id,name FROM ".csaProductCategories, OBJECT_K);
-			$producersMap = CsaWpPluginProducersMapArray();
+			$product_categories_map = $wpdb->get_results("SELECT id,name FROM ".CSA_WP_PLUGIN_TABLE_PRODUCT_CATEGORIES, OBJECT_K);
+			$producers_map = csa_wp_plugin_producers_map_array();
 
 
-			$products = $wpdb->get_results("SELECT * FROM ". csaProducts);
+			$products = $wpdb->get_results("SELECT * FROM ". CSA_WP_PLUGIN_TABLE_PRODUCTS);
 			foreach($products as $row) 
 			{
-				$productID = $row->id;				
-				$category = $productCategoriesMap[$row->category]->name;
-				$producerID = $wpdb->get_var($wpdb->prepare("SELECT producer FROM ". csaProducts ." WHERE id=%d", $productID));
-				$producer = $producersMap[$producerID];
+				$product_id = $row->id;				
+				$category = $product_categories_map[$row->category]->name;
+				$producer_id = $wpdb->get_var($wpdb->prepare("SELECT producer FROM ". CSA_WP_PLUGIN_TABLE_PRODUCTS ." WHERE id=%d", $product_id));
+				$producer = $producers_map[$producer_id];
 				
 				echo "
 					<tr 
 						valign='top' 
-						id='csa-wp-plugin-showProductsProductID_$productID'  
+						id='csa-wp-plugin-showProductsProductID_$product_id'  
 						class='csa-wp-plugin-showProducts-product'
-						style='color:". (($row->is_available == '1')?"black":"gray") ."'
+						style='text-align:center;color:". (($row->is_available == '1')?"black":"gray") ."'
 					>
 					<td class='editable'>$row->name </td>
 					<td>$category </td>
@@ -454,30 +525,30 @@ function CsaWpPluginShowProducts($display, $pageURL) {
 					<td class='editable'>$row->description</td>
 					<td 
 						class='editable_boolean'
-						id = 'csa-wp-plugin-showProductsAvailabilityID_$productID'
+						id = 'csa-wp-plugin-showProductsAvailabilityID_$product_id'
 					>".(($row->is_available == 1)?"yes":"no")."</td>
 					<td style='text-align:center'><img 
 							style='cursor:pointer' 
 							src='".plugins_url()."/csa-wp-plugin/icons/".(($row->is_available == 1)?"visible":"nonVisible").".png' 
 							height='24' width='24' 
-							id = 'csa-wp-plugin-showProductsAvailabilityIconID_$productID'
+							id = 'csa-wp-plugin-showProductsAvailabilityIconID_$product_id'
 							title='mark it as ".(($row->is_available == 1)?"unavailable":"available")."'
-							onclick='CsaWpPluginRequestToggleProductVisibility(this,\"$pluginsDir\")'></td>
+							onclick='csa_wp_plugin_request_toggle_product_visibility(this,\"$plugins_dir\")'></td>
 					<td style='text-align:center'> 
 						<img 
 							width='24' height='24'  
 							class='delete no-underline' 
-							src='$pluginsDir/csa-wp-plugin/icons/edit.png' 
+							src='$plugins_dir/csa-wp-plugin/icons/edit.png' 
 							style='cursor:pointer;padding-left:10px;' 
-							onclick='CsaWpPluginEditProduct(this, \"$pageURL\")' 
+							onclick='csa_wp_plugin_edit_product(this, \"$page_url\")' 
 							title='click to edit this product'/></td>
 					<td style='text-align:center'> <img 
 						style='cursor:pointer' 
 						src='".plugins_url()."/csa-wp-plugin/icons/delete.png' 
 						height='24' width='24'
-						onmouseover='CsaWpPluginHoverIcon(this, \"delete\", \"$pluginsDir\")' 
-						onmouseout='CsaWpPluginUnHoverIcon(this, \"delete\", \"$pluginsDir\")' 						
-						onclick='CsaWpPluginRequestDeleteProduct(this)' 
+						onmouseover='csa_wp_plugin_hover_icon(this, \"delete\", \"$plugins_dir\")' 
+						onmouseout='csa_wp_plugin_unhover_icon(this, \"delete\", \"$plugins_dir\")' 						
+						onclick='csa_wp_plugin_request_delete_product(this)' 
 						title='delete product'></td>
 					</tr>
 
@@ -490,55 +561,63 @@ function CsaWpPluginShowProducts($display, $pageURL) {
 <?php
 }
 
-add_action( 'wp_ajax_csa-wp-plugin-update_product', 'CsaWpPluginUpdateProduct' );
+add_action( 'wp_ajax_csa-wp-plugin-update_product', 'csa_wp_plugin_update_product' );
 
-function CsaWpPluginUpdateProduct() {
-	if(isset($_POST['value']) && isset($_POST['column']) && isset($_POST['productID'])) {
-		//$old_value = clean_input($_POST['old_val']);
-		$new_value = clean_input($_POST['value']);
-		$columnNum = intval(clean_input($_POST['column']))+1; //not valid for getting the right column, when html table structure differs from the relative db table
-		$productID = intval(clean_input($_POST['productID']));
-		if ($columnNum == 8) $new_value = ($new_value == "yes"?1:0);
+function csa_wp_plugin_update_product() {
+	if(isset($_POST['value']) && isset($_POST['column']) && isset($_POST['product_id'])) {
+		//$old_value = csa_wp_plugin_clean_input($_POST['old_val']);
+		$new_value = csa_wp_plugin_clean_input($_POST['value']);
+		$column_num = intval(csa_wp_plugin_clean_input($_POST['column']))+1; //not valid for getting the right column, when html table structure differs from the relative db table
+		$product_id = intval(csa_wp_plugin_clean_input($_POST['product_id']));
+		if ($column_num == 8) {
+			$new_value = ($new_value == "yes"?1:0);
+		}
 		
-		if(!empty($columnNum) && !empty($productID)) {
+		if(!empty($column_num) && !empty($product_id)) {
 			// Updating the information 
 			global $wpdb;
 			//get csa_product's column names and assign them to an array
-			$columns = $wpdb->get_results("SELECT COLUMN_NAME FROM INFORMATION_SCHEMA.COLUMNS WHERE TABLE_NAME = '".csaProducts."' ORDER BY ORDINAL_POSITION", ARRAY_N);
+			$columns = $wpdb->get_results("SELECT COLUMN_NAME FROM INFORMATION_SCHEMA.COLUMNS WHERE TABLE_NAME = '".CSA_WP_PLUGIN_TABLE_PRODUCTS."' ORDER BY ORDINAL_POSITION", ARRAY_N);
 			//update the database, using the relative column name
-			$columnName = $columns[$columnNum][0];
+			$column_name = $columns[$column_num][0];
 
 			if(	$wpdb->update(
-				csaProducts,
-				array($columnName => $new_value), 
-				array('id' => $productID )
-			) === FALSE) 
-				echo 'error, sql request failed.';												
-			else echo 'success,'.$new_value;
-		} 
-		else echo 'error,Empty values.';
-	} 
-	else echo 'error,Bad request.';
+				CSA_WP_PLUGIN_TABLE_PRODUCTS,
+				array($column_name => $new_value), 
+				array('id' => $product_id )
+			) === FALSE) {
+				echo 'error, sql request failed.';											
+			} else {
+				echo 'success,'.$new_value;
+			}
+		} else {
+			echo 'error,Empty values.';
+		}
+	} else {
+		echo 'error,Bad request.';
+	}
 	
 	wp_die(); 	// this is required to terminate immediately and return a proper response
 
 }
 
-add_action( 'wp_ajax_csa-wp-plugin-update_product_availability', 'CsaWpPluginUpdateProductAvailability' );
+add_action( 'wp_ajax_csa-wp-plugin-update_product_availability', 'csa_wp_plugin_update_product_availability' );
 
- function CsaWpPluginUpdateProductAvailability() {
-	if(isset($_POST['productID']) && isset($_POST['availability'])) {
-		$productID = intval($_POST['productID']);
+function csa_wp_plugin_update_product_availability() {
+	if(isset($_POST['product_id']) && isset($_POST['availability'])) {
+		$product_id = intval($_POST['product_id']);
 		$availability = $_POST['availability'];
 
 		global $wpdb;		
 		if(	$wpdb->update(
-			csaProducts,
+			CSA_WP_PLUGIN_TABLE_PRODUCTS,
 			array("is_available" => $availability), 
-			array('id' => $productID)
-		) === FALSE) 
+			array('id' => $product_id)
+		) === FALSE) {
 			echo 'error, sql request failed';												
-		else echo 'success, Availability has been updated.';
+		} else {
+			echo 'success, Availability has been updated.';
+		}
 	} else {
 		echo 'error,Invalid request made.';
 	}
@@ -546,38 +625,51 @@ add_action( 'wp_ajax_csa-wp-plugin-update_product_availability', 'CsaWpPluginUpd
 	wp_die(); 	// this is required to terminate immediately and return a proper response
 }
 
-add_action( 'wp_ajax_csa-wp-plugin-delete_product', 'CsaWpPluginDeleteProduct' );
+add_action( 'wp_ajax_csa-wp-plugin-delete_product', 'csa_wp_plugin_delete_product' );
 
-function CsaWpPluginDeleteProduct() {
-	if(isset($_POST['productID'])) {
-		$productID = intval(clean_input($_POST['productID']));
-		if(!empty($productID)) {
+function csa_wp_plugin_delete_product() {
+	if(isset($_POST['product_id'])) {
+		$product_id = intval(csa_wp_plugin_clean_input($_POST['product_id']));
+		if(!empty($product_id)) {
 			// Updating the information 
 			global $wpdb;
 
-			if(	$wpdb->delete(
-				csaProducts,
-				array('id' => $productID ),
-				array ('%d')
-			) === FALSE) 
-				echo 'error, sql request failed.';												
-			else echo 'success';
-		} 
-		else echo 'error,Empty values.';
-	} 
-	else echo 'error,Bad request.';
+			$product_is_used = $wpdb->get_var($wpdb->prepare("
+									SELECT COUNT(product_id)
+									FROM ".CSA_WP_PLUGIN_TABLE_PRODUCT_ORDERS." 
+									WHERE product_id=%d", $product_id));
+			if ($product_is_used > 0) {
+				echo 'skipped, used in orders';
+			} else {			
+				if(	$wpdb->delete(
+					CSA_WP_PLUGIN_TABLE_PRODUCTS,
+					array('id' => $product_id ),
+					array ('%d')
+				) === FALSE) {
+					echo 'error, sql request failed.';												
+				} else {
+					echo 'success';
+				}
+			}
+		} else {
+			echo 'error,Empty values.';
+		}
+	} else {
+		echo 'error,Bad request.';
+	}
 	
 	wp_die(); 	// this is required to terminate immediately and return a proper response
 
 }
 
-function  CsaWpPluginDeliveryProductsExist (){
+function  csa_wp_plugin_delivery_products_exist (){
 	global $wpdb;
-	if (count($wpdb->get_results("SELECT id FROM " .csaProducts. " WHERE is_available = 1")) == 0) {
+	if ($wpdb->get_var("SELECT COUNT(id) FROM " .CSA_WP_PLUGIN_TABLE_PRODUCTS. " WHERE is_available = 1") == 0) {
 		echo "
 			<h3 style='color:brown'>sorry... no available products found... be patient, soon they will have grown enough... !</h3> 
 		";
 		return false;
+	} else {
+		return true;	
 	}
-	else return true;	
 }

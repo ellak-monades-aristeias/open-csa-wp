@@ -1,10 +1,23 @@
 var $j = jQuery.noConflict();	
 
 $j(document).ready(function() {
-	var deliveryClueTips = $j("#csa-wp-plugin-newDelivery_div .csa-wp-plugin-tip_deliveries");
+
+	var table = $j("#csa-wp-plugin-showDeliveriesList_table");
+	if (table.length > 0) {
+		table.dataTable({
+			"bPaginate": false, 
+			"bStateSave": true, 
+			"bInfo": false, 
+			"bFilter": true,
+			"bSort" : true
+		});
+	}
+
+
+	var delivery_tips = $j("#csa-wp-plugin-newDelivery_div .csa-wp-plugin-tip_deliveries");
 	
-	if(deliveryClueTips.length > 0) {
-		deliveryClueTips.cluetip({
+	if(delivery_tips.length > 0) {
+		delivery_tips.cluetip({
 			splitTitle: '|',						 
 			showTitle: false,
 			hoverClass: 'highlight',
@@ -13,10 +26,10 @@ $j(document).ready(function() {
 		});
 	}
 
-	deliveryClueTips = $j("#csa-wp-plugin-showDeliveriesList_div .csa-wp-plugin-tip_deliveries");
+	delivery_tips = $j("#csa-wp-plugin-showDeliveriesList_div .csa-wp-plugin-tip_deliveries");
 	
-	if(deliveryClueTips.length > 0) {
-		deliveryClueTips.cluetip({
+	if(delivery_tips.length > 0) {
+		delivery_tips.cluetip({
 			splitTitle: '|',						 
 			showTitle: false,
 			hoverClass: 'highlight',
@@ -26,14 +39,14 @@ $j(document).ready(function() {
 	}
 });
 
-function CsaWpPluginNewDeliveryFormatCustomValues (btn) {
+function csa_wp_plugin_new_delivery_format_custom_values (btn) {
 	btn.disabled = true;
 
-	var deadlineTimeObj = document.getElementById("csa-wp-plugin-newDelivery_order_deadline_time_input_id");
-	deadlineTimeObj.value = deadlineTimeObj.value.split(" ")[2] + ":00";
+	var deadline_time_obj = document.getElementById("csa-wp-plugin-newDelivery_order_deadline_time_input_id");
+	deadline_time_obj.value = deadline_time_obj.value.split(" ")[2] + ":00";
 	
-	var deliveryStartTimeObj = document.getElementById("csa-wp-plugin-newDelivery_spotDetails_delivery_start_time_input_id");
-	deliveryStartTimeObj.value = deliveryStartTimeObj.value.split(" ")[1] + ":00";
+	var delivery_start_time_obj = document.getElementById("csa-wp-plugin-newDelivery_spotDetails_delivery_start_time_input_id");
+	delivery_start_time_obj.value = delivery_start_time_obj.value.split(" ")[1] + ":00";
 	
 	var deliveryEndTimeObj = document.getElementById("csa-wp-plugin-newDelivery_spotDetails_delivery_end_time_input_id");
 	deliveryEndTimeObj.value = deliveryEndTimeObj.value.split(" ")[1] + ":00";
@@ -43,7 +56,7 @@ function CsaWpPluginNewDeliveryFormatCustomValues (btn) {
 	$j(btn).closest("form").submit();
 }
 
-function CsaWpPluginRequestInitiateNewOrUpdateDelivery(btn, deliveryID, urlAddress) {
+function csa_wp_plugin_request_initiate_new_or_update_delivery(btn, delivery_id, url_address) {
 
 	var $j = jQuery.noConflict();
 
@@ -51,43 +64,43 @@ function CsaWpPluginRequestInitiateNewOrUpdateDelivery(btn, deliveryID, urlAddre
 	document.getElementById("csa-wp-plugin-newDelivery_delivery_deadline_date_disabled_id").disabled = false;
 	document.getElementById("csa-wp-plugin-newDelivery_inCharge_input_disabled_id").disabled = false;
 		
-	var serializedFormData = $j('#csa-wp-plugin-initiateNewDelivery_form_id').serializeArray();
+	var serialized_form_data = $j('#csa-wp-plugin-initiateNewDelivery_form_id').serializeArray();
 	
-	if (serializedFormData[1].value == "") {
-		CsaWpPluginYouForgotThisOne (document.getElementById("csa-wp-plugin-newDelivery_delivery_deadline_date_input_span_id"));
+	if (serialized_form_data[1].value == "") {
+		csa_wp_plugin_you_forgot_this_one (document.getElementById("csa-wp-plugin-newDelivery_delivery_deadline_date_input_span_id"));
 		event.preventDefault();
 	}
 	else {
 		btn.disabled = true;
 
 		var $j = jQuery.noConflict();
-		serializedFormData = JSON.stringify(serializedFormData);
+		serialized_form_data = JSON.stringify(serialized_form_data);
 				
 		var data = {
 			'action': 'csa-wp-plugin-initiate_or_update_new_delivery_request',
-			'deliveryID' : deliveryID,
-			'data'	: serializedFormData
+			'delivery_id' : delivery_id,
+			'data'	: serialized_form_data
 		}
 			
 		$j.post(ajaxurl, data ,
 			function(response){
 				//console.log("Server returned: [" + response + "]");
 				btn.disabled = false;
-				window.location.replace(urlAddress);
+				window.location.replace(url_address);
 		});
 	}
 }
 
-function CsaWpPluginRequestDeleteDelivery(delivery) {
+function csa_wp_plugin_request_delete_deliver(delivery) {
 
 	var $j = jQuery.noConflict();		
 	var deliveryTR = $j(delivery).closest("tr");
 
-	var deliveryID = $j(deliveryTR).attr("id").split('_')[1];
+	var delivery_id = $j(deliveryTR).attr("id").split('_')[1];
 	
 	var data = {
 		"action" : "csa-wp-plugin-delete_delivery",
-		"deliveryID" : deliveryID
+		"delivery_id" : delivery_id
 	};
 	
 	$j.post(ajaxurl, data, 
@@ -97,33 +110,34 @@ function CsaWpPluginRequestDeleteDelivery(delivery) {
 			$j(deliveryTR).fadeOut(200,function() {
 					$j(deliveryTR).remove();
 					
-					if ($j('#csa-wp-plugin-showDeliveriesList_table .csa-wp-plugin-showDeliveries-delivery').length == 0) 
+					if ($j('#csa-wp-plugin-showDeliveriesList_table .csa-wp-plugin-showDeliveries-delivery').length == 0) {
 						location.reload(true);
+					}
 			});
 		}
 	);
 }
 
-function CsaWpPluginEditDelivery(deliveryObj, pageUrl) {
+function csa_wp_plugin_edit_delivery(deliveryObj, page_url) {
 	var deliveryTR = $j(deliveryObj).closest("tr");
 
-	var deliveryID = $j(deliveryTR).attr("id").split('_')[1];
+	var delivery_id = $j(deliveryTR).attr("id").split('_')[1];
 
-	window.location.replace( pageUrl + "&deliveryID=" + deliveryID);
+	window.location.replace( page_url + "&delivery_id=" + delivery_id);
 }
 
-function CsaWpPluginRequestToggleDeliveryAbilityToOrder(imageObj, pluginsDir) {
+function csa_wp_plugin_request_toggle_delivery_ability_to_order(image_obj, plugins_dir) {
 	var $j = jQuery.noConflict();
-	var row = imageObj.parentNode.parentNode;
-	var deliveryID = row.id.split('_')[1];
+	var row = image_obj.parentNode.parentNode;
+	var delivery_id = row.id.split('_')[1];
 	
-	var areOrdersOpen = imageObj.title.split(" ")[0]=='remove'?0:1;
+	var are_orders_open = image_obj.title.split(" ")[0]=='remove'?0:1;
 	
 	//update database
 	var data = {
 		"action" : "csa-wp-plugin-update_delivery_abilityToOrder",
-		"deliveryID" : deliveryID,
-		"areOrdersOpen" : areOrdersOpen
+		"delivery_id" : delivery_id,
+		"are_orders_open" : are_orders_open
 	};
 	
 	
@@ -131,29 +145,31 @@ function CsaWpPluginRequestToggleDeliveryAbilityToOrder(imageObj, pluginsDir) {
 		function(response) { 
 			//console.log ("Server returned:["+response+"]");
 			
-			CsaWpPluginToggleDeliveryAbilityToOrder (deliveryID, pluginsDir);
+			csa_wp_plugin_toggle_delivery_ability_to_order (delivery_id, plugins_dir);
 		}
 	);
 }
 
-function CsaWpPluginToggleDeliveryAbilityToOrder (deliveryID, pluginsDir) {
+function csa_wp_plugin_toggle_delivery_ability_to_order (delivery_id, plugins_dir) {
 
-	objTR = document.getElementById ("csa-wp-plugin-showDeliveriesDeliveryID_"+deliveryID);
-	imageObj = document.getElementById("csa-wp-plugin-showDeliveriesOpenOrdersIconID_"+deliveryID);;
-	textObj = document.getElementById("csa-wp-plugin-showDeliveriesOpenOrdersID_"+deliveryID);
+	obj_tr = document.getElementById ("csa-wp-plugin-showDeliveriesDeliveryID_"+delivery_id);
+	image_obj = document.getElementById("csa-wp-plugin-showDeliveriesOpenOrdersIconID_"+delivery_id);;
+	text_obj = document.getElementById("csa-wp-plugin-showDeliveriesOpenOrdersID_"+delivery_id);
 	
 	//toggle row color, image source, text, and title
-	if (imageObj.title.split(" ")[0] == 'grant') {
-		if (objTR.style.color != 'grey')
-			objTR.style.color = 'green';
-		imageObj.src = pluginsDir + "/csa-wp-plugin/icons/open.png";
-		textObj.innerHTML = "yes";
-		imageObj.title = "remove ability to order";
+	if (image_obj.title.split(" ")[0] == 'grant') {
+		if (obj_tr.style.color != 'grey') {
+			obj_tr.style.color = 'green';
+		}
+		image_obj.src = plugins_dir + "/csa-wp-plugin/icons/open.png";
+		text_obj.innerHTML = "yes";
+		image_obj.title = "remove ability to order";
 	} else {
-		if (objTR.style.color != 'grey')
-			objTR.style.color = 'brown';
-		imageObj.src = pluginsDir + "/csa-wp-plugin/icons/close.png";
-		textObj.innerHTML = "no";
-		imageObj.title = "grant ability to order";
+		if (obj_tr.style.color != 'grey') {
+			obj_tr.style.color = 'brown';
+		}
+		image_obj.src = plugins_dir + "/csa-wp-plugin/icons/close.png";
+		text_obj.innerHTML = "no";
+		image_obj.title = "grant ability to order";
 	}
 }

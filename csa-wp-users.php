@@ -1,32 +1,43 @@
 <?php
+defined( 'ABSPATH' ) or die( 'No script kiddies please!' );
 
-add_action( 'show_user_profile', 'CsaWpPluginShowUserProperties' );
-add_action( 'edit_user_profile', 'CsaWpPluginShowUserProperties' );
+add_action( 'show_user_profile', 'csa_wp_plugin_show_user_properties' );
+add_action( 'edit_user_profile', 'csa_wp_plugin_show_user_properties' );
 //add_action( 'register_form','CsaWpPluginShowDefaultUserProperties');
-add_action('user_new_form', 'CsaWpPluginAdminShowDefaultUserProperties');
+add_action('user_new_form', 'csa_wp_plugin_admin_show_default_user_properties');
 
 
-function CsaWpPluginShowUserProperties( $user ) {
+function csa_wp_plugin_show_user_properties( $user ) {
 	if ( current_user_can( 'administrator' ) || 
-		(($csaData = get_user_meta( $user->ID, 'csa-wp-plugin_user', true )) && $csaData['role'] == "administrator" )
-	) CsaWpPluginEditUserProperties($user, false);
-	else CsaWpPluginNonEditableUserProperties($user);
+		(($csa_data = get_user_meta( $user->ID, 'csa-wp-plugin_user', true )) && $csa_data['role'] == "administrator" )
+	) {
+		csa_wp_plugin_edit_user_properties($user, false);
+	} else {
+		csa_wp_plugin_non_ediablet_user_properties($user);
+	}
 }
 
-function CsaWpPluginNonEditableUserProperties( $user ) {
+function csa_wp_plugin_non_ediablet_user_properties( $user ) {
 	
-	$csaData = get_user_meta( $user->ID, 'csa-wp-plugin_user', true );
+	$csa_data = get_user_meta( $user->ID, 'csa-wp-plugin_user', true );
 	
-	if (!$csaData) {
+	if (!$csa_data) {
 		$type = "Your account's type in CSA has not yet been defined";
 		$role = "Your account's role in CSA has not yet been defined";
 	} else {
 		$type = "Consumer";
-		if ($csaData['type'] == "producer") $type = "Producer";
-		else if ($csaData['type'] == "both") $type = "Producer and Consumer";
+		if ($csa_data['type'] == "producer") {
+			$type = "Producer";
+		} else if ($csa_data['type'] == "both") {
+			$type = "Producer and Consumer";
+		}
+		
 		$role = "Simple User";
-		if ($csaData['role'] == "responsible") $role = "You can become responsible for some delivery";
-		else if ($csaData['role'] == "adminisrator") $role = "Administrator";
+		if ($csa_data['role'] == "responsible") {
+			$role = "You can become responsible for some delivery";
+		} else if ($csa_data['role'] == "adminisrator") {
+			$role = "Administrator";
+		}
 	}
 	
 	echo "
@@ -45,37 +56,22 @@ function CsaWpPluginNonEditableUserProperties( $user ) {
 	";
 }
 
-function CsaWpPluginAdminShowDefaultUserProperties ( $user) {
-	CsaWpPluginEditUserProperties($user, true);
+function csa_wp_plugin_admin_show_default_user_properties ( $user) {
+	csa_wp_plugin_edit_user_properties($user, true);
 }
 
-function CsaWpPluginEditUserProperties ($user, $new_user) {
+function csa_wp_plugin_edit_user_properties ($user, $new_user) {
 
-	wp_enqueue_script('CsaWpPluginScripts');
+	wp_enqueue_script('csa-wp-plugin-enqueue-csa-scripts');
+	wp_enqueue_script('csa-wp-plugin-users-scripts');
 	wp_enqueue_script('jquery.cluetip');
 	wp_enqueue_style('jquery.cluetip.style');
 
+	$csa_data = array();
 
-?>	
-	<script type="text/javascript">
-	// clueTip code for showing product details in tooltip 
-	var $j = jQuery.noConflict();
-	$j(document).ready(function() {
-	  $j('.tip').cluetip({
-		splitTitle: '|',							 
-		showTitle: false,
-		hoverClass: 'highlight',
-		open: 'slideDown', 
-		openSpeed: 'fast'
-	  });
-	});
-	</script>
-<?php
-
-	$csaData = array();
-
-	if (!$new_user)	
-		$csaData = get_user_meta( $user->ID, 'csa-wp-plugin_user', true );
+	if (!$new_user)	{
+		$csa_data = get_user_meta( $user->ID, 'csa-wp-plugin_user', true );
+	}
     ?>
 	<h3>CSA Properties</h3>
 
@@ -88,10 +84,14 @@ function CsaWpPluginEditUserProperties ($user, $new_user) {
 					type="radio" 
 					name="csa-wp-plugin_user_type" 
 					value="consumer"  
-					onclick="CsaWpPluginProducerOrderInfoVia(document.getElementById('csa-wp-plugin-consumer_radio'),document.getElementById('csa-wp-plugin-producer_contact_preference'))"
+					onclick="csa_wp_plugin_producer_orders_info_via(document.getElementById('csa-wp-plugin-consumer_radio'),document.getElementById('csa-wp-plugin-producer_contact_preference'))"
 					<?php 
-						if(!$new_user && isset($csaData['type'])) checked($csaData['type'], "consumer"); 
-						else if($new_user || !isset($csaData['type'])) echo 'checked = "checked"';?>
+						if(!$new_user && isset($csa_data['type'])) {
+							checked($csa_data['type'], "consumer"); 
+						} else if ($new_user || !isset($csa_data['type'])) {
+							echo 'checked = "checked"';
+						}
+					?>
 				> <label for="csa-wp-plugin-consumer_radio">Consumer</label>
 				<br>
 				<input 
@@ -99,8 +99,12 @@ function CsaWpPluginEditUserProperties ($user, $new_user) {
 					type="radio" 
 					name="csa-wp-plugin_user_type" 
 					value="producer"  
-					onclick="CsaWpPluginProducerOrderInfoVia(document.getElementById('csa-wp-plugin-producer_radio'),document.getElementById('csa-wp-plugin-producer_contact_preference'))"
-					<?php if (!$new_user && isset($csaData['type'])) checked($csaData['type'], "producer");?>
+					onclick="csa_wp_plugin_producer_orders_info_via(document.getElementById('csa-wp-plugin-producer_radio'),document.getElementById('csa-wp-plugin-producer_contact_preference'))"
+					<?php 
+						if (!$new_user && isset($csa_data['type'])) {
+							checked($csa_data['type'], "producer");
+						}
+					?>
 				> <label for="csa-wp-plugin-producer_radio">Producer</label>
 				<br>
 				<input 
@@ -108,39 +112,65 @@ function CsaWpPluginEditUserProperties ($user, $new_user) {
 					type="radio" 
 					name="csa-wp-plugin_user_type"
 					value="both"  
-					onclick="CsaWpPluginProducerOrderInfoVia(document.getElementById('csa-wp-plugin-both_radio'),document.getElementById('csa-wp-plugin-producer_contact_preference'))"
-					<?php if (!$new_user && isset($csaData['type'])) checked($csaData['type'], "both");?>
+					onclick="csa_wp_plugin_producer_orders_info_via(document.getElementById('csa-wp-plugin-both_radio'),document.getElementById('csa-wp-plugin-producer_contact_preference'))"
+					<?php 
+						if (!$new_user && isset($csa_data['type'])) {
+							checked($csa_data['type'], "both");
+						}
+					?>
 				> <label for="csa-wp-plugin-both_radio">Both</label>
 				<div id='csa-wp-plugin-producer_contact_preference' 
 				<?php 
 					if (!$new_user && 
-						isset($csaData['type']) &&
-						($csaData['type'] == 'producer' || $csaData['type'] =='both'))
+						isset($csa_data['type']) &&
+						($csa_data['type'] == 'producer' || $csa_data['type'] =='both')) {
 						echo "style='display:block'";
-					else echo "style='display:none'";
+					} else {
+						echo "style='display:none'";
+					}
 				?>>
 					and producer prefers to be informed about orders via
 					<select name="csa-wp-plugin_user_info_via">
 						<option 
 							value=""
 							disabled='disabled'
-							<?php if($new_user || !isset($csaData['info-via'])) echo "selected='selected'";?>
+							<?php 
+								if($new_user || !isset($csa_data['info-via'])) {
+									echo "selected='selected'";
+								}
+							?>
 						>please select...</option>
 						<option 
 							value='website'
-							<?php if(!$new_user && isset($csaData['info-via'])) selected($csaData['info-via'], "website");  ?>
+							<?php 
+								if(!$new_user && isset($csa_data['info-via'])) { 
+									selected($csa_data['info-via'], "website");  
+								}
+							?>
 						>website</option>
 						<option 
 							value='e-mail'
-							<?php if(!$new_user && isset($csaData['info-via'])) selected($csaData['info-via'], "e-mail");  ?>
+							<?php 
+								if(!$new_user && isset($csa_data['info-via'])) {	
+									selected($csa_data['info-via'], "e-mail");  
+								}
+							?>
 						>e-mail</option>
 						<option 
 							value='sms'
-							<?php if(!$new_user && isset($csaData['info-via'])) selected($csaData['info-via'], "sms");  ?>
+							<?php 
+								if(!$new_user && isset($csa_data['info-via'])) {
+									selected($csa_data['info-via'], "sms");  
+								}
+							?>
 						>sms</option>
 						<option 
 							value='phone'
-							<?php if(!$new_user && isset($csaData['info-via'])) selected($csaData['info-via'], "phone");  ?>
+							<?php 
+								if(!$new_user && isset($csa_data['info-via'])) { 
+									selected($csa_data['info-via'], "phone");  
+								}
+							?>
 						>phone call</option>
 					</select>
 				</div>
@@ -155,8 +185,12 @@ function CsaWpPluginEditUserProperties ($user, $new_user) {
 					name="csa-wp-plugin_user_role" 
 					value="none"  
 					<?php 
-						if(!$new_user && isset($csaData['role'])) checked($csaData['role'], "none"); 
-						else if($new_user || !isset($csaData['role'])) echo 'checked = "checked"';?>
+						if (!$new_user && isset($csa_data['role'])) {
+							checked($csa_data['role'], "none"); 
+						} else if($new_user || !isset($csa_data['role'])) {
+							echo 'checked = "checked"';
+						}
+					?>
 				> <label for="csa-wp-plugin-none_radio">None</label>
 				<br>
 				<input 
@@ -164,17 +198,23 @@ function CsaWpPluginEditUserProperties ($user, $new_user) {
 					type="radio" 
 					name="csa-wp-plugin_user_role" 
 					value="responsible"
-					class="tip"
-					title="Can become responsible of some delivery"
-					<?php if (!$new_user && isset($csaData['role'])) checked($csaData['role'], "responsible");?>
-				> <span class="tip" title="Can become responsible for some delivery"><label for="csa-wp-plugin-responsible_radio">Responsible</label></span>
+					<?php 
+						if (!$new_user && isset($csa_data['role'])) {
+							checked($csa_data['role'], "responsible");
+						}
+					?>
+				> <span class="csa-wp-plugin-tip_users" title="Can become responsible for some delivery"><label for="csa-wp-plugin-responsible_radio">Responsible</label></span>
 				<br>
 				<input
 					id="csa-wp-plugin-administrator_radio"
 					type="radio" 
 					name="csa-wp-plugin_user_role" 
 					value="administrator"  
-					<?php if (!$new_user && isset($csaData['role'])) checked($csaData['role'], "administrator");?>
+					<?php 
+						if (!$new_user && isset($csa_data['role'])) {
+							checked($csa_data['role'], "administrator");
+						}
+					?>
 				> <label for="csa-wp-plugin-administrator_radio">Administrator</label>
 			</td>
 		</tr>
@@ -182,151 +222,190 @@ function CsaWpPluginEditUserProperties ($user, $new_user) {
 <?php
 }
 	
-add_action( 'personal_options_update', 'CsaWpPluginSaveUserProperties' );
-add_action( 'edit_user_profile_update', 'CsaWpPluginSaveUserProperties' );
-add_action( 'user_register', 'CsaWpPluginSaveUserProperties');
+add_action( 'personal_options_update', 'csa_wp_plugin_save_user_properties' );
+add_action( 'edit_user_profile_update', 'csa_wp_plugin_save_user_properties' );
+add_action( 'user_register', 'csa_wp_plugin_save_user_properties');
 
 
-function CsaWpPluginSaveUserProperties( $user_id ) {
-	$csaData = array();
+function csa_wp_plugin_save_user_properties( $user_id ) {
+	$csa_data = array();
 
-	if(!empty( $_POST['csa-wp-plugin_user_type'] ))	
-		$csaData['type'] = sanitize_text_field( $_POST['csa-wp-plugin_user_type'] );
+	if(!empty( $_POST['csa-wp-plugin_user_type'] ))	{
+		$csa_data['type'] = sanitize_text_field( $_POST['csa-wp-plugin_user_type'] );
+	}
 
-	if(!empty( $_POST['csa-wp-plugin_user_info_via'] ))	
-		$csaData['info-via'] = sanitize_text_field( $_POST['csa-wp-plugin_user_info_via'] );
+	if(!empty( $_POST['csa-wp-plugin_user_info_via'] ))	{
+		$csa_data['info-via'] = sanitize_text_field( $_POST['csa-wp-plugin_user_info_via'] );
+	}
 		
-	if(!empty( $_POST['csa-wp-plugin_user_role'] ))	
-		$csaData['role'] = sanitize_text_field( $_POST['csa-wp-plugin_user_role'] );
+	if(!empty( $_POST['csa-wp-plugin_user_role'] ))	{
+		$csa_data['role'] = sanitize_text_field( $_POST['csa-wp-plugin_user_role'] );
+	}
 	
-	if(!empty($csaData)) 
-		update_user_meta( $user_id, 'csa-wp-plugin_user', $csaData);
+	if(!empty($csa_data)) {
+		update_user_meta( $user_id, 'csa-wp-plugin_user', $csa_data);
+	}
 }
 
 
-add_filter( 'manage_users_columns', 'CsaWpPluginDisplayUserPropertiesColumns' );
-add_filter( 'manage_users_custom_column', 'CsaWpPluginPopulateUserPropertiesColumns', 10, 3 );
+add_filter( 'manage_users_columns', 'csa_wp_plugin_display_user_properties_columns' );
+add_filter( 'manage_users_custom_column', 'csa_wp_plugin_populate_user_properties_columns', 10, 3 );
 
-function CsaWpPluginDisplayUserPropertiesColumns ( $columns )  {
+function csa_wp_plugin_display_user_properties_columns ( $columns )  {
     $columns['csa-wp-plugin-user_type'] = 'CSA Type';
 	$columns['csa-wp-plugin-user_role'] = 'CSA Role';
 
     return $columns;
 }
 
-function CsaWpPluginPopulateUserPropertiesColumns ( $value, $column_name, $user_id ) {
-    if ( $column_name != "csa-wp-plugin-user_type" && $column_name != "csa-wp-plugin-user_role" )
+function csa_wp_plugin_populate_user_properties_columns ( $value, $column_name, $user_id ) {
+    if ( $column_name != "csa-wp-plugin-user_type" && $column_name != "csa-wp-plugin-user_role" ) {
         return value;
+	}
 
-	$csaData = get_user_meta( $user_id, 'csa-wp-plugin_user', true );
+	$csa_data = get_user_meta( $user_id, 'csa-wp-plugin_user', true );
 	
-    if ( $column_name == "csa-wp-plugin-user_type" && $csaData && $csaData['type'])
-        return $csaData['type'];
+    if ( $column_name == "csa-wp-plugin-user_type" && $csa_data && $csa_data['type']) {
+        return $csa_data['type'];
+	}
 
-    if ( $column_name == "csa-wp-plugin-user_role" && $csaData && $csaData['role'])
-        return $csaData['role'];
+    if ( $column_name == "csa-wp-plugin-user_role" && $csa_data && $csa_data['role']) {
+        return $csa_data['role'];
+	}
 		
 	return "";
 }
 
-add_action( 'delete_user', 'CsaWpPluginDeleteUser' );
+add_action( 'delete_user', 'csa_wp_plugin_delete_user' );
 
-function CsaWpPluginDeleteUser ($user_id) {
+function csa_wp_plugin_delete_user ($user_id) {
 	delete_user_meta ($user_id, 'csa-wp-plugin_user');
 }
 
-function CsaWpPluginDeleteUsers() {
-	$csaUsers = get_users(array('fields' => 'ID'));
+function csa_wp_plugin_delete_users_meta() {
+	$csa_users = get_users(array('fields' => 'ID'));
 	
-    foreach($csaUsers as $csaUser) CsaWpPluginDeleteUser($csaUser);
+    foreach($csa_users as $csaUser) csa_wp_plugin_delete_user($csaUser);
 }
 
-// -----------------------------------
-// ------------ NEW STUFF ------------
-// -----------------------------------
-
-function CsaWpPluginSelectUsers($selectedUserID, $message) {
+function csa_wp_plugin_select_users($selected_user_id, $message) {
 	$users = get_users();
-	CsaWpPluginBuildUsersSelection($users, $selectedUserID, $message);
+	csa_wp_plugin_build_users_selection($users, $selected_user_id, $message);
 }
 
-function CsaWpPluginSelectUsersOfType($userType, $selectedUserID, $message) {
-	$csaProducers = CsaWpPluginGetUserExcluding($userType=="consumer"?"producer":"consumer") ;
-	CsaWpPluginBuildUsersSelection($csaProducers, $selectedUserID, $message);
+function csa_wp_plugin_select_users_of_type($user_type, $selected_user_id, $message) {
+	$csa_producers = csa_wp_plugin_get_user_excluding($user_type=="consumer"?"producer":"consumer") ;
+	csa_wp_plugin_build_users_selection($csa_producers, $selected_user_id, $message);
 }
 
-function CsaWpPluginGetUserExcluding($userType) {
-	$csaUsers = get_users();
+function csa_wp_plugin_get_user_excluding($user_type) {
+	$csa_users = get_users();
 	
-	foreach ($csaUsers as $i => $user) {
-		$csaUserData = get_user_meta( $user->ID, 'csa-wp-plugin_user', true );
-		if ($csaUserData == "" || $csaUserData['type'] == $userType)
-			unset($csaUsers[$i]);
+	foreach ($csa_users as $i => $user) {
+		$csa_user_data = get_user_meta( $user->ID, 'csa-wp-plugin_user', true );
+		if ($csa_user_data == "" || $csa_user_data['type'] == $user_type) {
+			unset($csa_users[$i]);
+		}
 	}
 	
-	return $csaUsers;
+	return $csa_users;
 }
 
-function CsaWpPluginBuildUsersSelection($usersToSelect, $selectedUserID, $message) {
+function csa_wp_plugin_build_users_selection($users_to_select, $selected_user_id, $message) {
 						
-	foreach ($usersToSelect as $user) {
-		$text = CsaWpPluginUserReadable($user);
+	foreach ($users_to_select as $user) {
+		$text = csa_wp_plugin_user_readable($user);
 		
-		if ($user->ID == $selectedUserID) 								
+		if ($user->ID == $selected_user_id) {
 			echo "<option value='".$user->ID."' selected='selected' style='color:black'>". $message.$text."</option>";
-		else
+		} else {
 			echo "<option value='".$user->ID."' style='color:black'>".$text."</option>";
+		}
 
 	}
 }
 
-function CsaWpPluginUserReadable ($user) {
+function csa_wp_plugin_user_readable ($user) {
 	$text = "";
-	$firstName = get_user_meta( $user->ID, 'first_name', true );
-	$lastName = get_user_meta( $user->ID, 'last_name', true );
+	$first_name = get_user_meta( $user->ID, 'first_name', true );
+	$last_name = get_user_meta( $user->ID, 'last_name', true );
 	
-	if ($firstName != null) {
-		$text = $firstName; 
-		if ($lastName != null) $text = $text." ".$lastName;
+	if ($first_name != null) {
+		$text = $first_name; 
+		if ($last_name != null) {
+			$text = $text." ".$last_name;
+		}
 		$text.=" ";
+	} else if ($last_name != null) {
+		$text .= $last_name . " ";
 	}
-	else if ($lastName != null)
-		$text .= $lastName . " ";
 		
 	$text .= "(".$user->user_login.")";
 	
 	return $text;
 }
 
-function CsaWpPluginUserReadableWithoutLogin ($user) {
+function csa_wp_plugin_user_readable_without_login ($user) {
 	$text = "";
-	$firstName = get_user_meta( $user->ID, 'first_name', true );
-	$lastName = get_user_meta( $user->ID, 'last_name', true );
+	$first_name = get_user_meta( $user->ID, 'first_name', true );
+	$last_name = get_user_meta( $user->ID, 'last_name', true );
 	
-	if ($firstName != null) {
-		$text = $firstName; 
-		if ($lastName != null) $text = $text." ".$lastName;
+	if ($first_name != null) {
+		$text = $first_name; 
+		if ($last_name != null) {
+			$text = $text." ".$last_name;
+		}
 		$text.=" ";
+	} else if ($last_name != null) {
+		$text .= $last_name . " ";
 	}
-	else if ($lastName != null)
-		$text .= $lastName . " ";
-		
-	if ($text == "")	
+
+	if ($text == "") {
 		$text = $user->user_login;
+	}
 	
 	return $text;
 }
 
-function CsaWpPluginProducersMapArray () {
-	$producersMap = array ();
+function csa_wp_plugin_producers_map_array () {
+	$producers_map = array ();
 	
-	$csaUsers = get_users();
-	foreach ($csaUsers as $user) {
-		$csaUserData = get_user_meta( $user->ID, 'csa-wp-plugin_user', true );
-		if ($csaUserData != "" && ($csaUserData['type'] == "producer" || $csaUserData['type'] == "both"))
-			$producersMap[$user->ID] = CsaWpPluginUserReadableWithoutLogin($user);
+	$csa_users = get_users();
+	foreach ($csa_users as $user) {
+		$csa_user_data = get_user_meta( $user->ID, 'csa-wp-plugin_user', true );
+		if ($csa_user_data != "" && ($csa_user_data['type'] == "producer" || $csa_user_data['type'] == "both")) {
+			$producers_map[$user->ID] = csa_wp_plugin_user_readable_without_login($user);
+		}
 	}
 	
-	return $producersMap;
+	return $producers_map;
+}
+
+function csa_wp_plugin_is_user_csa_administrator($user_id) {
+	$user_data = get_user_meta($user_id, 'csa-wp-plugin_user', true ); 
+	
+	if ($user_data == null || $user_data['role'] != "administrator") {
+		return false;
+	} else {
+		return true;
+	}
+}
+
+function csa_wp_plugin_is_user_responsible_for_delivery($user_id, $delivery_id) {
+
+	$user_data = get_user_meta($user_id, 'csa-wp-plugin_user', true ); 
+	
+	if ($user_data == null || $user_data['role'] == "none") {
+		return false;
+	} else {
+		global $wpdb;
+		$user_in_charge = $wpdb->get_var($wpdb->prepare("SELECT user_in_charge FROM ".CSA_WP_PLUGIN_TABLE_DELIVERIES." WHERE id=%d", $delivery_id));
+		
+		if ($user_in_charge != $user_id) {
+			return false;
+		} else {
+			return true;
+		}	
+	}
 }
 ?>

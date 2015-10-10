@@ -1,11 +1,13 @@
 <?php
+defined( 'ABSPATH' ) or die( 'No script kiddies please!' );
+
 /*
 	@! Perfect tables
 	@@ Using jQuery
 */
 
 ## Clean the input from script, html, style, and almost all potenially harmful tags.
-function clean_input($input) {
+function csa_wp_plugin_clean_input($input) {
 	$search = array(
 		'@<script[^>]*?>.*?</script>@si',   /* strip out javascript */
 		'@<[\/\!]*?[^<>]*?>@si',            /* strip out HTML tags */
@@ -23,34 +25,37 @@ for each record it retrieves (1) the <key_field_name> and stores it as a value o
 and (2) an array of <field_names> that create the value of the option
 ******************************************************** */
 
-function CsaWpPluginSelectOptionsFromDB($field_names, $key_field_name, $table_name, $selected_val, $message){
+function csa_wp_plugin_select_options_from_db($field_names, $key_field_name, $table_name, $selected_val, $message){
 	global $wpdb;
 	
 	$options = $wpdb->get_results("SELECT * FROM ". $table_name);
 	$result = "";
 	foreach($options as $rownum => $row) {	  
 		$result .= '<option value ="'. $row-> $key_field_name . '" style="color:black"'; 
-		if ($selected_val != null && $selected_val == $row->$key_field_name) $result .= 'selected = "selected"';
+		if ($selected_val != null && $selected_val == $row->$key_field_name){
+			$result .= 'selected = "selected"';
+		}
 		$result .= '>';
-		if ($selected_val != null && $selected_val == $row->$key_field_name)
+		if ($selected_val != null && $selected_val == $row->$key_field_name) {
 			$result .= $message;
+		}
 		for($x = 0; $x < count($field_names); $x++) {
   		  $result .=  $row-> $field_names[$x];
 		}       
-		 $result .= '</option>';
+		$result .= '</option>';
    	 }
 	    
     	return $result;
 }
 
-function CsaWpPluginRemoveSeconds($time) {
+function csa_wp_plugin_remove_seconds($time) {
 	$parts = explode (":", $time);
 	return ($parts[0].":".$parts[1]);
 }
 
-function CsaWpPluginGetRedirectionURL($backEndBool) {
+function csa_wp_plugin_get_redirection_url($back_end_bool, $page) {
 	global $wp;
-	return ($backEndBool===true)?admin_url('/admin.php?page=csa_management'):add_query_arg( $wp->query_string, '', home_url( $wp->request ));
+	return ($back_end_bool===true)?admin_url("/admin.php?page=$page"):add_query_arg( $wp->query_string, '', home_url( $wp->request ));
 }
 
 ?>

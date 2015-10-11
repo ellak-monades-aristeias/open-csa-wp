@@ -61,8 +61,8 @@ $j(document).ready(function() {
 			"type" : "text",
 			//"submit" : "<img src='" + "<?php echo plugins_url(); ?>" + "/csa-wp-plugin/icons/ok.png'>",
 			//"cancel" : "<img src='" + "<?php echo plugins_url(); ?>" + "/csa-wp-plugin/icons/cancel.png'>",
-			"tooltip": "click to change...",
-			"placeholder": "click to fill ...",
+			"tooltip": orders_translation.tooltip,
+			"placeholder": orders_translation.placeholder,
 			"onblur": "cancel",
 			"loadtype": 'POST',
 		};
@@ -98,7 +98,7 @@ $j(document).ready(function() {
 							var return_values = response.split(",");
 				
 							if (return_values[0] == "skipped") {
-								alert("You can not update the quantity of your product orders, since the order deadline has been reached for this delivery. For any change, please contact either an administrator or the responsible for this delivery.");
+								alert(orders_translation.product_quantity_cannnot_be_updated);
 								o_table.fnUpdate(old_value, aPos[0], aPos[1]);
 							} else {			
 								csa_wp_plugin_calc_editable_order_cost(tmp);
@@ -114,7 +114,7 @@ $j(document).ready(function() {
 });
 
 
-function csa_wp_plugiin_calc_new_order_cost() {
+function csa_wp_plugin_calc_new_order_cost() {
 	var $j = jQuery.noConflict();
 	var serialized_form_data = $j('#csa-wp-plugin-sumbitOrder_form_id').serializeArray();
 	var total_cost = 0;
@@ -129,7 +129,7 @@ function csa_wp_plugiin_calc_new_order_cost() {
 		}
 	});
 
-	document.getElementById('csa-wp-plugin-totalCalc').innerHTML = 'Total: <span style=font-weight:bold;color:green>' + total_cost.toFixed(2) + ' €</span>';
+	document.getElementById('csa-wp-plugin-totalCalc').innerHTML = orders_translation.total +': <span style=font-weight:bold;color:green>' + total_cost.toFixed(2) + ' €</span>';
 }
 
 function csa_wp_plugin_calc_editable_order_cost() {
@@ -166,7 +166,7 @@ function csa_wp_plugin_new_order_validation(delivery_id,user_id, current_user_id
 	});
 	
 	if (empty_order) {
-		document.getElementById("csa-wp-plugin-showNewOrderForm_emptyOrder_span_id").innerHTML = "Your order is still empty...";
+		document.getElementById("csa-wp-plugin-showNewOrderForm_emptyOrder_span_id").innerHTML = orders_translation.empty_order;
 		btn.disabled = false;
 	} else {
 		csa_wp_plugin_request_submit_order_to_server(delivery_id, user_id, current_user_id, btn);
@@ -193,7 +193,7 @@ function csa_wp_plugin_request_submit_order_to_server(delivery_id,user_id, curre
 			
 			var return_values = response.split(",");
 				if (return_values[0] == "skipped") {
-				alert("You can not add new or upate your order for this delivery, since its order deadline has been reached. For any additional information, please contact either an administrator or the responsible for this delivery.");
+				alert(orders_translation.cannnot_add_or_update_order);
 			} else {
 				btn.disabled = false;
 				location.reload(true);
@@ -224,7 +224,7 @@ function csa_wp_plugin_request_delete_product_order(product, old_value, field, o
 			var return_values = response.split(",");
 						
 			if (return_values[0] == "skipped") {
-				alert("You can not delete your product order, since the order deadline has been reached for this delivery. For any change, please contact either an administrator or the responsible for this delivery.");
+				alert(orders_translation.cannnot_delete_product);
 				if (old_value != null) {
 					var aPos = o_table.fnGetPosition(field);
 					o_table.fnUpdate(old_value, aPos[0], aPos[1]);
@@ -265,7 +265,7 @@ function csa_wp_plugin_request_cancel_user_order(delivery_id, user_id, current_u
 			var return_values = response.split(",");
 						
 			if (return_values[0] == "skipped") {
-				alert("You can not cancel your product order, since the order deadline has been reached for this delivery. For any change, please contact either an administrator or the responsible for this delivery.");
+				alert(orders_translation.cannnot_cancel_order);
 			} else {
 				location.reload(true);
 			}
@@ -308,7 +308,7 @@ function csa_wp_plugin_become_responsible(user_id, delivery_id) {
 			var return_values = response.split(",");
 	
 			if (return_values[0] == "skipped") {
-				alert("You can not become responsible, since another user is already. For any change, please contact either an administrator or the responsible for this delivery.");
+				alert(orders_translation.cannnot_become_responsible);
 			} else {
 				location.reload(true);
 			}

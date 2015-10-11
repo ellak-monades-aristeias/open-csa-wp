@@ -1,6 +1,12 @@
 <?php
 defined( 'ABSPATH' ) or die( 'No script kiddies please!' );
 
+
+/*	*******************************
+	SHOW/EDIT USER'S CSA PROPERTIES
+	*******************************	
+*/
+
 add_action( 'show_user_profile', 'csa_wp_plugin_show_user_properties' );
 add_action( 'edit_user_profile', 'csa_wp_plugin_show_user_properties' );
 //add_action( 'register_form','CsaWpPluginShowDefaultUserProperties');
@@ -13,43 +19,43 @@ function csa_wp_plugin_show_user_properties( $user ) {
 	) {
 		csa_wp_plugin_edit_user_properties($user, false);
 	} else {
-		csa_wp_plugin_non_ediablet_user_properties($user);
+		csa_wp_plugin_non_editable_user_properties($user);
 	}
 }
 
-function csa_wp_plugin_non_ediablet_user_properties( $user ) {
+function csa_wp_plugin_non_editable_user_properties( $user ) {
 	
 	$csa_data = get_user_meta( $user->ID, 'csa-wp-plugin_user', true );
 	
 	if (!$csa_data) {
-		$type = "Your account's type in CSA has not yet been defined";
-		$role = "Your account's role in CSA has not yet been defined";
+		$type = __("Your account's type in CSA has not yet been defined",CSA_WP_PLUGIN_DOMAIN);
+		$role = __("Your account's role in CSA has not yet been defined",CSA_WP_PLUGIN_DOMAIN);
 	} else {
 		$type = "Consumer";
 		if ($csa_data['type'] == "producer") {
-			$type = "Producer";
+			$type = __("Producer", CSA_WP_PLUGIN_DOMAIN);
 		} else if ($csa_data['type'] == "both") {
-			$type = "Producer and Consumer";
+			$type = __("Producer and Consumer",CSA_WP_PLUGIN_DOMAIN);
 		}
 		
-		$role = "Simple User";
+		$role = __("Simple User",CSA_WP_PLUGIN_DOMAIN);
 		if ($csa_data['role'] == "responsible") {
-			$role = "You can become responsible for some delivery";
+			$role = __("You can become responsible for some delivery",CSA_WP_PLUGIN_DOMAIN);
 		} else if ($csa_data['role'] == "adminisrator") {
 			$role = "Administrator";
 		}
 	}
 	
 	echo "
-		<h3>CSA Properties</h3>
+		<h3>".__('CSA Properties',CSA_WP_PLUGIN_DOMAIN)."</h3>
 
 		<table class='form-table'>
 		<tr>
-			<th>Type</th>
+			<th>".__('Type',CSA_WP_PLUGIN_DOMAIN)."</th>
 			<td>".$type."</td>
 		</tr>
 		<tr>
-			<th>Role</th>
+			<th>".__('Role',CSA_WP_PLUGIN_DOMAIN)."</th>
 			<td>".$role."</td>
 		</tr>
 		</table>
@@ -62,7 +68,7 @@ function csa_wp_plugin_admin_show_default_user_properties ( $user) {
 
 function csa_wp_plugin_edit_user_properties ($user, $new_user) {
 
-	wp_enqueue_script('csa-wp-plugin-enqueue-csa-scripts');
+	wp_enqueue_script('csa-wp-plugin-general-scripts');
 	wp_enqueue_script('csa-wp-plugin-users-scripts');
 	wp_enqueue_script('jquery.cluetip');
 	wp_enqueue_style('jquery.cluetip.style');
@@ -73,11 +79,11 @@ function csa_wp_plugin_edit_user_properties ($user, $new_user) {
 		$csa_data = get_user_meta( $user->ID, 'csa-wp-plugin_user', true );
 	}
     ?>
-	<h3>CSA Properties</h3>
+	<h3><?php _e('CSA Properties',CSA_WP_PLUGIN_DOMAIN); ?></h3>
 
 	<table class="form-table">
 		<tr>
-			<th>Type</th>
+			<th><?php _e('Type',CSA_WP_PLUGIN_DOMAIN); ?></th>
 			<td> 
 				<input 
 					id="csa-wp-plugin-consumer_radio"
@@ -92,7 +98,7 @@ function csa_wp_plugin_edit_user_properties ($user, $new_user) {
 							echo 'checked = "checked"';
 						}
 					?>
-				> <label for="csa-wp-plugin-consumer_radio">Consumer</label>
+				> <label for="csa-wp-plugin-consumer_radio"><?php _e('Consumer',CSA_WP_PLUGIN_DOMAIN);?></label>
 				<br>
 				<input 
 					id="csa-wp-plugin-producer_radio"
@@ -105,7 +111,7 @@ function csa_wp_plugin_edit_user_properties ($user, $new_user) {
 							checked($csa_data['type'], "producer");
 						}
 					?>
-				> <label for="csa-wp-plugin-producer_radio">Producer</label>
+				> <label for="csa-wp-plugin-producer_radio"><?php _e('Producer',CSA_WP_PLUGIN_DOMAIN);?></label>
 				<br>
 				<input 
 					id="csa-wp-plugin-both_radio"
@@ -118,7 +124,7 @@ function csa_wp_plugin_edit_user_properties ($user, $new_user) {
 							checked($csa_data['type'], "both");
 						}
 					?>
-				> <label for="csa-wp-plugin-both_radio">Both</label>
+				> <label for="csa-wp-plugin-both_radio"><?php _e('Both',CSA_WP_PLUGIN_DOMAIN);?></label>
 				<div id='csa-wp-plugin-producer_contact_preference' 
 				<?php 
 					if (!$new_user && 
@@ -129,7 +135,7 @@ function csa_wp_plugin_edit_user_properties ($user, $new_user) {
 						echo "style='display:none'";
 					}
 				?>>
-					and producer prefers to be informed about orders via
+					<?php _e('and producer prefers to be informed about orders via',CSA_WP_PLUGIN_DOMAIN); ?>
 					<select name="csa-wp-plugin_user_info_via">
 						<option 
 							value=""
@@ -139,7 +145,7 @@ function csa_wp_plugin_edit_user_properties ($user, $new_user) {
 									echo "selected='selected'";
 								}
 							?>
-						>please select...</option>
+						><?php _e('please select ...',CSA_WP_PLUGIN_DOMAIN);?></option>
 						<option 
 							value='website'
 							<?php 
@@ -147,7 +153,7 @@ function csa_wp_plugin_edit_user_properties ($user, $new_user) {
 									selected($csa_data['info-via'], "website");  
 								}
 							?>
-						>website</option>
+						><?php _e('website',CSA_WP_PLUGIN_DOMAIN);?></option>
 						<option 
 							value='e-mail'
 							<?php 
@@ -155,7 +161,7 @@ function csa_wp_plugin_edit_user_properties ($user, $new_user) {
 									selected($csa_data['info-via'], "e-mail");  
 								}
 							?>
-						>e-mail</option>
+						><?php _e('e-mail',CSA_WP_PLUGIN_DOMAIN);?></option>
 						<option 
 							value='sms'
 							<?php 
@@ -163,7 +169,7 @@ function csa_wp_plugin_edit_user_properties ($user, $new_user) {
 									selected($csa_data['info-via'], "sms");  
 								}
 							?>
-						>sms</option>
+						><?php _e('sms',CSA_WP_PLUGIN_DOMAIN);?></option>
 						<option 
 							value='phone'
 							<?php 
@@ -171,13 +177,13 @@ function csa_wp_plugin_edit_user_properties ($user, $new_user) {
 									selected($csa_data['info-via'], "phone");  
 								}
 							?>
-						>phone call</option>
+						><?php _e('phone call',CSA_WP_PLUGIN_DOMAIN);?></option>
 					</select>
 				</div>
 			</td>
 		</tr>
 		<tr>
-			<th>Role</th>	
+			<th><?php _e('Role',CSA_WP_PLUGIN_DOMAIN);?></th>	
 			<td> 
 				<input 
 					id="csa-wp-plugin-none_radio"
@@ -191,7 +197,7 @@ function csa_wp_plugin_edit_user_properties ($user, $new_user) {
 							echo 'checked = "checked"';
 						}
 					?>
-				> <label for="csa-wp-plugin-none_radio">None</label>
+				> <label for="csa-wp-plugin-none_radio"><?php _e('None',CSA_WP_PLUGIN_DOMAIN);?></label>
 				<br>
 				<input 
 					id="csa-wp-plugin-responsible_radio"
@@ -203,7 +209,7 @@ function csa_wp_plugin_edit_user_properties ($user, $new_user) {
 							checked($csa_data['role'], "responsible");
 						}
 					?>
-				> <span class="csa-wp-plugin-tip_users" title="Can become responsible for some delivery"><label for="csa-wp-plugin-responsible_radio">Responsible</label></span>
+				> <span class="csa-wp-plugin-tip_users" title="Can become responsible for some delivery"><label for="csa-wp-plugin-responsible_radio"><?php _e('Responsible',CSA_WP_PLUGIN_DOMAIN);?></label></span>
 				<br>
 				<input
 					id="csa-wp-plugin-administrator_radio"
@@ -215,12 +221,17 @@ function csa_wp_plugin_edit_user_properties ($user, $new_user) {
 							checked($csa_data['role'], "administrator");
 						}
 					?>
-				> <label for="csa-wp-plugin-administrator_radio">Administrator</label>
+				> <label for="csa-wp-plugin-administrator_radio"><?php _e('Administrator',CSA_WP_PLUGIN_DOMAIN);?></label>
 			</td>
 		</tr>
 	</table>
 <?php
 }
+
+/*	****************************
+	UPDATE USER'S CSA PROPERTIES
+	****************************	
+*/
 	
 add_action( 'personal_options_update', 'csa_wp_plugin_save_user_properties' );
 add_action( 'edit_user_profile_update', 'csa_wp_plugin_save_user_properties' );
@@ -275,6 +286,13 @@ function csa_wp_plugin_populate_user_properties_columns ( $value, $column_name, 
 		
 	return "";
 }
+
+
+/*	****************************
+	DELETE USER'S CSA PROPERTIES
+	****************************	
+*/
+
 
 add_action( 'delete_user', 'csa_wp_plugin_delete_user' );
 
@@ -407,5 +425,24 @@ function csa_wp_plugin_is_user_responsible_for_delivery($user_id, $delivery_id) 
 			return true;
 		}	
 	}
+}
+
+function csa_wp_plugin_user_can($page_name) {
+	if (!is_user_logged_in()) {
+		echo "<h6 style='color:brown'>". __('sorry... you need to log in first...',CSA_WP_PLUGIN_DOMAIN)."</h6><br/>";
+		return false;
+	}
+	if (!current_user_can( 'administrator' ) &&
+		(!($csa_data = get_user_meta(get_current_user_id(), 'csa-wp-plugin_user', true )) || $csa_data['role'] != "administrator" )
+	) {	
+		echo "<h6 style='color:brown'>"; 
+		printf (
+				__('sorry... you do not have sufficient privileges to access \"%s\" page. In case something goes wrong, please contant one of your team\'s administrators...',CSA_WP_PLUGIN_DOMAIN), 
+				$page_name
+			);		
+		echo "</h6><br/>";
+		return false;
+	}
+	else return true;
 }
 ?>

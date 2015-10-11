@@ -2,7 +2,7 @@
 defined( 'ABSPATH' ) or die( 'No script kiddies please!' );
 
 function csa_wp_plugin_spot_form ($spot_id, $display){
-	wp_enqueue_script( 'csa-wp-plugin-enqueue-csa-scripts' );
+	wp_enqueue_script( 'csa-wp-plugin-general-scripts' );
 	wp_enqueue_script('csa-wp-plugin-spots-scripts');
 	wp_enqueue_script('jquery.cluetip');
 	wp_enqueue_style('jquery.cluetip.style');
@@ -21,19 +21,19 @@ function csa_wp_plugin_spot_form ($spot_id, $display){
 			<?php 
 				if ($spot_id == null) {
 					echo 'style="cursor:pointer"';
-					echo 'onclick="csa_wp_plugin_toggle_form(\'showNewSpot\',\'Add New Spot\', \' form\')"';
+					echo 'onclick="csa_wp_plugin_toggle_form(\'showNewSpot\',\''.__('Add New Spot',CSA_WP_PLUGIN_DOMAIN).'\', \' '. __('form',CSA_WP_PLUGIN_DOMAIN).'\')"';
 				}
 			?>>
 			<font size='4'>
 			<?php 
 			if ($spot_id == null) {
 				if ($display == false) {
-					echo 'Add New Spot (show form)';
+					_e('Add New Spot (show form)',CSA_WP_PLUGIN_DOMAIN);
 				} else { 
-					echo 'Add New Spot (hide form)';
+					_e('Add New Spot (hide form)',CSA_WP_PLUGIN_DOMAIN);
 				}
 			} else {
-				echo 'Edit Spot #'.$spot_id;
+				echo __('Edit Spot #',CSA_WP_PLUGIN_DOMAIN).$spot_id;
 			}
 			?>
 		</font></span></div>
@@ -51,8 +51,8 @@ function csa_wp_plugin_spot_form ($spot_id, $display){
 							if ($spot_id != null && $spot_info[0]->spot_name != "" && $spot_info[0]->spot_name != null) {
 								echo "value='".$spot_info[0]->spot_name."'"; 
 							}
+							echo "placeholder=\"".__('Spot Name *',CSA_WP_PLUGIN_DOMAIN)."\"";
 						?>
-						placeholder="Spot Name *"
 						required 
 						name="csa-wp-plugin-spots_spot_name_input" 
 						onchange="csa_wp_plugin_request_spot_name_validity(this.value, <?php echo ($spot_id!=null?$spot_id:"null");?> , 0, null)">
@@ -64,8 +64,8 @@ function csa_wp_plugin_spot_form ($spot_id, $display){
 							if ($spot_id != null && $spot_info[0]->street_name != "" && $spot_info[0]->street_name != null) {
 								echo "value='".$spot_info[0]->street_name."'"; 
 							}							
+							echo "placeholder=\"".__('Street Name *',CSA_WP_PLUGIN_DOMAIN)."\"";
 						?>
-						placeholder="Street Name *"
 						required 
 						name="csa-wp-plugin-spots_street_name_input">
 					<input 
@@ -74,8 +74,8 @@ function csa_wp_plugin_spot_form ($spot_id, $display){
 							if ($spot_id != null && $spot_info[0]->street_number != "" && $spot_info[0]->street_number != null) {
 								echo "value='".$spot_info[0]->street_number."'"; 
 							}
+							echo "placeholder=\"".__('Street Number *',CSA_WP_PLUGIN_DOMAIN)."\"";
 						?>
-						placeholder="Street Number *"
 						required 
 						name="csa-wp-plugin-spots_street_number_input"></td></tr>
 				<tr valign="top"><td>
@@ -85,8 +85,8 @@ function csa_wp_plugin_spot_form ($spot_id, $display){
 							if ($spot_id != null && $spot_info[0]->city != "" && $spot_info[0]->city != null) {
 								echo "value='".$spot_info[0]->city."'"; 
 							}
+							echo "placeholder=\"".__('City *',CSA_WP_PLUGIN_DOMAIN)."\"";
 						?>
-						placeholder="City *"
 						required 
 						name="csa-wp-plugin-spots_city_input">
 					<input 
@@ -95,12 +95,13 @@ function csa_wp_plugin_spot_form ($spot_id, $display){
 							if ($spot_id != null && $spot_info[0]->region != "" && $spot_info[0]->region != null) {
 								echo "value='".$spot_info[0]->region."'"; 
 							}
+							echo "placeholder=\"".__('Region *',CSA_WP_PLUGIN_DOMAIN)."\"";
 						?>
-						placeholder="Region *"
 						required 
 						name="csa-wp-plugin-spots_region_input"></td></tr>
 				<tr valign="top"><td>
-					<textarea name="csa-wp-plugin-spots_description_input" rows="3" cols="30" placeholder="Description";
+					<textarea name="csa-wp-plugin-spots_description_input" rows="3" cols="30" 
+						<?php _e('placeholder="Description"',CSA_WP_PLUGIN_DOMAIN); ?>
 						><?php 
 							if ($spot_id != null) {
 								echo $spot_info[0]->description; 
@@ -124,8 +125,8 @@ function csa_wp_plugin_spot_form ($spot_id, $display){
 						} else {
 						?>
 							<option value="" selected="selected" disabled="disabled">Is this a delivery spot? *</option>
-							<option value="yes" style="color:black">yes</option>
-							<option value="no" style="color:black">no</option>
+							<option value="yes" style="color:black"><?php _e('yes',CSA_WP_PLUGIN_DOMAIN);?></option>
+							<option value="no" style="color:black"><?php _e('no',CSA_WP_PLUGIN_DOMAIN);?></option>
 						<?php
 						}
 						?>
@@ -153,20 +154,20 @@ function csa_wp_plugin_spot_form ($spot_id, $display){
 						<?php if (!$is_delivery_spot) echo "style='color:#999'";?>						
 						onfocus='getElementById("csa-wp-plugin-delivery_spot_owner_span_id").style.display = "none";'
 						onchange='
-							if (this.options[this.selectedIndex].text.split(" ")[0]!= "The") 
-								this.options[this.selectedIndex].text = "The owner of this delivery spot is: "+ this.options[this.selectedIndex].text;
+							if (this.options[this.selectedIndex].text.split(" ")[0] != "<?php _e('The owner of this delivery spot is',CSA_WP_PLUGIN_DOMAIN);?>".split(" ")[0]) 
+								this.options[this.selectedIndex].text = "<?php _e('The owner of this delivery spot is',CSA_WP_PLUGIN_DOMAIN);?>: "+ this.options[this.selectedIndex].text;
 							(this.style.color=this.options[this.selectedIndex].style.color);'
 					>
 						<option value="" 
 							<?php if (!$is_delivery_spot) echo "selected='selected'";?> 
-							disabled="disabled" id="csa-wp-plugin-delivery_spot_owner_disabled_id">Owner of this delivery spot... *
+							disabled="disabled" id="csa-wp-plugin-delivery_spot_owner_disabled_id"><?php _e('Owner of this delivery spot... *',CSA_WP_PLUGIN_DOMAIN);?>
 						</option>
 						<?php 
 						$spotOwner = null;
 						if ($is_delivery_spot) {
 							$spot_owner_id = $wpdb->get_var($wpdb->prepare("SELECT user_id FROM ".CSA_WP_PLUGIN_TABLE_SPOTS_TO_USERS." WHERE spot_id=%d AND type='delivery' ", $spot_id), 0, 0);
 						}							
-						csa_wp_plugin_select_users($spot_owner_id, "The owner of this delivery spot is: ");
+						csa_wp_plugin_select_users($spot_owner_id, __("The owner of this delivery spot is: ", CSA_WP_PLUGIN_DOMAIN));
 						
 						?>
 					</select> 
@@ -180,8 +181,8 @@ function csa_wp_plugin_spot_form ($spot_id, $display){
 						onfocus='document.getElementById("csa-wp-plugin-showNewSpotForm_orderDeadline_span").style.display = "none";'
 						onchange='
 							this.style.color="black";
-							if (this.options[this.selectedIndex].text.split(" ")[0] != "Order")
-								this.options[this.selectedIndex].text = "Order deadline is on " + this.options[this.selectedIndex].text;
+							if (this.options[this.selectedIndex].text.split(" ")[0] != "<?php _e('Order deadline is on',CSA_WP_PLUGIN_DOMAIN);?>".split(" ")[0])
+								this.options[this.selectedIndex].text = "<?php _e('Order deadline is on',CSA_WP_PLUGIN_DOMAIN);?>: " + this.options[this.selectedIndex].text;
 							getElementById("csa-wp-plugin-spots_order_deadline_time_input_id").style.display = "inline"
 							'
 						<?php	
@@ -196,27 +197,27 @@ function csa_wp_plugin_spot_form ($spot_id, $display){
 								echo "selected='selected'"; 
 							}
 						?>
-						disabled="disabled" id="csa-wp-plugin-spots_order_deadline_day_disabled_id">Order deadline day ... *</option>
+						disabled="disabled" id="csa-wp-plugin-spots_order_deadline_day_disabled_id"><?php _e('Order deadline day... *',CSA_WP_PLUGIN_DOMAIN);?> </option>
 					<?php 
 					for ($i=0; $i<7; $i++) {
 						if ($is_delivery_spot && $spot_info[0]->default_order_deadline_day == $i) {
-							echo "<option value='$i' selected='selected'> Order deadline is on $days_of_week[$i] </option>";
+							echo "<option value='$i' selected='selected' style='color:black'>". __('Order deadline is on ', CSA_WP_PLUGIN_DOMAIN)." $days_of_week[$i] </option>";
 						} else {
-							echo "<option value='$i'>".$days_of_week[$i]."</option>";
+							echo "<option value='$i' style='color:black'>".$days_of_week[$i]."</option>";
 						}
 					}
 					?>
-					</select> 
+					</select> 	
 					<input 
 						<?php 
 							if ($is_delivery_spot && $spot_info[0]->default_order_deadline_time != "" && $spot_info[0]->default_order_deadline_time != null) {
-								echo "value='up to ".csa_wp_plugin_remove_seconds($spot_info[0]->default_order_deadline_time)."'";
+								echo "value='".__('up to',CSA_WP_PLUGIN_DOMAIN). " " .csa_wp_plugin_remove_seconds($spot_info[0]->default_order_deadline_time)."'";
 							}
 							if (!$is_delivery_spot) {
 								echo "style='display:none'";
 							}
+							echo "placeholder=\"". __('up to',CSA_WP_PLUGIN_DOMAIN)."... *\"";
 						?>
-						placeholder="up to... *"
 						id="csa-wp-plugin-spots_order_deadline_time_input_id"
 						class="textbox-n" type="text" size="10" name="csa-wp-plugin-spots_order_deadline_time_input"
 						onfocus='
@@ -230,7 +231,7 @@ function csa_wp_plugin_spot_form ($spot_id, $display){
 							this.type="text";
 							if (this.value != "") {
 								this.style.color="black";
-								this.value = "up to " + this.value;
+								this.value = "<?php _e('up to',CSA_WP_PLUGIN_DOMAIN);?> " + this.value;
 							}'>
 					<span id="csa-wp-plugin-showNewSpotForm_orderDeadline_span" style="display:none"></span>
 				</td></tr>
@@ -242,8 +243,8 @@ function csa_wp_plugin_spot_form ($spot_id, $display){
 						onfocus='getElementById("csa-wp-plugin-showNewSpotForm_invalidDeliveryTime_span").innerHTML = "";'
 						onchange='
 							this.style.color="black";
-							if (this.options[this.selectedIndex].text.split(" ")[0] != "Delivery") {
-								this.options[this.selectedIndex].text = "Delivery day is " + this.options[this.selectedIndex].text;
+							if (this.options[this.selectedIndex].text.split(" ")[0] != "<?php _e('Delivery day is',CSA_WP_PLUGIN_DOMAIN);?>".split(" ")[0]) {
+								this.options[this.selectedIndex].text = "<?php _e('Delivery day is',CSA_WP_PLUGIN_DOMAIN);?> " + this.options[this.selectedIndex].text;
 							}
 							
 							getElementById("csa-wp-plugin-showNewSpotForm_delivery_start_time_input_id").style.display = "inline"
@@ -260,11 +261,11 @@ function csa_wp_plugin_spot_form ($spot_id, $display){
 								echo "selected='selected'"; 
 							}
 						?>
-						id="csa-wp-plugin-spots_delivery_day_disabled_id">Delivery day ... *</option>
+						id="csa-wp-plugin-spots_delivery_day_disabled_id"><?php _e('Delivery day',CSA_WP_PLUGIN_DOMAIN);?>... *</option>
 					<?php 
 					for ($i=0; $i<7; $i++) {
 						if ($is_delivery_spot && $spot_info[0]->default_delivery_day == $i) {
-							echo "<option value='$i' selected='selected'> Delivery day is $days_of_week[$i] </option>";
+							echo "<option value='$i' selected='selected'>". __('Delivery day is',CSA_WP_PLUGIN_DOMAIN)." $days_of_week[$i] </option>";
 						} else { 
 							echo "<option value='$i'>".$days_of_week[$i]."</option>";
 						}
@@ -274,13 +275,13 @@ function csa_wp_plugin_spot_form ($spot_id, $display){
 					<input id="csa-wp-plugin-showNewSpotForm_delivery_start_time_input_id"
 						<?php 
 							if ($is_delivery_spot && $spot_info[0]->default_delivery_start_time != "" && $spot_info[0]->default_delivery_start_time != null) { 
-								echo "value='from ".csa_wp_plugin_remove_seconds($spot_info[0]->default_delivery_start_time)."'";
+								echo "value='".__('from', CSA_WP_PLUGIN_DOMAIN)." ".csa_wp_plugin_remove_seconds($spot_info[0]->default_delivery_start_time)."'";
 							}
 							if (!$is_delivery_spot) {
 								echo "style='display:none'";
 							}
+							echo "placeholder=\"". __('from',CSA_WP_PLUGIN_DOMAIN)."... *\"";
 						?>
-						placeholder="from... *"
 						class="textbox-n" type="text" size="10" name="csa-wp-plugin-spots_delivery_start_time_input"
 
 						onfocus='
@@ -297,19 +298,19 @@ function csa_wp_plugin_spot_form ($spot_id, $display){
 							}
 							else {
 								this.style.color="black";
-								this.value = "from " + this.value;
+								this.value = "<?php _e('from',CSA_WP_PLUGIN_DOMAIN);?> " + this.value;
 								csa_wp_plugin_validate_delivery_time_period("showNewSpotForm");
 							}'>
 					<input id="csa-wp-plugin-showNewSpotForm_delivery_end_time_input_id"
 						<?php 
 							if ($is_delivery_spot && $spot_info[0]->default_delivery_end_time != "" && $spot_info[0]->default_delivery_end_time != null) {
-								echo "value='to ".csa_wp_plugin_remove_seconds($spot_info[0]->default_delivery_end_time)."'";
+								echo "value='".__('to',CSA_WP_PLUGIN_DOMAIN)." ".csa_wp_plugin_remove_seconds($spot_info[0]->default_delivery_end_time)."'";
 							}
 							if (!$is_delivery_spot) {
 								echo "style='display:none'";
 							}
+							echo "placeholder=\"". __('to',CSA_WP_PLUGIN_DOMAIN)."... *\"";
 						?>
-						placeholder="to... *"					
 						class="textbox-n" type="text" size="10" name="csa-wp-plugin-spots_delivery_end_time_input"
 						
 						onfocus='
@@ -322,7 +323,7 @@ function csa_wp_plugin_spot_form ($spot_id, $display){
 							this.type="text";
 							if (this.value != "") {
 								this.style.color="black";
-								this.value = "to " + this.value;
+								this.value = "<?php _e('to',CSA_WP_PLUGIN_DOMAIN);?> " + this.value;
 								csa_wp_plugin_validate_delivery_time_period("showNewSpotForm");
 							}
 						'>
@@ -341,8 +342,8 @@ function csa_wp_plugin_spot_form ($spot_id, $display){
 					onfocus='getElementById("csa-wp-plugin-showNewSpotForm_ordersClose_span_id").innerHTML = "";'
 					onchange='
 						this.style.color="black";
-						if (this.options[this.selectedIndex].text.split(" ")[0] != "Orders") {
-							this.options[this.selectedIndex].text = "Orders close "+this.options[this.selectedIndex].text;
+						if (this.options[this.selectedIndex].text.split(" ")[0] != "<?php _e('Order close',CSA_WP_PLUGIN_DOMAIN);?>".split(" ")[0]) {
+							this.options[this.selectedIndex].text = "<?php _e('Order close',CSA_WP_PLUGIN_DOMAIN);?> "+this.options[this.selectedIndex].text;
 						}
 						getElementById("csa-wp-plugin-spots_close_"+ this.options[this.selectedIndex].value).style.display= "inline";
 						getElementById("csa-wp-plugin-spots_close_"+ this.options[((this.selectedIndex-1)+1)%2+1].value).style.display="none"'>
@@ -352,17 +353,17 @@ function csa_wp_plugin_spot_form ($spot_id, $display){
 								echo "selected='selected'";
 							}
 						?> 
-						disabled="disabled" id="csa-wp-plugin-spots_close_disabled_id">Orders close... *</option>
+						disabled="disabled" id="csa-wp-plugin-spots_close_disabled_id"><?php _e('Order close',CSA_WP_PLUGIN_DOMAIN);?>... *</option>
 					<option value="automatic" 
 						<?php 
 							if ($is_delivery_spot && $spot_info[0]->close_order =="automatic") {
 								echo "selected='selected'";
 							}
 						?> 
-						title="Orders' submission will be closed automatically when order submission deadline is reached">
+						title="<?php _e("Orders' submission will be closed automatically when order submission deadline is reached", CSA_WP_PLUGIN_DOMAIN); ?>">
 						<?php 
 							if ($is_delivery_spot && $spot_info[0]->close_order =="automatic") {
-								echo "Orders close "; 
+								echo __('Order close',CSA_WP_PLUGIN_DOMAIN)." "; 
 							}
 						?>
 						automatically</option>
@@ -372,10 +373,10 @@ function csa_wp_plugin_spot_form ($spot_id, $display){
 								echo "selected='selected'";
 							}
 						?> 
-						title="Orders' submission will be closed manually by the user that is responsible for the delivery">
+						title="<?php _e("Orders' submission will be closed manually by the user that is responsible for the delivery",CSA_WP_PLUGIN_DOMAIN); ?>">
 						<?php 
 							if ($is_delivery_spot && $spot_info[0]->close_order =="manual") {
-								echo "Orders close "; 
+								echo __('Order close',CSA_WP_PLUGIN_DOMAIN)." "; 
 							}
 						?>
 						manually</option>
@@ -390,7 +391,7 @@ function csa_wp_plugin_spot_form ($spot_id, $display){
 					?> 
 					id="csa-wp-plugin-spots_close_automatic" 
 					class="csa-wp-plugin-tip_spots"
-					title="Orders' submission will be closed automatically when order submission deadline is reached"
+					title="<?php _e("Orders' submission will be closed automatically when order submission deadline is reached", CSA_WP_PLUGIN_DOMAIN); ?>"
 				>&nbsp;i.e. ... (point here)</span>
 				<span 
 					<?php 
@@ -402,7 +403,7 @@ function csa_wp_plugin_spot_form ($spot_id, $display){
 					?> 
 					id="csa-wp-plugin-spots_close_manual"
 					class="csa-wp-plugin-tip_spots"
-					title="Orders' submission will be closed manually by the user that is responsible for the delivery"
+					title="<?php _e("Orders' submission will be closed manually by the user that is responsible for the delivery",CSA_WP_PLUGIN_DOMAIN); ?>"
 				>&nbsp;i.e. ... (point here)</span>
 				<span id="csa-wp-plugin-showNewSpotForm_ordersClose_span_id"></span>
 				</td></tr>
@@ -439,7 +440,7 @@ function csa_wp_plugin_spot_form ($spot_id, $display){
 								echo "selected='selected'";
 							}
 						?> 
-							disabled="disabled" id="csa-wp-plugin-spots_parking_disabled_id">Finding parking space is ...</option>
+							disabled="disabled" id="csa-wp-plugin-spots_parking_disabled_id"><?php _e("Finding parking space is", CSA_WP_PLUGIN_DOMAIN); ?>...</option>
 						<option value="easy" 
 							<?php 
 								if ($is_delivery_spot && $spot_info[0]->parking !="" && $spot_info[0]->parking =="easy") {
@@ -449,7 +450,7 @@ function csa_wp_plugin_spot_form ($spot_id, $display){
 							style="color:blue">
 							<?php 
 								if ($is_delivery_spot && $spot_info[0]->parking !="" && $spot_info[0]->parking =="easy") {
-									echo "Finding parking space is "; 
+									echo __('Finding parking space is',CSA_WP_PLUGIN_DOMAIN) ." "; 
 								}
 							?>
 							easy :)</option>
@@ -462,7 +463,7 @@ function csa_wp_plugin_spot_form ($spot_id, $display){
 							style="color:green">
 							<?php 
 								if ($is_delivery_spot && $spot_info[0]->parking !="" && $spot_info[0]->parking =="possible") {
-									echo "Finding parking space is "; 
+									echo __('Finding parking space is',CSA_WP_PLUGIN_DOMAIN) ." "; 
 								}
 							?>
 							possible :)</option>
@@ -475,7 +476,7 @@ function csa_wp_plugin_spot_form ($spot_id, $display){
 							style="color:orange">
 							<?php 
 								if ($is_delivery_spot && $spot_info[0]->parking !="" && $spot_info[0]->parking =="hard") {
-									echo "Finding parking space is "; 
+									echo __('Finding parking space is',CSA_WP_PLUGIN_DOMAIN) ." "; 
 								}
 							?>
 							hard :(</option>
@@ -488,7 +489,7 @@ function csa_wp_plugin_spot_form ($spot_id, $display){
 							style="color:brown">
 							<?php 
 								if ($is_delivery_spot && $spot_info[0]->parking !="" && $spot_info[0]->parking =="impossible") {
-									echo "Finding parking space is "; 
+									echo __('Finding parking space is',CSA_WP_PLUGIN_DOMAIN) ." "; 
 								}
 							?>
 							impossible :(</option>
@@ -514,10 +515,10 @@ function csa_wp_plugin_spot_form ($spot_id, $display){
 						onchange='
 							(this.style.color=this.options[this.selectedIndex].style.color);
 							if (this.options[this.selectedIndex].value == "yes") {
-								this.options[this.selectedIndex].text = "It has refrigerator to store products! :)";
+								this.options[this.selectedIndex].text = "<?php _e('It has refrigerator to store products',CSA_WP_PLUGIN_DOMAIN);?>! :)";
 							}
 							else {
-								this.options[this.selectedIndex].text = "It does not have refrigerator to store products! :("
+								this.options[this.selectedIndex].text = "<?php _e('It does not have refrigerator to store products',CSA_WP_PLUGIN_DOMAIN);?>! :("
 							}'
 					>
 						<option value="" 
@@ -526,7 +527,7 @@ function csa_wp_plugin_spot_form ($spot_id, $display){
 									echo "selected='selected'";
 								}
 							?> 
-							disabled="disabled" id="csa-wp-plugin-spots_refrigerator_disabled_id">Does it have refrigerator to store products...?</option>
+							disabled="disabled" id="csa-wp-plugin-spots_refrigerator_disabled_id"><?php _e('Does it have refrigerator to store products',CSA_WP_PLUGIN_DOMAIN);?>...?</option>
 						<option value="yes" style="color:green"
 							<?php 
 								if ($is_delivery_spot && $spot_info[0]->has_refrigerator !="" && $spot_info[0]->has_refrigerator =="1") {
@@ -536,9 +537,9 @@ function csa_wp_plugin_spot_form ($spot_id, $display){
 							>
 							<?php 
 								if ($is_delivery_spot && $spot_info[0]->has_refrigerator !="" && $spot_info[0]->has_refrigerator =="1") {
-									echo "It has refrigerator to store products! :) "; 
+									echo __('It has refrigerator to store products',CSA_WP_PLUGIN_DOMAIN). "! :) "; 
 								} else {
-									echo "yes";
+									echo __("yes", CSA_WP_PLUGIN_DOMAIN);
 								}
 							?> </option>
 						<option value="no" style="color:brown"
@@ -550,9 +551,9 @@ function csa_wp_plugin_spot_form ($spot_id, $display){
 							>
 							<?php 
 								if ($is_delivery_spot && $spot_info[0]->has_refrigerator !="" && $spot_info[0]->has_refrigerator =="0") {
-									echo "It does not have refrigerator to store products! :( "; 
+									echo _e('It does not have refrigerator to store products',CSA_WP_PLUGIN_DOMAIN)."! :( "; 
 								} else {
-									echo "no";
+									echo __("no", CSA_WP_PLUGIN_DOMAIN);
 								}
 							?></option>
 					</select> 
@@ -568,18 +569,18 @@ function csa_wp_plugin_spot_form ($spot_id, $display){
 				<?php 
 					if ($spot_id == null) {
 						echo "
-							value='Add Spot'
+							value='".__('Add Spot', CSA_WP_PLUGIN_DOMAIN)."'
 							onclick='csa_wp_plugin_new_spot_fields_validation(this, null, \"". admin_url("/admin.php?page=csa_spots_management") ."\")'
 						";
 					} else {
 						echo "
-							value='Update Spot'
+							value='".__('Update Spot', CSA_WP_PLUGIN_DOMAIN)."'
 							onclick='csa_wp_plugin_new_spot_fields_validation(this, $spot_id, \"". admin_url("/admin.php?page=csa_spots_management") ."\")'
 						";
 					}
 				?>
 				class="button button-primary"
-				title="Please fill in required fields, i.e. those marked with (*)"
+				title="<?php __('Please fill in required fields, i.e. those marked with (*)',CSA_WP_PLUGIN_DOMAIN); ?>"
 			/>
 			<input 
 				type="button"
@@ -587,11 +588,11 @@ function csa_wp_plugin_spot_form ($spot_id, $display){
 				<?php 
 				if ($spot_id == null) {
 					echo "
-					value='Reset Info'
+					value='".__('Reset Info', CSA_WP_PLUGIN_DOMAIN)."'
 					onclick='csa_wp_plugin_reset_spot_form();'";
 				} else { 
 					echo "
-					value='Cancel'
+					value='".__('Cancel', CSA_WP_PLUGIN_DOMAIN)."'
 					onclick='window.location.replace(\"". admin_url('/admin.php?page=csa_spots_management')."\")'
 					'";
 				}
@@ -743,7 +744,7 @@ function csa_wp_plugin_add_or_update_spot() {
 }
 
 function csa_wp_plugin_show_spots() {
-	wp_enqueue_script('csa-wp-plugin-enqueue-csa-scripts');
+	wp_enqueue_script('csa-wp-plugin-general-scripts');
 	wp_enqueue_script('csa-wp-plugin-spots-scripts');
 	wp_enqueue_script('jquery.datatables');
 	wp_enqueue_script('jquery.jeditable'); 
@@ -768,13 +769,13 @@ function csa_wp_plugin_show_spots() {
 		<table class='table-bordered' id="csa-wp-plugin-showSpotsList_table" style='border-spacing:1em'> 
 		<thead class='tableHeader'>
 			<tr>
-				<th>Spot Name</th>
-				<th>Street Name</th>
-				<th>Street Number</th>
-				<th>City</th>
-				<th>Region</th>
-				<th>Description</th>
-				<th>Delivery Spot?</th>
+				<th><?php _e('Spot Name', CSA_WP_PLUGIN_DOMAIN);?></th>
+				<th><?php _e('Street Name', CSA_WP_PLUGIN_DOMAIN);?></th>
+				<th><?php _e('Street Number', CSA_WP_PLUGIN_DOMAIN);?></th>
+				<th><?php _e('City', CSA_WP_PLUGIN_DOMAIN);?></th>
+				<th><?php _e('Region', CSA_WP_PLUGIN_DOMAIN);?></th>
+				<th><?php _e('Description', CSA_WP_PLUGIN_DOMAIN);?></th>
+				<th><?php _e('Delivery Spot?', CSA_WP_PLUGIN_DOMAIN);?></th>
 				<th/>
 				<th/>
 			</tr>
@@ -807,7 +808,7 @@ function csa_wp_plugin_show_spots() {
 							src='$plugins_dir/csa-wp-plugin/icons/edit.png' 
 							style='cursor:pointer;padding-left:10px;' 
 							onclick='csa_wp_plugin_edit_spot(this, \"". admin_url('/admin.php?page=csa_spots_management')."\")' 
-							title='click to edit this spot'/></td>
+							title='". __('click to edit this spot', CSA_WP_PLUGIN_DOMAIN) ."'/></td>
 					<td style='text-align:center'> 
 						<img 
 							class='delete no-underline' 
@@ -815,7 +816,7 @@ function csa_wp_plugin_show_spots() {
 							style='cursor:pointer;padding-left:10px;' 
 							onmouseover='csa_wp_plugin_hover_icon(this, \"delete\", \"$plugins_dir\")' 
 							onmouseout='csa_wp_plugin_unhover_icon(this, \"delete\", \"$plugins_dir\")' 
-							onclick='csa_wp_plugin_request_delete_spot(this)' title='click to delete this spot'/></td></tr>";
+							onclick='csa_wp_plugin_request_delete_spot(this)' title='". __('click to delete this spot', CSA_WP_PLUGIN_DOMAIN) ."'/></td></tr>";
 			}
 			?>
 		</tbody> </table>

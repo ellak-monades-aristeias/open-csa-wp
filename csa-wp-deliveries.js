@@ -162,14 +162,14 @@ function csa_wp_plugin_toggle_delivery_ability_to_order (delivery_id, plugins_di
 			obj_tr.style.color = 'green';
 		}
 		image_obj.src = plugins_dir + "/csa-wp-plugin/icons/open.png";
-		text_obj.innerHTML = "yes";
-		image_obj.title = "remove ability to order";
+		text_obj.innerHTML = deliveries_translation.yes;
+		image_obj.title = deliveries_translation.remove_ability_to_order;
 	} else {
 		if (obj_tr.style.color != 'grey') {
 			obj_tr.style.color = 'brown';
 		}
 		image_obj.src = plugins_dir + "/csa-wp-plugin/icons/close.png";
-		text_obj.innerHTML = "no";
-		image_obj.title = "grant ability to order";
+		text_obj.innerHTML = deliveries_translation.no;
+		image_obj.title = deliveries_translation.grant_ability_to_order";
 	}
 }

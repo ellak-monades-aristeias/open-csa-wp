@@ -3,7 +3,7 @@ defined( 'ABSPATH' ) or die( 'No script kiddies please!' );
 
 function csa_wp_plugin_show_new_product_category_form($display) {
 
-	wp_enqueue_script( 'csa-wp-plugin-enqueue-csa-scripts' );
+	wp_enqueue_script( 'csa-wp-plugin-general-scripts' );
 	wp_enqueue_script( 'csa-wp-plugin-product-categories-scripts' );
 ?>
 	<br />
@@ -11,13 +11,13 @@ function csa_wp_plugin_show_new_product_category_form($display) {
 		<span 
 			style="cursor:pointer" 
 			id="csa-wp-plugin-addProductCategory_formHeader_text" 
-			onclick="csa_wp_plugin_toggle_form('addProductCategory','Add New Category of Products', ' form')"
+			onclick="csa_wp_plugin_toggle_form('addProductCategory','<?php _e('Add New Category of Products', CSA_WP_PLUGIN_DOMAIN);?>', ' <?php _e('form', CSA_WP_PLUGIN_DOMAIN);?>')"
 		><font size='4'>
 			<?php 
 				if ($display == false) {
-					echo 'Add New Category of Products (show form)';
+					echo __('Add New Category of Products', CSA_WP_PLUGIN_DOMAIN) .' ('. __('show form',CSA_WP_PLUGIN_DOMAIN) .')';
 				} else {
-					echo 'Add New Category of Products (hide form)';
+					echo __('Add New Category of Products', CSA_WP_PLUGIN_DOMAIN) .' ('. __('hide form',CSA_WP_PLUGIN_DOMAIN) .')';
 				}
 			?>
 		</font>
@@ -36,7 +36,7 @@ function csa_wp_plugin_show_new_product_category_form($display) {
 				<tr valign="top"><td>
 					<input 
 						type='text' 
-						placeholder="Category Name *" 
+						placeholder="<?php _e('Category Name', CSA_WP_PLUGIN_DOMAIN)?> *" 
 						required
 						name="csa-wp-plugin-newProductCategory_name_input"
 					>
@@ -44,7 +44,7 @@ function csa_wp_plugin_show_new_product_category_form($display) {
 				<tr valign="top"><td>
 					<textarea 
 						rows="3" cols="30" 
-						placeholder="Description"
+						placeholder="<?php _e('Description', CSA_WP_PLUGIN_DOMAIN)?>"
 						name="csa-wp-plugin-newProductCategory_desctription_input"
 					></textarea>
 				</td></tr>
@@ -91,7 +91,7 @@ function csa_wp_plugin_add_new_category() {
 
 function csa_wp_plugin_show_product_categories($display) {
 
-	wp_enqueue_script('csa-wp-plugin-enqueue-csa-scripts');
+	wp_enqueue_script('csa-wp-plugin-general-scripts');
 	wp_enqueue_script('csa-wp-plugin-product-categories-scripts');
 	wp_enqueue_script('jquery.datatables');
 	wp_enqueue_script('jquery.jeditable'); 
@@ -104,13 +104,13 @@ function csa_wp_plugin_show_product_categories($display) {
 		<span 
 			style="cursor:pointer" 
 			id="csa-wp-plugin-showProductCategoriesList_formHeader_text" 
-			onclick="csa_wp_plugin_toggle_form('showProductCategoriesList','Product Categories List', '')">
+			onclick="csa_wp_plugin_toggle_form('showProductCategoriesList','<?php _e('Product Categories List', CSA_WP_PLUGIN_DOMAIN);?>', '')">
 			<font size='4'>
 			<?php 
 				if ($display == false) {
-					echo 'Product Categories List (show)';
+					echo __('Product Categories List', CSA_WP_PLUGIN_DOMAIN) .' ('. __('show',CSA_WP_PLUGIN_DOMAIN) .')';
 				} else {
-					echo 'Product Categories List (hide)';
+					echo __('Product Categories List', CSA_WP_PLUGIN_DOMAIN) .' ('. __('hide',CSA_WP_PLUGIN_DOMAIN) .')';
 				}
 			?>
 
@@ -136,8 +136,8 @@ function csa_wp_plugin_show_product_categories($display) {
 		<table class='table-bordered' id="csa-wp-plugin-showProductCategoriesList_table" style='border-spacing:1em'> 
 		<thead class='tableHeader'>
 			<tr>
-				<th>Name</th>
-				<th>Description</th>
+				<th><?php _e('Name', CSA_WP_PLUGIN_DOMAIN);?></th>
+				<th><?php _e('Description', CSA_WP_PLUGIN_DOMAIN);?></th>
 				<th/>
 			</tr>
 		</thead> 
@@ -163,7 +163,7 @@ function csa_wp_plugin_show_product_categories($display) {
 						onmouseover='csa_wp_plugin_hover_icon(this, \"delete\", \"$plugins_dir\")' 
 						onmouseout='csa_wp_plugin_unhover_icon(this, \"delete\", \"$plugins_dir\")' 						
 						onclick='csa_wp_plugin_request_delete_product_category(this)' 
-						title='delete product'></td>
+						title='". __('delete product', CSA_WP_PLUGIN_DOMAIN) ."'></td>
 					</tr>";
 			}
 			?>

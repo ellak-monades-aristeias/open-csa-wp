@@ -15,10 +15,10 @@ $j(document).ready(function() {
 			"width" : "10em",
 			"height": "3em",
 			"type" : "text",
-			"tooltip": "click to change...",
-			"placeholder": "click to fill ...",
+			"tooltip": spots_translation.tooltip_text_click_to_change,
+			"placeholder": spots_translation.placeholder_click_to_fill,
 			"onblur": "cancel",
-			"loadtype": 'POST',
+			"loadtype": 'POST'
 		};
 		
 		//edit any value of any object (of class .editable)
@@ -42,7 +42,7 @@ $j(document).ready(function() {
 						if (column==0) {
 							csa_wp_plugin_request_spot_name_validity(value, null, 1,
 								function() {
-									alert ("invalid! spot name already exists. please choose a unique one...")
+									alert (spots_translation.invalid_spot_name_hint)
 									csa_wp_plugin_request_spot_update(spot_id,old_value,column);
 									$j(field).html(old_value);
 								}
@@ -56,34 +56,34 @@ $j(document).ready(function() {
 			data_editable
 		);	
 		
-		data_editable['submit'] = "OK";
-		data_editable['type'] = "select";
-		data_editable['data'] = "{'yes':'yes', 'no':'no'}"
+		// data_editable['submit'] = "OK";
+		// data_editable['type'] = "select";
+		// data_editable['data'] = "{'yes':'yes', 'no':'no'}"
 		
-		//edit any value of any object (of class .editable)
-		$j(".editable_select", o_table.fnGetNodes()).editable(
-			function(value, settings) { 
-				var field = this;
-				var spot_id = field.parentNode.getAttribute("id").split('_')[1];
-				var column = o_table.fnGetPosition(field)[2] //???? why [2] and not [1]? - [0] describes the row, [1] describes the column, [2] describes again the column?, [3..] undefined
-				var old_value = o_table.fnGetData(field);
+		// //edit any value of any object (of class .editable)
+		// $j(".editable_select", o_table.fnGetNodes()).editable(
+			// function(value, settings) { 
+				// var field = this;
+				// var spot_id = field.parentNode.getAttribute("id").split('_')[1];
+				// var column = o_table.fnGetPosition(field)[2] //???? why [2] and not [1]? - [0] describes the row, [1] describes the column, [2] describes again the column?, [3..] undefined
+				// var old_value = o_table.fnGetData(field);
 				
-				var data_post = {
-					"action" : "csa-wp-plugin-update-spot",
-					"value" : value,
-					"spot_id": spot_id,
-					"column": column
-				};
-				$j.post(ajaxurl, data_post, 
-					function(response) { 
-						//console.log ("Server returned:["+response+"]");						
-					}
-				);
+				// var data_post = {
+					// "action" : "csa-wp-plugin-update-spot",
+					// "value" : value,
+					// "spot_id": spot_id,
+					// "column": column
+				// };
+				// $j.post(ajaxurl, data_post, 
+					// function(response) { 
+						// //console.log ("Server returned:["+response+"]");						
+					// }
+				// );
 			
-				return(value);
-			}, 
-			data_editable
-		);
+				// return(value);
+			// }, 
+			// data_editable
+		// );
 	}
 	
 	var spot_tips = $j("#csa-wp-plugin-showSpotsList_div .csa-wp-plugin-tip_spots");
@@ -157,7 +157,7 @@ function csa_wp_plugin_request_spot_name_validity(name, spot_id, num_entries_exi
 				} else {
 					$j('#csa-wp-plugin-showNewSpot_name_span_id')[0].style.color = "brown";
 					$j('#csa-wp-plugin-showNewSpot_name_span_id')[0].style.display = "inline";
-					$j('#csa-wp-plugin-showNewSpot_name_span_id')[0].innerHTML = "invalid! name already exists";
+					$j('#csa-wp-plugin-showNewSpot_name_span_id')[0].innerHTML = spots_translation.invalid_spot_name;
 				}
 		});
 	} else $j('#csa-wp-plugin-showNewSpot_name_span_id')[0].style.display = "none";
@@ -257,7 +257,7 @@ function csa_wp_plugin_request_delete_spot(spot) {
 			var return_values = response.split(",");
 			
 			if (return_values[0] == "skipped") {
-				alert("You can not delete this spot, since at least one delivery has been initiated for it.");
+				alert(spots_translation.spot_cannnot_be_deleted);
 			} else {
 				$j(spot_tr).fadeOut(200,function() {
 						$j(spot_tr).remove();
@@ -279,9 +279,9 @@ function csa_wp_plugin_show_new_spot_is_delivery_selection(select_obj, spot_id) 
 		select_obj.options[select_obj.selectedIndex].text = "it is a delivery spot";
 		csa_wp_plugin_slide_toggle(document.getElementById("csa-wp-plugin-spots_deliverySpot_div"));
 		if (spot_id != null) {
-			span.innerHTML = "<i style='color:#999'>&nbsp;&nbsp; you can update the following info...</i>";
+			span.innerHTML = "<i style='color:#999'>&nbsp;&nbsp; "+ spots_translation.can_update_info +"</i>";
 		} else {
-			span.innerHTML = "<i style='color:#999'>&nbsp;&nbsp; please fill in the following info...</i>";
+			span.innerHTML = "<i style='color:#999'>&nbsp;&nbsp;" + spots_translation.please_fill_info + " </i>";
 		}
 		span.style.display="inline";
 	} else {
@@ -291,7 +291,7 @@ function csa_wp_plugin_show_new_spot_is_delivery_selection(select_obj, spot_id) 
 			csa_wp_plugin_slide_toggle(div);
 		}
 		if (spot_id != null) {
-			span.innerHTML = "<i style='color:#999'>&nbsp;&nbsp; the details of the former delivery spot will be maintained for later reference...</i>";
+			span.innerHTML = "<i style='color:#999'>&nbsp;&nbsp; " + spots_translation.delivery_spot_details_maintained + "</i>";
 			span.style.display="inline";
 		} else {
 			span.style.display="none";

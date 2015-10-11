@@ -32,7 +32,7 @@ function csa_wp_plugin_toggle_form(text1, text2, text3, textSize, text4) {
 }
 
 function csa_wp_plugin_you_forgot_this_one (span) {
-	span.innerHTML = "<i style='color:brown'>&nbsp;&nbsp; you forgot this one...</i>"
+	span.innerHTML = "<i style='color:brown'>&nbsp;&nbsp;"+ general_translation.you_forgot_this_one + "...</i>"
 	span.style.display = "inline";
 }
 
@@ -45,14 +45,14 @@ function csa_wp_plugin_validate_delivery_time_period (text_to_fill) {
 	var message = document.getElementById("csa-wp-plugin-" + text_to_fill + "_invalidDeliveryTime_span");
 	
 	if (text1 == "" && text2 != "") {
-		message.innerHTML = "&nbsp; invalid delivery period! start of period in not defined";
+		message.innerHTML = "&nbsp; "+ general_translation.invalid_delivery_period_undefined;
 	} else if (text2 != "") {
 		var time1 = text1.split(" ")[1];	
 		var time2 = text2.split(" ")[1];	
 
 		if (time2 <= time1 ) {
 			obj2.value = "";
-			message.innerHTML = "&nbsp; invalid delivery period! please fill in for end time some value > " + time1;
+			message.innerHTML = "&nbsp; " + general_translation.invalid_delivery_period_value + " > " + time1;
 			message.style.color='brown';
 			message.style.display='inline';
 		}

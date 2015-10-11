@@ -3,7 +3,7 @@ defined( 'ABSPATH' ) or die( 'No script kiddies please!' );
 
 function csa_wp_plugin_show_new_product_form($product_id, $display, $page_url) { 
 	
-	wp_enqueue_script( 'csa-wp-plugin-enqueue-csa-scripts' );
+	wp_enqueue_script( 'csa-wp-plugin-general-scripts' );
 	wp_enqueue_script( 'csa-wp-plugin-products-scripts' );
 	
 	global $days_of_week,$wpdb;
@@ -20,16 +20,19 @@ function csa_wp_plugin_show_new_product_form($product_id, $display, $page_url) {
 			<?php 
 				if ($product_id == null) {
 					echo 'style="cursor:pointer"';
-					echo 'onclick="csa_wp_plugin_toggle_form(\'addProduct\',\'Add New Product\', \' form\')"';
+					echo 'onclick="csa_wp_plugin_toggle_form(\'addProduct\',\''.__('Add New Product', CSA_WP_PLUGIN_DOMAIN).'\', \' '.__('form', CSA_WP_PLUGIN_DOMAIN).'\')"';
 				}
 			?>>
 			<font size='4'>
 			<?php 
 			if ($product_id == null) {
-				if ($display == false) echo 'Add New Product (show form)';
-				else echo 'Add New Product (hide form)';
+				if ($display == false) {
+					echo __('Add New Product', CSA_WP_PLUGIN_DOMAIN) .' ('. __('show form',CSA_WP_PLUGIN_DOMAIN) .')';
+				} else {
+					echo __('Add New Product', CSA_WP_PLUGIN_DOMAIN) .' ('. __('hide form',CSA_WP_PLUGIN_DOMAIN) .')';
+				}
 			} else {
-				echo 'Edit Product #'.$product_id;
+				echo __('Edit Product', CSA_WP_PLUGIN_DOMAIN) .' #'.$product_id;
 			}
 			?>
 
@@ -54,7 +57,7 @@ function csa_wp_plugin_show_new_product_form($product_id, $display, $page_url) {
 								echo "value='".$product_info[0]->name."'"; 
 							}
 						?>
-						placeholder='Product Name *' 
+						placeholder='<?php _e('Product Name', CSA_WP_PLUGIN_DOMAIN)?> *' 
 						name="csa-wp-plugin-product_name_input" 
 						required></td></tr>
 				<tr valign="top"><td>
@@ -71,8 +74,8 @@ function csa_wp_plugin_show_new_product_form($product_id, $display, $page_url) {
 						'
 						onchange = '
 							this.style.color="black"
-							if (this.options[this.selectedIndex].text.split(" ")[0] != "Category") {
-								this.options[this.selectedIndex].text = "Category is " + this.options[this.selectedIndex].text;
+							if (this.options[this.selectedIndex].text.split(" ")[0] != "<?php _e('Category is', CSA_WP_PLUGIN_DOMAIN)?>".split(" ")[0]) {
+								this.options[this.selectedIndex].text = "<?php _e('Category is', CSA_WP_PLUGIN_DOMAIN)?> " + this.options[this.selectedIndex].text;
 							}
 						'
 					>
@@ -87,7 +90,7 @@ function csa_wp_plugin_show_new_product_form($product_id, $display, $page_url) {
 									"id", 
 									CSA_WP_PLUGIN_TABLE_PRODUCT_CATEGORIES, 
 									($product_id != null)?$product_info[0]->category:null,
-									"Category is "
+									__("Category is ", CSA_WP_PLUGIN_DOMAIN)
 								); ?>
                   	</select>
 					<span id="csa-wp-plugin-newProductForm_category_input_span_id"></span>
@@ -102,8 +105,8 @@ function csa_wp_plugin_show_new_product_form($product_id, $display, $page_url) {
 						'					
 						onchange = '
 							this.style.color="black"
-							if (this.options[this.selectedIndex].text.split(" ")[0] != "Producer") {
-								this.options[this.selectedIndex].text = "Producer is " + this.options[this.selectedIndex].text;
+							if (this.options[this.selectedIndex].text.split(" ")[0] != "<?php _e('Producer is', CSA_WP_PLUGIN_DOMAIN)?>".split(" ")[0]) {
+								this.options[this.selectedIndex].text = "<?php _e('Producer is', CSA_WP_PLUGIN_DOMAIN)?> " + this.options[this.selectedIndex].text;
 							}
 						'
 						<?php 
@@ -121,7 +124,7 @@ function csa_wp_plugin_show_new_product_form($product_id, $display, $page_url) {
 							disabled='disabled'
 							id = "csa-wp-plugin-newProductForm_producer_input_disabled_id"
 						>Producer *</option>
-						<?php echo csa_wp_plugin_select_users_of_type("producer", ($product_id!=null)?$product_info[0]->producer:null, "Producer is "); ?>
+						<?php echo csa_wp_plugin_select_users_of_type("producer", ($product_id!=null)?$product_info[0]->producer:null, __("Producer is ", CSA_WP_PLUGIN_DOMAIN)); ?>
 					</select>
 					<span id="csa-wp-plugin-newProductForm_producer_input_span_id"></span>
 				</td></tr>
@@ -139,15 +142,15 @@ function csa_wp_plugin_show_new_product_form($product_id, $display, $page_url) {
 						onblur = '
 							getElementById ("csa-wp-plugin-showNewProduct_button_id").disabled=false;
 							if (this.value != "") {
-								this.value = "Variety is "+ this.value;
+								this.value = "<?php _e('Variety is', CSA_WP_PLUGIN_DOMAIN)?> "+ this.value;
 							}
 						'
 						<?php 
 							if ($product_id != null && $product_info[0]->variety != "" && $product_info[0]->variety != null) {
-								echo "value='Variety is ".$product_info[0]->variety."'"; 
+								echo "value='".__('Variety is', CSA_WP_PLUGIN_DOMAIN)." ".$product_info[0]->variety."'"; 
 							}
 						?>
-						placeholder='Variety *' 
+						placeholder='<?php _e('Variety', CSA_WP_PLUGIN_DOMAIN)?> *' 
 						required 
 						name="csa-wp-plugin-product_variety_input">
 					</td>
@@ -160,13 +163,13 @@ function csa_wp_plugin_show_new_product_form($product_id, $display, $page_url) {
 							if ($product_id != null && $product_info[0]->current_price_in_euro != "" && $product_info[0]->current_price_in_euro != null) {
 								echo "type='text'";
 								echo "style='width:8em; text-align:right'";
-								echo 'value = "it costs '. $product_info[0]->current_price_in_euro. '"';
+								echo 'value = "'.__('It costs', CSA_WP_PLUGIN_DOMAIN).' '. $product_info[0]->current_price_in_euro. '"';
 							} else {
 								echo "type='number'";
 								echo "style='width:8em'";
 							}
 						?>
-						placeholder='Price *' 
+						placeholder='<?php _e('Price', CSA_WP_PLUGIN_DOMAIN); ?> *' 
 						onfocus = '
 							getElementById ("csa-wp-plugin-showNewProduct_button_id").disabled=true;
 							this.value = this.value.split(" ")[2];
@@ -178,7 +181,7 @@ function csa_wp_plugin_show_new_product_form($product_id, $display, $page_url) {
 							if (this.value == "") {
 								this.style.textAlign="left";
 							} else {
-								this.value = "It costs " + this.value;
+								this.value = "<?php _e('It costs', CSA_WP_PLUGIN_DOMAIN) ?> " + this.value;
 								this.style.textAlign="right";
 							}
 						'
@@ -196,8 +199,8 @@ function csa_wp_plugin_show_new_product_form($product_id, $display, $page_url) {
 						'
 						onchange = '
 							this.style.color="black";
-							if (this.options[this.selectedIndex].text.split(" ")[0] != "per") {
-								this.options[this.selectedIndex].text = "per " + this.options[this.selectedIndex].text;
+							if (this.options[this.selectedIndex].text.split(" ")[0] != "<?php _e('per', CSA_WP_PLUGIN_DOMAIN); ?>") {
+								this.options[this.selectedIndex].text = "<?php _e('per', CSA_WP_PLUGIN_DOMAIN); ?> " + this.options[this.selectedIndex].text;
 							}
 					'>
 						<option 
@@ -216,7 +219,7 @@ function csa_wp_plugin_show_new_product_form($product_id, $display, $page_url) {
 				</td></tr>
 				<tr valign="top">
 					<td>
-						<textarea placeholder='Description' rows="3" cols="30" name="csa-wp-plugin-product_descritpion_input"
+						<textarea placeholder='<?php _e('Description', CSA_WP_PLUGIN_DOMAIN); ?>' rows="3" cols="30" name="csa-wp-plugin-product_descritpion_input"
 						><?php 
 							if ($product_id != null && $product_info[0]->description != "" && $product_info[0]->description != null) {
 								echo $product_info[0]->description; 
@@ -243,10 +246,10 @@ function csa_wp_plugin_show_new_product_form($product_id, $display, $page_url) {
 					onchange='
 						if (this.options[this.selectedIndex].value == "yes") {
 							this.style.color = "green";
-							this.options[this.selectedIndex].text = "Currently, it is available"
+							this.options[this.selectedIndex].text = "<?php _e('Currently, it is available', CSA_WP_PLUGIN_DOMAIN); ?>"
 						} else {
 							this.style.color = "brown";
-							this.options[this.selectedIndex].text = "Currently, it not is available"
+							this.options[this.selectedIndex].text = "<?php _e('Currently, it is not available', CSA_WP_PLUGIN_DOMAIN); ?>"
 						}
 						'
 				>
@@ -263,13 +266,13 @@ function csa_wp_plugin_show_new_product_form($product_id, $display, $page_url) {
 					<?php 
 						if ($product_id != null) {
 							echo '
-								<option value="yes" style="color:green". '. ($product_info[0]->is_available == 1?"selected='selected'> Currently, it is available":">yes") .' </option>
-								<option value="no" style="color:brown"'. ($product_info[0]->is_available == 0?"selected='selected'> Currently, it is not available":">no") .' </option>
+								<option value="yes" style="color:green". '. ($product_info[0]->is_available == 1?"selected='selected'> ". __('Currently, it is available', CSA_WP_PLUGIN_DOMAIN):">". __('yes', CSA_WP_PLUGIN_DOMAIN)) .' </option>
+								<option value="no" style="color:brown"'. ($product_info[0]->is_available == 0?"selected='selected'> ". __('Currently, it is not available', CSA_WP_PLUGIN_DOMAIN):">". __('no', CSA_WP_PLUGIN_DOMAIN)) .' </option>
 							';
 						} else {
 						?>
-							<option value="yes" style="color:green">yes</option>
-							<option value="no" style="color:brown">no</option>
+							<option value="yes" style="color:green"><?php _e('yes', CSA_WP_PLUGIN_DOMAIN); ?></option>
+							<option value="no" style="color:brown"><?php _e('no', CSA_WP_PLUGIN_DOMAIN); ?></option>
 						<?php
 						}
 					?>					
@@ -284,10 +287,10 @@ function csa_wp_plugin_show_new_product_form($product_id, $display, $page_url) {
 			id="csa-wp-plugin-showNewProduct_button_id"
 			<?php 
 				if ($product_id == null) {
-					echo "value='Add Product'";
+					echo "value='". __('Add Product',CSA_WP_PLUGIN_DOMAIN) ."'";
 					echo "onclick='csa_wp_plugin_new_product_fields_validation(this, null, \"$page_url\")'";
 				} else { 
-					echo "value='Update Product'";
+					echo "value='". __('Update Product',CSA_WP_PLUGIN_DOMAIN) ."'";
 					echo "onclick='csa_wp_plugin_new_product_fields_validation(this, $product_id, \"$page_url\")'";
 				}
 				
@@ -299,12 +302,12 @@ function csa_wp_plugin_show_new_product_form($product_id, $display, $page_url) {
 			<?php 
 			if ($product_id == null) {
 				echo "
-				value='Reset Info'
+				value='". __('Reset Info',CSA_WP_PLUGIN_DOMAIN) ."'
 				onclick='csa_wp_plugin_reset_product_form();'";
 			}
 			else {
 				echo "
-				value='Cancel'
+				value='". __('Cancel',CSA_WP_PLUGIN_DOMAIN) ."'
 				onclick='window.location.replace(\"$page_url\")'
 				'";
 			}
@@ -325,9 +328,9 @@ function csa_wp_plugin_select_measurement_unit($product_id, $product_info) {
 		value='kilogram'
 		<?php
 			if ($product_id != null && $product_info[0]->measurement_unit == "kilogram" ) {
-				echo "selected='selected' >per kilogram"; 
+				echo "selected='selected' >". __('per kilogram',CSA_WP_PLUGIN_DOMAIN); 
 			} else {
-				echo ">kilogram";
+				echo ">". __('kilogram',CSA_WP_PLUGIN_DOMAIN);
 			}
 		?>
 	</option>
@@ -335,9 +338,9 @@ function csa_wp_plugin_select_measurement_unit($product_id, $product_info) {
 		value='piece'
 		<?php 
 			if ($product_id != null && $product_info[0]->measurement_unit == "piece" ) {
-				echo "selected='selected' >per piece"; 
+				echo "selected='selected' >". __('per piece',CSA_WP_PLUGIN_DOMAIN); 
 			} else {
-				echo ">piece";
+				echo ">". __('piece',CSA_WP_PLUGIN_DOMAIN);
 			}
 		?>
 	</option>
@@ -345,9 +348,9 @@ function csa_wp_plugin_select_measurement_unit($product_id, $product_info) {
 		value='bunch'
 		<?php 
 			if ($product_id != null && $product_info[0]->measurement_unit == "bunch" ) {
-				echo "selected='selected' >per bunch"; 
+				echo "selected='selected' >". __('per bunch',CSA_WP_PLUGIN_DOMAIN); 
 			} else {
-				echo ">bunch";
+				echo ">". __('bunch',CSA_WP_PLUGIN_DOMAIN);
 			}
 		?>
 	</option>
@@ -355,9 +358,9 @@ function csa_wp_plugin_select_measurement_unit($product_id, $product_info) {
 		value='litre'
 		<?php 
 			if ($product_id != null && $product_info[0]->measurement_unit == "litre" ) {
-				echo "selected='selected' >per litre"; 
+				echo "selected='selected' >". __('per litre',CSA_WP_PLUGIN_DOMAIN); 
 			} else {
-				echo ">litre";
+				echo ">". __('litre',CSA_WP_PLUGIN_DOMAIN);
 			}
 		?>
 	</option>
@@ -430,7 +433,7 @@ function csa_wp_plugin_add_or_update_product() {
 }
 
 function csa_wp_plugin_show_products($display, $page_url) {
-	wp_enqueue_script('csa-wp-plugin-enqueue-csa-scripts');
+	wp_enqueue_script('csa-wp-plugin-general-scripts');
 	wp_enqueue_script('csa-wp-plugin-products-scripts');
 	wp_enqueue_script('jquery.datatables');
 	wp_enqueue_script('jquery.jeditable'); 
@@ -446,9 +449,9 @@ function csa_wp_plugin_show_products($display, $page_url) {
 			<font size='4'>
 			<?php 
 				if ($display == false) {
-					echo 'Product List (show)';
+					echo __('Product List', CSA_WP_PLUGIN_DOMAIN) .' ('. __('show',CSA_WP_PLUGIN_DOMAIN) .')';
 				} else {
-					echo 'Product List (hide)';
+					echo __('Product List', CSA_WP_PLUGIN_DOMAIN) .' ('. __('hide',CSA_WP_PLUGIN_DOMAIN) .')';
 				}
 			?>
 			</font>
@@ -480,14 +483,14 @@ function csa_wp_plugin_show_products($display, $page_url) {
 		> 
 		<thead class='tableHeader'>
 			<tr>
-				<th>Name</th>
-				<th>Category</th>
-				<th>Variety</th>
-				<th>Price(€)</th>
-				<th>Per...</th>
-				<th>Producer</th>
-				<th>Description</th>
-				<th>Available?</th>
+				<th><?php _e('Name', CSA_WP_PLUGIN_DOMAIN)?></th>
+				<th><?php _e('Category', CSA_WP_PLUGIN_DOMAIN)?></th>
+				<th><?php _e('Variety', CSA_WP_PLUGIN_DOMAIN)?></th>
+				<th><?php _e('Price', CSA_WP_PLUGIN_DOMAIN)?>(€)</th>
+				<th><?php _e('Per', CSA_WP_PLUGIN_DOMAIN)?>...</th>
+				<th><?php _e('Producer', CSA_WP_PLUGIN_DOMAIN)?></th>
+				<th><?php _e('Description', CSA_WP_PLUGIN_DOMAIN)?></th>
+				<th><?php _e('Available?', CSA_WP_PLUGIN_DOMAIN)?></th>
 				<th/>
 				<th/>
 				<th/>
@@ -532,7 +535,7 @@ function csa_wp_plugin_show_products($display, $page_url) {
 							src='".plugins_url()."/csa-wp-plugin/icons/".(($row->is_available == 1)?"visible":"nonVisible").".png' 
 							height='24' width='24' 
 							id = 'csa-wp-plugin-showProductsAvailabilityIconID_$product_id'
-							title='mark it as ".(($row->is_available == 1)?"unavailable":"available")."'
+							title='". __('mark it as', CSA_WP_PLUGIN_DOMAIN)." ".(($row->is_available == 1)?__('unavailable', CSA_WP_PLUGIN_DOMAIN):__('available', CSA_WP_PLUGIN_DOMAIN))."'
 							onclick='csa_wp_plugin_request_toggle_product_visibility(this,\"$plugins_dir\")'></td>
 					<td style='text-align:center'> 
 						<img 
@@ -541,7 +544,7 @@ function csa_wp_plugin_show_products($display, $page_url) {
 							src='$plugins_dir/csa-wp-plugin/icons/edit.png' 
 							style='cursor:pointer;padding-left:10px;' 
 							onclick='csa_wp_plugin_edit_product(this, \"$page_url\")' 
-							title='click to edit this product'/></td>
+							title='". __('click to edit this product', CSA_WP_PLUGIN_DOMAIN)."'/></td>
 					<td style='text-align:center'> <img 
 						style='cursor:pointer' 
 						src='".plugins_url()."/csa-wp-plugin/icons/delete.png' 
@@ -549,9 +552,8 @@ function csa_wp_plugin_show_products($display, $page_url) {
 						onmouseover='csa_wp_plugin_hover_icon(this, \"delete\", \"$plugins_dir\")' 
 						onmouseout='csa_wp_plugin_unhover_icon(this, \"delete\", \"$plugins_dir\")' 						
 						onclick='csa_wp_plugin_request_delete_product(this)' 
-						title='delete product'></td>
+						title='". __('delete product', CSA_WP_PLUGIN_DOMAIN)."'></td>
 					</tr>
-
 				";
 						
 			}
@@ -659,14 +661,13 @@ function csa_wp_plugin_delete_product() {
 	}
 	
 	wp_die(); 	// this is required to terminate immediately and return a proper response
-
 }
 
 function  csa_wp_plugin_delivery_products_exist (){
 	global $wpdb;
 	if ($wpdb->get_var("SELECT COUNT(id) FROM " .CSA_WP_PLUGIN_TABLE_PRODUCTS. " WHERE is_available = 1") == 0) {
 		echo "
-			<h3 style='color:brown'>sorry... no available products found... be patient, soon they will have grown enough... !</h3> 
+			<h3 style='color:brown'>".__('sorry... no available products found... be patient, soon they will have grown enough... !', CSA_WP_PLUGIN_DOMAIN)."</h3> 
 		";
 		return false;
 	} else {

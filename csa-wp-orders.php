@@ -3,7 +3,7 @@ defined( 'ABSPATH' ) or die( 'No script kiddies please!' );
 
 function csa_wp_plugin_show_order_form ($user_id, $spot_id, $delivery_id, $display, $page_url, $personal_order){
 
-	wp_enqueue_script( 'csa-wp-plugin-enqueue-csa-scripts' );
+	wp_enqueue_script( 'csa-wp-plugin-general-scripts' );
 	wp_enqueue_script( 'csa-wp-plugin-orders-scripts' );
 	wp_enqueue_script('jquery.cluetip');
 	wp_enqueue_style('jquery.cluetip.style');
@@ -15,7 +15,7 @@ function csa_wp_plugin_show_order_form ($user_id, $spot_id, $delivery_id, $displ
 	}
 	
 	$edit_order_bool = false;
-	$header_text = "Submit New Order";
+	$header_text = __("Submit New Order", CSA_WP_PLUGIN_DOMAIN);
 	if (isset($_POST["csa-wp-plugin-showEditableUserOrderForm_user_input"]) OR (
 				$user_id != null && 
 				$delivery_id != null &&
@@ -23,7 +23,7 @@ function csa_wp_plugin_show_order_form ($user_id, $spot_id, $delivery_id, $displ
 			)
 		) {
 		$edit_order_bool = true;
-		$header_text = "Edit Order";
+		$header_text = __("Edit Order",CSA_WP_PLUGIN_DOMAIN);
 	}
 ?>
 
@@ -33,13 +33,13 @@ function csa_wp_plugin_show_order_form ($user_id, $spot_id, $delivery_id, $displ
 		<span 
 			id="csa-wp-plugin-showNewOrderForm_formHeader_text"
 			style="cursor:pointer"
-			onclick="csa_wp_plugin_toggle_form('showNewOrderForm','<?php echo $header_text; ?>', ' form');"
+			onclick="csa_wp_plugin_toggle_form('showNewOrderForm','<?php echo $header_text; ?>', ' <?php _e('form', CSA_WP_PLUGIN_DOMAIN) ?>');"
 		>
 		<?php
 			if ($display === false) {
-				echo "<font size=4> $header_text (show form) </font>";
+				echo "<font size=4> $header_text (".__("show form",CSA_WP_PLUGIN_DOMAIN).") </font>";
 			} else {
-				echo "<font size=4> $header_text (hide form) </font>";
+				echo "<font size=4> $header_text (".__("hide form",CSA_WP_PLUGIN_DOMAIN).") </font>";
 			}
 		?>
 		</span>
@@ -70,9 +70,9 @@ function csa_wp_plugin_show_order_form ($user_id, $spot_id, $delivery_id, $displ
 								value=""
 								selected="selected"
 								disabled="disabled"
-							> Select the user submitting the order ...
+							> <?php _e('Select the user submitting the order',CSA_WP_PLUGIN_DOMAIN); ?> ...
 							</option>
-							<?php csa_wp_plugin_select_users($user_id, "for user: ");?>
+							<?php csa_wp_plugin_select_users($user_id, __('for user',CSA_WP_PLUGIN_DOMAIN).": ");?>
 						</select>
 					</td>
 				</tr>
@@ -96,14 +96,14 @@ function csa_wp_plugin_show_order_form ($user_id, $spot_id, $delivery_id, $displ
 						> 
 						<?php
 						if ($personal_order === false) {
-							echo "now, select the delivery spot ...";
+							_e("now, select the delivery spot ...",CSA_WP_PLUGIN_DOMAIN);
 						} else {
-							echo "select the delivery spot ...";
+							_e("select the delivery spot ...",CSA_WP_PLUGIN_DOMAIN);
 						}
 						?>
 						
 						</option>
-						<?php csa_wp_plugin_select_delivery_spots($spot_id, "on delivery spot: ");?>
+						<?php csa_wp_plugin_select_delivery_spots($spot_id, __("on delivery spot",CSA_WP_PLUGIN_DOMAIN).": ");?>
 					</select>
 				</td>
 				</tr>
@@ -122,8 +122,8 @@ function csa_wp_plugin_show_order_form ($user_id, $spot_id, $delivery_id, $displ
 					<span 
 						id="csa-wp-plugin-showNewOrderForm_spotDetails_formHeader_text"
 						style="cursor:pointer"
-						onclick="csa_wp_plugin_toggle_form('showNewOrderForm_spotDetails','spot details...', '', 2);"
-					><font size=2> spot details... (show) </font>
+						onclick="csa_wp_plugin_toggle_form('showNewOrderForm_spotDetails','<?php _e('spot details',CSA_WP_PLUGIN_DOMAIN); ?>...', '', 2);"
+					><font size=2> <?php echo __('spot details',CSA_WP_PLUGIN_DOMAIN). "... (". __('show',CSA_WP_PLUGIN_DOMAIN) .")"; ?> </font>
 					</span>
 				</div>
 				<div 
@@ -186,8 +186,8 @@ function csa_wp_plugin_show_order_form ($user_id, $spot_id, $delivery_id, $displ
 									readonly='readonly'
 									value='".
 									($spot_info->has_refrigerator == 1?
-									"It has refrigerator to store products! :) ": 
-									"It does not have refrigerator to store products! :(")
+									__('It has refrigerator to store products', CSA_WP_PLUGIN_DOMAIN)."! :) ": 
+									__('It does not have refrigerator to store products', CSA_WP_PLUGIN_DOMAIN)."! :(")
 									."'
 									size = '40px'
 								/>
@@ -220,17 +220,17 @@ function csa_wp_plugin_show_order_form ($user_id, $spot_id, $delivery_id, $displ
 								value="" 
 								selected="selected" 
 								disabled="disabled"
-							> now, select one of the active deliveries ...
+							> <?php _e('now, select one of the active deliveries', CSA_WP_PLUGIN_DOMAIN); ?> ...
 							</option>
 							<?php 
 								if ($spot_id!=null) {
-									csa_wp_plugin_select_deliveries($spot_id, $delivery_id, "for delivery with: "); 
+									csa_wp_plugin_select_deliveries($spot_id, $delivery_id, __('for delivery with',CSA_WP_PLUGIN_DOMAIN) .": "); 
 								}
 							?>
 						</select>
 					<?php
 					} else {
-						$value_of_read_only_input = "currently, this delivery spot has no active deliveries";
+						$value_of_read_only_input = __("currently, this delivery spot has no active deliveries", CSA_WP_PLUGIN_DOMAIN);
 						$value_of_read_only_input_len = strlen($value_of_read_only_input);
 						$size_of_read_only_input = (($value_of_read_only_input_len + 1) ).'"px\"';
 						echo "
@@ -285,20 +285,20 @@ function csa_wp_plugin_show_new_order_user_form($delivery_id, $user_id, $edit_or
 	echo "
 		<span 
 			class='csa-wp-plugin-tip_order' 
-			title=' 
-				Choose the quantity of each product you want to order and press \"Submit\" at the end of the page.
-				| After submitting your order, you will still be able to edit it, until the deadline for order submission of this delivery.
-				| You can read additional information for each product, by pointing to \"info\".
+			title=' ".
+				__('Choose the quantity of each product you want to order and press "Submit" at the end of the page.', CSA_WP_PLUGIN_DOMAIN)."
+				| ". __('After submitting your order, you will still be able to edit it, until the deadline for order submission of this delivery.',CSA_WP_PLUGIN_DOMAIN)."
+				| ". __('You can read additional information for each product, by pointing to "info".',CSA_WP_PLUGIN_DOMAIN) ."
 			'>
 			<p style='color:green;font-style:italic; font-size:13px'>
-			by pointing here you can read additional information...</p>
+			". __('by pointing here you can read additional information.', CSA_WP_PLUGIN_DOMAIN)."...</p>
 		</span>";
 
 	csa_wp_plugin_show_user_orders_form($delivery_id, $user_id, $edit_order_bool, $page_url);
 }
 
 function csa_wp_plugin_show_editable_user_order($user_id, $delivery_id, $edit_order_bool, $page_url) { 
-	wp_enqueue_script( 'csa-wp-plugin-enqueue-csa-scripts' );
+	wp_enqueue_script( 'csa-wp-plugin-general-scripts' );
 	wp_enqueue_script( 'csa-wp-plugin-orders-scripts' );
 	wp_enqueue_script('jquery.cluetip');
 	wp_enqueue_style('jquery.cluetip.style');
@@ -309,24 +309,24 @@ function csa_wp_plugin_show_editable_user_order($user_id, $delivery_id, $edit_or
 	<span 
 		class='csa-wp-plugin-tip_order' 
 		title="
-			If you want to edit the quantity of some product order, click on it, update it, and then press ENTER.
-			|To delete some product from your order, click on the 'x' icon.
+			<?php _e('If you want to edit the quantity of some product order, click on it, update it, and then press ENTER.',CSA_WP_PLUGIN_DOMAIN);?>
+			| <?php _e("To remove some product from your order, click on the 'x' icon.",CSA_WP_PLUGIN_DOMAIN); ?>
 		">
 		<p style="color:green;font-style:italic; font-size:13px">
-			by pointing here you can read additional information...</p>
+			<?php _e('by pointing here you can read additional information',CSA_WP_PLUGIN_DOMAIN); ?>...</p>
 	</span>	
 	
 	<table class='table-bordered' id="csa-wp-plugin-showUserOrder_table" style='border-spacing:1em'> 
 	<thead class="tableHeader">
 		<tr>
-			<th>Quantity</th>
-			<th	style="text-align:center">Name</th>
-			<th>Category</th>
-			<th>Variety</th>
-			<th>Price(€)</th>
-			<th>Per...</th>
-			<th>Cost</th>
-			<th>Producer</th>
+			<th><?php _e('Quantity',CSA_WP_PLUGIN_DOMAIN); ?></th>
+			<th	style="text-align:center"><?php _e('Name',CSA_WP_PLUGIN_DOMAIN); ?></th>
+			<th><?php _e('Category',CSA_WP_PLUGIN_DOMAIN); ?></th>
+			<th><?php _e('Variety',CSA_WP_PLUGIN_DOMAIN); ?></th>
+			<th><?php _e('Price',CSA_WP_PLUGIN_DOMAIN); ?>(€)</th>
+			<th><?php _e('Per',CSA_WP_PLUGIN_DOMAIN); ?>...</th>
+			<th><?php _e('Cost',CSA_WP_PLUGIN_DOMAIN); ?></th>
+			<th><?php _e('Producer',CSA_WP_PLUGIN_DOMAIN); ?></th>
 			<th></th>
 			<th></th>
 		</tr>
@@ -371,7 +371,7 @@ function csa_wp_plugin_show_editable_user_order($user_id, $delivery_id, $edit_or
 				} else { 
 					echo "<td/>";	
 				}
-				echo "<td> <img class='delete no-underline' src='$plugins_dir/csa-wp-plugin/icons/delete.png' style='cursor:pointer;padding-left:10px;' onmouseover='csa_wp_plugin_hover_icon(this, \"delete\", \"$plugins_dir\")' onmouseout='csa_wp_plugin_unhover_icon(this, \"delete\", \"$plugins_dir\")' onclick='csa_wp_plugin_request_delete_product_order(this)' title='διαγραφή'/></td>
+				echo "<td> <img class='delete no-underline' src='$plugins_dir/csa-wp-plugin/icons/delete.png' style='cursor:pointer;padding-left:10px;' onmouseover='csa_wp_plugin_hover_icon(this, \"delete\", \"$plugins_dir\")' onmouseout='csa_wp_plugin_unhover_icon(this, \"delete\", \"$plugins_dir\")' onclick='csa_wp_plugin_request_delete_product_order(this)' title='".__('remove this product from your order', CSA_WP_PLUGIN_DOMAIN)."'/></td>
 			</tr>"; 
 			$total_cost+=$p_cost;
 		}
@@ -394,17 +394,17 @@ function csa_wp_plugin_show_editable_user_order($user_id, $delivery_id, $edit_or
 				", $delivery_id, $user_id));
 				
 				if ($order_comments == null) {
-					echo "placeholder='Do you have any comments to add...?'";
+					echo "placeholder='".__('Do you have any comments to add',CSA_WP_PLUGIN_DOMAIN). "...?'";
 				}
 			?>><?php if ($order_comments != null) {echo "$order_comments";}?></textarea>
 	</div>
 	<table>
 		<tbody>
 			<tr> 
-				<td><div>Total Cost: <span id='editable_product_order_TotalCost' style='font-weight:bold'><?php echo round($total_cost,1). " €" ?></span></div></td>
+				<td><div><?php _e('Total Cost',CSA_WP_PLUGIN_DOMAIN); ?>: <span id='editable_product_order_TotalCost' style='font-weight:bold'><?php echo round($total_cost,1). " €" ?></span></div></td>
 				<td><div onclick="csa_wp_plugin_slide_toggle(document.getElementById('cancel_div'))"> 
 						<img src="<?php echo plugins_url(); ?>/csa-wp-plugin/icons/delete.png"/ height="24" width="24"> &nbsp
-						<span class='showHide_div' style='color:brown;cursor:pointer'>Cancel Order</span> 
+						<span class='showHide_div' style='color:brown;cursor:pointer'><?php _e('Cancel Order',CSA_WP_PLUGIN_DOMAIN); ?></span> 
 					</div>
 				</td>
 			</tr>
@@ -413,7 +413,7 @@ function csa_wp_plugin_show_editable_user_order($user_id, $delivery_id, $edit_or
 					<input 
 					type="button"
 					class="button button-primary"
-					value='Done'
+					value='<?php _e('Done',CSA_WP_PLUGIN_DOMAIN); ?>'
 					onclick='
 							csa_wp_plugin_request_user_order_update(<?php echo"$delivery_id, $user_id"?>, getElementById("csa_wp_plugin_order_comments_id").value);
 							window.location.replace(" <?php echo $page_url ?> ");
@@ -425,8 +425,8 @@ function csa_wp_plugin_show_editable_user_order($user_id, $delivery_id, $edit_or
 	</div>
 	
 	<div id='cancel_div' style='display:none; '> <br/>
-		<button type="button" class="button button-primary" onclick='csa_wp_plugin_request_cancel_user_order(<?php echo $delivery_id.", ".$user_id.", ".get_current_user_id() ?>)'>Yes... cancel order!</button>
-		<button type="button" class="button button-primary" style='background-color:brown' onclick="csa_wp_plugin_slide_toggle(document.getElementById('cancel_div'))">uhh... just a mistake!</button>
+		<button type="button" class="button button-primary" onclick='csa_wp_plugin_request_cancel_user_order(<?php echo $delivery_id.", ".$user_id.", ".get_current_user_id() ?>)'><?php _e('Yes... cancel order!',CSA_WP_PLUGIN_DOMAIN); ?></button>
+		<button type="button" class="button button-primary" style='background-color:brown' onclick="csa_wp_plugin_slide_toggle(document.getElementById('cancel_div'))"><?php _e('uhh... just a mistake!',CSA_WP_PLUGIN_DOMAIN); ?></button>
 	</div>
 	<br/>
 	<?php csa_wp_plugin_show_additional_products_order_form($delivery_id, $user_id, $edit_order_bool, $page_url); 
@@ -438,8 +438,8 @@ function csa_wp_plugin_show_additional_products_order_form($delivery_id, $user_i
 		<span 
 			id="csa-wp-plugin-showAdditionalProductOrders_formHeader_text"
 			style="cursor:pointer"
-			onclick="csa_wp_plugin_toggle_form('showAdditionalProductOrders','Add more products', ' form');"
-		><font size=4> Add more products (show form) </font>
+			onclick="csa_wp_plugin_toggle_form('showAdditionalProductOrders','<?php _e('Add more products',CSA_WP_PLUGIN_DOMAIN); ?>', ' <?php _e('form',CSA_WP_PLUGIN_DOMAIN); ?>');"
+		><font size=4> <?php _e('Add more products',CSA_WP_PLUGIN_DOMAIN); ?> (<?php _e('show form',CSA_WP_PLUGIN_DOMAIN); ?>) </font>
 		</span>
 	</div>
 	<div 
@@ -447,11 +447,12 @@ function csa_wp_plugin_show_additional_products_order_form($delivery_id, $user_i
 	<span 
 		class='csa-wp-plugin-tip_order' 
 		title=' 
-			Choose the quantity of each product you want to order and press \"Submit\" at the end of the page.
-			| You can read additional information for each product, by pointing to \"info\".
+			<?php _e('Choose the quantity of each product you want to order and press "Submit" at the end of the page.',CSA_WP_PLUGIN_DOMAIN); ?>
+			| <?php _e('You can read additional information for each product, by pointing to "info".',CSA_WP_PLUGIN_DOMAIN); ?>
 		'>
 		<p style='color:green;font-style:italic; font-size:13px'>
-			by pointing here you can read additional information...</p>
+			<?php _e('by pointing here you can read additional information',CSA_WP_PLUGIN_DOMAIN); ?>...
+		</p>
 	</span>
 <?php
 
@@ -477,12 +478,12 @@ function csa_wp_plugin_show_user_orders_form($delivery_id, $user_id, $edit_order
 		<table id='ordersArray' class='table-bordered' style='border-spacing:1em'> 
 			<thead class="tableHeader">
 				<tr>
-					<th>Name</th>
-					<th>Variety</th>
-					<th>Price</th>
-					<th>Unit</th>
-					<th>Quantity</th>
-					<th>Producer</th>
+					<th><?php _e('Name',CSA_WP_PLUGIN_DOMAIN); ?></th>
+					<th><?php _e('Variety',CSA_WP_PLUGIN_DOMAIN); ?></th>
+					<th><?php _e('Price',CSA_WP_PLUGIN_DOMAIN); ?></th>
+					<th><?php _e('Unit',CSA_WP_PLUGIN_DOMAIN); ?></th>
+					<th><?php _e('Quantity',CSA_WP_PLUGIN_DOMAIN); ?></th>
+					<th><?php _e('Producer',CSA_WP_PLUGIN_DOMAIN); ?></th>
 					<th> </th> 
 					<th class='th-hidden'>
 					</th>
@@ -517,12 +518,12 @@ function csa_wp_plugin_show_user_orders_form($delivery_id, $user_id, $edit_order
 				foreach($products as $row) {
 					if($row->is_available == 1) {
 						echo "
-						<tr>
+						<tr style='text-align:center'>
 						<td><span>".$row->name."</span></td>
 						<td><span>".$row->variety."</span></td>
 						<td><input type='number' readonly = 'readonly' name='csa-wp-plugin-order_productPrice' value='".$row->current_price_in_euro."' style=' width: 5em; border:none; background-color:white; text-align: center'/></td>
 						<td>€/".$row->measurement_unit."</td>
-						<td><input type='number' min='0' step='0.5' name='csa-wp-plugin-order_productQuantity' onchange='csa_wp_plugiin_calc_new_order_cost()' onkeyup='csa_wp_plugiin_calc_new_order_cost()' style='width:70px;background-color:LightGoldenRodYellow'></td>
+						<td><input type='number' min='0' step='0.5' name='csa-wp-plugin-order_productQuantity' onchange='csa_wp_plugin_calc_new_order_cost()' onkeyup='csa_wp_plugin_calc_new_order_cost()' style='width:70px;background-color:LightGoldenRodYellow'></td>
 						<td>".$producers_map[$row->producer]."</td>";
 						if ($row->description != null) {
 							echo "<td style='text-align:center'><span class='csa-wp-plugin-tip_order' title='|".$row->description."'>info</span></td>";
@@ -540,16 +541,15 @@ function csa_wp_plugin_show_user_orders_form($delivery_id, $user_id, $edit_order
 				name="csa_wp_plugin_order_comments" 
 				cols="50" rows="3" maxlength="500" 
 				class="info-text"
-				placeholder="Do you have any comments to add...?"></textarea>
+				placeholder="<?php _e('Do you have any comments to add...?',CSA_WP_PLUGIN_DOMAIN); ?>"></textarea>
 		</div>
 		<div>	
 			<input type='button' class="button button-primary" 
 				<?php
 				if($edit_order_bool === true) {
-					echo "value='Submit Additional Order'";
+					echo "value='".__('Submit Additional Order',CSA_WP_PLUGIN_DOMAIN)."'";
 				} else {
-					echo "value='Submit Order'";
-				}
+					echo "value='".__('Submit Order',CSA_WP_PLUGIN_DOMAIN)."'";				}
 				
 				?>
 				style="margin-top:1%" onclick="csa_wp_plugin_new_order_validation(<?php echo "$delivery_id, $user_id, ".get_current_user_id(); ?>, this)"/> 
@@ -560,7 +560,7 @@ function csa_wp_plugin_show_user_orders_form($delivery_id, $user_id, $edit_order
 						style='display:inline;margin-top:1%'
 						type='button'
 						class='button button-secondary'
-						value='cancel'
+						value='".__('cancel', CSA_WP_PLUGIN_DOMAIN)."'
 						onclick='window.location.replace(\" $page_url\");'
 					/>
 				";
@@ -575,7 +575,7 @@ function csa_wp_plugin_show_user_orders_form($delivery_id, $user_id, $edit_order
 
 
 function csa_wp_plugin_show_all_user_orders($personal_user_id, $display) {
-	wp_enqueue_script('csa-wp-plugin-enqueue-csa-scripts');
+	wp_enqueue_script('csa-wp-plugin-general-scripts');
 	wp_enqueue_script('csa-wp-plugin-orders-scripts');
 	wp_enqueue_script('jquery.datatables');
 	wp_enqueue_script('jquery.jeditable'); 
@@ -598,9 +598,9 @@ function csa_wp_plugin_show_all_user_orders($personal_user_id, $display) {
 		
 	if ($user_orders_count == 0) {
 		if ($personal_user_id != null) {
-			echo "<br/><div style='color:brown'>You have not yet submitted any order.</div>";
+			echo "<br/><div style='color:brown'> ".__('You have not yet submitted any order.', CSA_WP_PLUGIN_DOMAIN)."</div>";
 		} else {
-			echo "<br/><div style='color:brown'>No user has yet submitted any order.</div>";
+			echo "<br/><div style='color:brown'>".__('No user has yet submitted any order.', CSA_WP_PLUGIN_DOMAIN)."</div>";
 		}
 	} else {
 ?>
@@ -614,15 +614,15 @@ function csa_wp_plugin_show_all_user_orders($personal_user_id, $display) {
 				<font size='4'>
 				<?php 
 					if ($personal_user_id != null) {
-						$text_to_show = "Your Orders List";
+						$text_to_show = __("Your Orders List", CSA_WP_PLUGIN_DOMAIN);
 					} else {	
-						$text_to_show = "User Orders List";
+						$text_to_show = __("User Orders List", CSA_WP_PLUGIN_DOMAIN);
 					}
 				
 					if ($display === true) {
-						echo "$text_to_show (hide)";
+						echo "$text_to_show (".__("hide", CSA_WP_PLUGIN_DOMAIN).")";
 					} else {
-						echo "$text_to_show (show)";
+						echo "$text_to_show (".__("show", CSA_WP_PLUGIN_DOMAIN).")";
 					}
 				?>
 				</font>
@@ -636,18 +636,18 @@ function csa_wp_plugin_show_all_user_orders($personal_user_id, $display) {
 			?>	
 		>
 			<span class='csa-wp-plugin-tip_order' title='
-				Some order in "green" states that the corresponding delivery is pending and still accepts new orders.
-				| Some order in "brown" states that the corresponding delivery is pending and does not accept new orders.
-				| Some order in "grey" states that the corresponding delivery is accomplished.
-				| If you want to edit user order details, click on the "pen" icon.
-				<?php
+				<?php _e('Some order in "green" states that the corresponding delivery is pending and still accepts new orders.', CSA_WP_PLUGIN_DOMAIN)?>
+				| <?php _e('Some order in "brown" states that the corresponding delivery is pending and does not accept new orders.', CSA_WP_PLUGIN_DOMAIN)?>
+				| <?php _e('Some order in "grey" states that the corresponding delivery is accomplished.', CSA_WP_PLUGIN_DOMAIN)?>
+				| <?php _e('If you want to edit user order details, click on the "pen" icon.', CSA_WP_PLUGIN_DOMAIN);
+		
 					if ($personal_user_id != null) {
-						echo "|You can become responsible for some delivery (if none exists) by clicking on the \"list\" icon.";
+						echo "|". __('You can become responsible for some delivery (if none exists) by clicking on the "list" icon.', CSA_WP_PLUGIN_DOMAIN);
 					}
 				?>
 				'>
 			<p style="color:green;font-style:italic; font-size:13px">
-				by pointing here you can read additional information...</p></span>
+				<?php _e('by pointing here you can read additional information...', CSA_WP_PLUGIN_DOMAIN)?></p></span>
 
 
 			<table 
@@ -659,17 +659,17 @@ function csa_wp_plugin_show_all_user_orders($personal_user_id, $display) {
 				<tr>
 					<?php 
 						if ($personal_user_id == null) {
-							echo "<th>User</th>";
+							echo "<th>"._('User',CSA_WP_PLUGIN_DOMAIN) ."</th>";
 						}
 					?>
-					<th>Spot</th>
-					<th>Order Deadline Date</th>
-					<th>Order Deadline Time</th>
-					<th>Delivery Date</th>
-					<th>Delivery Start Time</th>
-					<th>Delivery End Time</th>
-					<th>User In Charge</th>
-					<th>New Orders Can be Submitted?</th>
+					<th><?php _e('Spot', CSA_WP_PLUGIN_DOMAIN)?></th>
+					<th><?php _e('Order Deadline Date', CSA_WP_PLUGIN_DOMAIN)?></th>
+					<th><?php _e('Order Deadline Time', CSA_WP_PLUGIN_DOMAIN)?></th>
+					<th><?php _e('Delivery Date', CSA_WP_PLUGIN_DOMAIN)?></th>
+					<th><?php _e('Delivery Start Time', CSA_WP_PLUGIN_DOMAIN)?></th>
+					<th><?php _e('Delivery End Time', CSA_WP_PLUGIN_DOMAIN)?></th>
+					<th><?php _e('Uner In Charge', CSA_WP_PLUGIN_DOMAIN)?></th>
+					<th><?php _e('New Orders Can be Submitted?', CSA_WP_PLUGIN_DOMAIN)?></th>
 					<th/>
 					<?php 
 						if ($personal_user_is_responsible === true) {
@@ -734,7 +734,7 @@ function csa_wp_plugin_show_all_user_orders($personal_user_id, $display) {
 									src='$plugins_dir/csa-wp-plugin/icons/edit.png' 
 									style='cursor:pointer;padding-left:10px;' 
 									onclick='csa_wp_plugin_edit_user_order($csaUser->ID, $delivery_id)' 
-									title='click to edit this order'/></td>
+									title='".__('click to edit this order',CSA_WP_PLUGIN_DOMAIN)."'/></td>
 						";
 						
 						if ($personal_user_is_responsible === true) {
@@ -747,7 +747,7 @@ function csa_wp_plugin_show_all_user_orders($personal_user_id, $display) {
 										src='$plugins_dir/csa-wp-plugin/icons/list.png' 
 										style='cursor:pointer;padding-left:10px;' 
 										onclick='csa_wp_plugin_become_responsible($csaUser->ID, $delivery_id)' 
-										title='click to become responsible for this delivery'/></td>
+										title='".__('click to become responsible for this delivery',CSA_WP_PLUGIN_DOMAIN)."'/></td>
 								";
 							} else {
 								echo "<td/>";
@@ -768,7 +768,7 @@ function csa_wp_plugin_show_all_user_orders($personal_user_id, $display) {
 
 function csa_wp_plugin_show_delivery_orders_list ($personal_user_id, $is_producer, $display) {
 
-	wp_enqueue_script('csa-wp-plugin-enqueue-csa-scripts');
+	wp_enqueue_script('csa-wp-plugin-general-scripts');
 	wp_enqueue_script('csa-wp-plugin-deliveries-scripts');
 	wp_enqueue_script('jquery.datatables');
 	wp_enqueue_script('jquery.jeditable'); 
@@ -786,15 +786,15 @@ function csa_wp_plugin_show_delivery_orders_list ($personal_user_id, $is_produce
 		
 	if ($deivery_orders_count == 0) {
 		if ($personal_user_id == null) {
-			"<br/><div style='color:brown'>No delivery has yet been initiated.</div>";
+			"<br/><div style='color:brown'>". __('No delivery has yet been initiated.', CSA_WP_PLUGIN_DOMAIN) ."</div>";
 		} else if ($is_producer == false) {
-			echo "<br/><div style='color:brown'>You have not yet become responsible for any delivery.</div>";
+			echo "<br/><div style='color:brown'>". __('You have not yet become responsible for any delivery.', CSA_WP_PLUGIN_DOMAIN) ."</div>";
 		}
 	} else {
 		if ($personal_user_id) {
-			$text_to_show = "List";
+			$text_to_show = __("List", CSA_WP_PLUGIN_DOMAIN);
 		} else {
-			$text_to_show = "Delivery Total Orders List";
+			$text_to_show = __("Delivery Total Orders List", CSA_WP_PLUGIN_DOMAIN);
 		}
 		
 		if ($is_producer === true) {
@@ -814,9 +814,9 @@ function csa_wp_plugin_show_delivery_orders_list ($personal_user_id, $is_produce
 				<font size='4'>
 				<?php 				
 					if ($display == false) {
-						echo "$text_to_show (show)";
+						echo "$text_to_show (".__("show", CSA_WP_PLUGIN_DOMAIN).")";
 					} else {
-						echo "$text_to_show (hide)";
+						echo "$text_to_show (".__("hide", CSA_WP_PLUGIN_DOMAIN).")";
 					}
 				?>
 				</font>
@@ -830,13 +830,13 @@ function csa_wp_plugin_show_delivery_orders_list ($personal_user_id, $is_produce
 			?>	
 		>
 			<span class='csa-wp-plugin-tip_order' title='
-					Deliveries in "green" are pending and still accept new orders.
-					| Deliveries in "brown" are pending and do not accept new orders.
-					| Deliveries in "grey" are accomplished.
-					|To view the total user orders for some delivery, click the "magnifier" icon.
+					<?php _e('Deliveries in "green" are pending and still accept new orders.', CSA_WP_PLUGIN_DOMAIN)?>
+					| <?php _e('Deliveries in "brown" are pending and do not accept new orders.', CSA_WP_PLUGIN_DOMAIN)?>
+					| <?php _e('Deliveries in "grey" are accomplished.', CSA_WP_PLUGIN_DOMAIN)?>
+					| <?php _e('To view the total user orders for some delivery, click the "magnifier" icon.', CSA_WP_PLUGIN_DOMAIN)?>
 				'>
 			<p style="color:green;font-style:italic; font-size:13px">
-				by pointing here you can read additional information... </p></span>
+				<?php _e('by pointing here you can read additional information...', CSA_WP_PLUGIN_DOMAIN)?></p></span>
 
 
 			<table 
@@ -846,18 +846,18 @@ function csa_wp_plugin_show_delivery_orders_list ($personal_user_id, $is_produce
 			> 
 			<thead class='tableHeader'>
 				<tr>
-					<th>Spot</th>
-					<th>Order Deadline Date</th>
-					<th>Order Deadline Time</th>
-					<th>Delivery Date</th>
-					<th>Delivery Start Time</th>
-					<th>Delivery End Time</th>
+					<th><?php _e('Spot', CSA_WP_PLUGIN_DOMAIN)?></th>
+					<th><?php _e('Order Deadline Date', CSA_WP_PLUGIN_DOMAIN)?></th>
+					<th><?php _e('Order Deadline Time', CSA_WP_PLUGIN_DOMAIN)?></th>
+					<th><?php _e('Delivery Date', CSA_WP_PLUGIN_DOMAIN)?></th>
+					<th><?php _e('Delivery Start Time', CSA_WP_PLUGIN_DOMAIN)?></th>
+					<th><?php _e('Delivery End Time', CSA_WP_PLUGIN_DOMAIN)?></th>
 					<?php 	
 						if ($personal_user_id == null || $is_producer === true) {
-							echo "<th>User In Charge</th>";
+							echo "<th>".__('User In Charge', CSA_WP_PLUGIN_DOMAIN)."</th>";
 						}
 					?>
-					<th>New Orders Can be Submitted?</th>
+					<th><?php _e('New Orders Can be Submitted?', CSA_WP_PLUGIN_DOMAIN)?></th>
 					<th/>
 				</tr>
 			</thead> 
@@ -914,7 +914,7 @@ function csa_wp_plugin_show_delivery_orders_list ($personal_user_id, $is_produce
 								onclick='csa_wp_plugin_request_total_orders_of_delivery(".$delivery_id.", ".
 								(($is_producer === true) ? "$personal_user_id" : "null")
 								.");' 
-								title='click to view the total user orders for this delivery'/></td>
+								title='".__('click to view the total user orders for this delivery',CSA_WP_PLUGIN_DOMAIN)."'/></td>
 						</tr>
 
 					";
@@ -959,9 +959,9 @@ function csa_wp_plugin_show_total_orders_of_delivery ($delivery_id, $producer_id
 	
 	if($producers_count <= 0) {
 		if ($producer_id == null) {
-			echo "<br/><span class='info-text' style='font-size:15px;color:brown'>No order has yet been submitted, for this delivery. </span> <br>";
+			echo "<br/><span class='info-text' style='font-size:15px;color:brown'>". __('No order has yet been submitted, for this delivery.', CSA_WP_PLUGIN_DOMAIN)." </span> <br>";
 		} else {
-			echo "<br/><span class='info-text' style='font-size:15px;color:brown'>You have no orders in this delivery. </span> <br>";
+			echo "<br/><span class='info-text' style='font-size:15px;color:brown'>". __('You have no orders in this delivery.', CSA_WP_PLUGIN_DOMAIN)." </span> <br>";
 		}
 	} else {	
 		$users_count = $wpdb->get_var($wpdb->prepare("
@@ -979,7 +979,7 @@ function csa_wp_plugin_show_total_orders_of_delivery ($delivery_id, $producer_id
 				
 		foreach ($producers_involved as $producer) {
 			$revenue = 0; //the amount to be paid to this producer
-			echo "<p class='panel'> <span style='font-size:14px'> Producer: </span> <span class='producer'>".$producers_map[$producer]."</span> </p>";
+			echo "<p class='panel'> <span style='font-size:14px'> ". __('Producer', CSA_WP_PLUGIN_DOMAIN) .": </span> <span class='producer'>".$producers_map[$producer]."</span> </p>";
 			
 			//Get the products in order for this producer
 			$products_in_order = $wpdb->get_results($wpdb->prepare("
@@ -1063,13 +1063,13 @@ function csa_wp_plugin_show_total_orders_of_delivery ($delivery_id, $producer_id
 				<?php $revenue += $product->costPerProduct;
 			}
 			
-			echo"<br/><p class='total' style='margin: -2% 0 3% 0'><span class='emphasis-box'>Total: ".$revenue." € </span></p><br/>";
+			echo"<br/><p class='total' style='margin: -2% 0 3% 0'><span class='emphasis-box'>". __('Total',CSA_WP_PLUGIN_DOMAIN).": ".$revenue." € </span></p><br/>";
 		}
 	
 		?>
 		<table style="margin-top:30px" class='table-straight'> <!-- stucture table (to display the following table next to each other -->
 			<tr><td>
-				<span style="font-weight:bold;color:green">Cost per consumer</span><?php
+				<span style="font-weight:bold;color:green"><?php _e('Cost per consumer',CSA_WP_PLUGIN_DOMAIN); ?></span><?php
 				
 				//Show costs in total
 				$total_user_costs = $wpdb->get_results($wpdb->prepare("
@@ -1091,8 +1091,8 @@ function csa_wp_plugin_show_total_orders_of_delivery ($delivery_id, $producer_id
 				<table style='width:280px;' class='table-bordered'>
 					<thead>
 						<tr>
-							<td>Consumer</td>
-							<td>Total Cost</td>
+							<td><?php _e('Consumer',CSA_WP_PLUGIN_DOMAIN); ?></td>
+							<td><?php _e('Total Cost',CSA_WP_PLUGIN_DOMAIN); ?></td>
 						</tr>
 					</thead>
 					
@@ -1108,7 +1108,7 @@ function csa_wp_plugin_show_total_orders_of_delivery ($delivery_id, $producer_id
 					?>
 
 					<tr style='background-color:Khaki'>
-						<td style="font-weight:bold">Total</td>
+						<td style="font-weight:bold"><?php _e('Total',CSA_WP_PLUGIN_DOMAIN); ?></td>
 						<td style="font-weight:bold"><?php echo round($total_cost,1)." €"; ?></td>
 					</tr>
 					</tr>
@@ -1138,8 +1138,8 @@ function csa_wp_plugin_show_total_orders_of_delivery ($delivery_id, $producer_id
 				<table style='width:200px;' class='table-bordered'>
 					<thead>
 						<tr>
-							<td>Producer</td>
-							<td style='width:100px'>Income</td>
+							<td><?php _e('Procuder',CSA_WP_PLUGIN_DOMAIN); ?></td>
+							<td style='width:100px'><?php _e('Income',CSA_WP_PLUGIN_DOMAIN); ?></td>
 						</tr>
 					</thead>
 					<?php
@@ -1154,7 +1154,7 @@ function csa_wp_plugin_show_total_orders_of_delivery ($delivery_id, $producer_id
 					?>
 
 					<tr style='background-color:Khaki'>
-						<td style="font-weight:bold">Total</td>
+						<td style="font-weight:bold"><?php _e('Total',CSA_WP_PLUGIN_DOMAIN); ?></td>
 						<td style="font-weight:bold"><?php echo round($total_cost,1)." €" ?></td>
 					</tr>
 				</table>
@@ -1188,7 +1188,7 @@ function csa_wp_plugin_show_total_orders_of_delivery ($delivery_id, $producer_id
 	<input 
 	type="button"
 	class="button button-secondary"
-	value='back to orders...'
+	value='<?php _e('back to orders...',CSA_WP_PLUGIN_DOMAIN); ?>'
 	onclick='window.location.replace(" <?php echo $page_url ?> ");'
 	/>	
 

@@ -8,8 +8,8 @@ $j(document).ready(function() {
         "type": "text",
         //"submit" : "<img src='" + "<?php echo plugins_url(); ?>" + "/csa-wp-plugin/icons/ok.png'>",
         //"cancel" : "<img src='" + "<?php echo plugins_url(); ?>" + "/csa-wp-plugin/icons/cancel.png'>",
-        "tooltip": "click to change...",
-		"placeholder": "click to fill ...",
+        "tooltip": product_categories_translation.tooltip,
+		"placeholder": product_categories_translation.placeholder,
         "onblur": "cancel",
         "loadtype": 'POST',
     };
@@ -111,7 +111,7 @@ function csa_wp_plugin_request_delete_product_category(category) {
 			var return_values = response.split(",");
 						
 			if (return_values[0] == "skipped") {
-				alert("You can not delete this produt category, since there exists at least one product of this category.");
+				alert(product_categories_translation.product_category_cannnot_be_deleted);
 			} else {
 				$j(product_category_tr).fadeOut(200, function() {
 					$j(product_category_tr).remove();

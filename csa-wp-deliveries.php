@@ -3,7 +3,7 @@ defined( 'ABSPATH' ) or die( 'No script kiddies please!' );
 
 function csa_wp_plugin_new_delivery_form($spot_id, $order_deadline_date, $custom_values, $delivery_id, $display) { 
 	
-	wp_enqueue_script( 'csa-wp-plugin-enqueue-csa-scripts' );
+	wp_enqueue_script( 'csa-wp-plugin-general-scripts' );
 	wp_enqueue_script( 'csa-wp-plugin-deliveries-scripts' );
 	wp_enqueue_script('jquery.cluetip');
 	wp_enqueue_style('jquery.cluetip.style');
@@ -92,8 +92,6 @@ function csa_wp_plugin_new_delivery_form($spot_id, $order_deadline_date, $custom
 				$delivery_id = $delivery_info->id;
 				$in_charge = $delivery_info->user_in_charge;
 			}
-			echo "Delivery [$delivery_id] Delivery Day [$delivery_day], Delivery Date [$delivery_date], Order Deadline Date [$order_deadline_date]";
-
 		}
 	}
 	
@@ -107,20 +105,23 @@ function csa_wp_plugin_new_delivery_form($spot_id, $order_deadline_date, $custom
 			<?php 
 				if ($spot_id == null) {
 					echo 'style="cursor:pointer"';
-					echo 'onclick="csa_wp_plugin_toggle_form(\'newDelivery\',\'Initiate New Delivery\', \' form\')"';
+					echo 'onclick="csa_wp_plugin_toggle_form(\'newDelivery\',\''. __('Initiate New Delivery',CSA_WP_PLUGIN_DOMAIN) .'\', \''. __(' 	form',CSA_WP_PLUGIN_DOMAIN).'\')"';
 				}
 			?>
 		><font size='4'>
 		<?php 
 			if ($spot_id == null) {
-				if ($display == false) echo 'Initiate New Delivery (show form)';
-				else echo 'Initiate New Delivery (hide form)';
+				if ($display == false) {
+					echo __('Initiate New Delivery', CSA_WP_PLUGIN_DOMAIN) .' ('. __('show form',CSA_WP_PLUGIN_DOMAIN) .')';
+				} else {
+					echo __('Initiate New Delivery', CSA_WP_PLUGIN_DOMAIN) .' ('. __('hide form',CSA_WP_PLUGIN_DOMAIN) .')';
+				}
 			}
 			else if ($delivery_id != null) {
-				echo 'Edit Delivery #'. $delivery_id;	
+				echo __('Edit Delivery', CSA_WP_PLUGIN_DOMAIN) . ' #'. $delivery_id;	
 			}
 			else {
-				echo 'Initiating new delivery for ';
+				echo __('Initiating new delivery for ', CSA_WP_PLUGIN_DOMAIN) ;
 			}
 		?>
 		</font>
@@ -155,7 +156,7 @@ function csa_wp_plugin_new_delivery_form($spot_id, $order_deadline_date, $custom
 						?>
 						disabled='disabled'
 						id = "csa-wp-plugin-newDelivery_spotDetails_spotID_input_disabled_id"
-					>Select Spot *</option>
+					><?php _e('Select Spot', CSA_WP_PLUGIN_DOMAIN)?> *</option>
  					<?php 
 						echo csa_wp_plugin_select_delivery_spots(($spot_id != null)?$spot_id:null, "Spot "); 
 					?>
@@ -168,12 +169,12 @@ function csa_wp_plugin_new_delivery_form($spot_id, $order_deadline_date, $custom
 							} else if ($custom_bool === false) {
 								echo "
 									<i style='color:gray' class='csa-wp-plugin-tip_deliveries' title='
-										Below, you can customize the deadline and delivery dates (and times) for this delivery.
+										". __('Below, you can customize the deadline and delivery dates (and times) for this delivery.', CSA_WP_PLUGIN_DOMAIN) ."
 									'> 
-										&nbsp; &nbsp; with default values... (point here) 
+										&nbsp; &nbsp; ". __('with default values... (point here)', CSA_WP_PLUGIN_DOMAIN) ." 
 									</i>";
 							} else {
-								echo "<i style='color:gray'> &nbsp; &nbsp; with custom values... </i>";
+								echo "<i style='color:gray'> &nbsp; &nbsp; ". __('with custom values...',CSA_WP_PLUGIN_DOMAIN) ." </i>";
 							}
 						}
 					?>
@@ -211,12 +212,12 @@ function csa_wp_plugin_new_delivery_form($spot_id, $order_deadline_date, $custom
 							echo 'selected="selected"';
 						}
 					?>
-					> Choose a deadline date * </option>
+					> <?php _e('Choose a deadline date', CSA_WP_PLUGIN_DOMAIN)?> * </option>
 					<?php 
 						$deadline_day = $days_of_week[$order_deadline_day];
 						for ($i=0; $i<5; $i++) {
 							$next_deadline_date = date(CSA_WP_PLUGIN_DATE_FORMAT, strtotime("Next ". $deadline_day . "+$i week"));
-							$next_deadline_date_readable = $deadline_day . ", ". date(CSA_WP_PLUGIN_DATE_FORMAT_READABLE, strtotime($next_deadline_date)) . ", up to ". $order_deadline_time;
+							$next_deadline_date_readable = $deadline_day . ", ". date(CSA_WP_PLUGIN_DATE_FORMAT_READABLE, strtotime($next_deadline_date)) . ", ". __('up to', CSA_WP_PLUGIN_DOMAIN) ." ". $order_deadline_time;
 							if ($order_deadline_date == null || $order_deadline_date != $next_deadline_date) {
 								echo "<option 
 										style='color:black' 
@@ -227,7 +228,7 @@ function csa_wp_plugin_new_delivery_form($spot_id, $order_deadline_date, $custom
 										style='color:black' 
 										selected = 'selected' 
 										value='$next_deadline_date;$order_deadline_time'
-									>Order deadline is on $next_deadline_date_readable</option>";
+									>".__('Order deadline is on',CSA_WP_PLUGIN_DOMAIN)." $next_deadline_date_readable</option>";
 							}
 						}
 					?>
@@ -238,7 +239,7 @@ function csa_wp_plugin_new_delivery_form($spot_id, $order_deadline_date, $custom
 								echo 'style="display:none"'; 
 							}
 						?>
-					> &nbsp;&nbsp; and
+					> &nbsp;&nbsp; <?php _e('and', CSA_WP_PLUGIN_DOMAIN); ?>
 					</span></td>
 				</tr>
 				<tr valign="top" 
@@ -274,8 +275,8 @@ function csa_wp_plugin_new_delivery_form($spot_id, $order_deadline_date, $custom
 						id="csa-wp-plugin-newDelivery_inCharge_input_id"		
 						onchange = '
 							this.style.color="black"
-							if (this.options[this.selectedIndex].text.split(" ")[0] != "Responsible for this delivery is") {
-								this.options[this.selectedIndex].text = "Responsible for this delivery is " + this.options[this.selectedIndex].text;
+							if (this.options[this.selectedIndex].text.split(" ")[0] != "<?php _e('Responsible for this delivery is', CSA_WP_PLUGIN_DOMAIN); ?>".split(" ")[0]) {
+								this.options[this.selectedIndex].text = <?php _e('Responsible for this delivery is', CSA_WP_PLUGIN_DOMAIN); ?> + " " + this.options[this.selectedIndex].text;
 							}
 						'
 						<?php 
@@ -293,8 +294,8 @@ function csa_wp_plugin_new_delivery_form($spot_id, $order_deadline_date, $custom
 							?>
 							id = "csa-wp-plugin-newDelivery_inCharge_input_disabled_id"
 							disabled='disabled'
-						>Do you know who is going to be in charge?</option>
-						<?php echo csa_wp_plugin_select_users_of_type("consumer", $in_charge, "Responsible for this delivery is "); ?>
+						><?php _e('Do you know who is going to be in charge?', CSA_WP_PLUGIN_DOMAIN)?> </option>
+						<?php echo csa_wp_plugin_select_users_of_type("consumer", $in_charge, __('Responsible for this delivery is', CSA_WP_PLUGIN_DOMAIN)." "); ?>
 					</select>
 				</td></tr>
 				
@@ -318,19 +319,19 @@ function csa_wp_plugin_new_delivery_form($spot_id, $order_deadline_date, $custom
 						onchange='
 							if (this.options[this.selectedIndex].value == "yes") {
 								this.style.color = "green";
-								this.options[this.selectedIndex].text = "Currently, new orders can be submitted"
+								this.options[this.selectedIndex].text = "<?php _e('Currently, new orders can be submitted', CSA_WP_PLUGIN_DOMAIN); ?>"
 							}
 							else {
 								this.style.color = "brown";
-								this.options[this.selectedIndex].text = "Currently, new orders can not be submitted"
+								this.options[this.selectedIndex].text = "<?php _e('Currently, new orders can not be submitted', CSA_WP_PLUGIN_DOMAIN); ?>"
 							}
 							'
 					>
 					<?php 
 						if ($delivery_id != null) {
 							echo '
-								<option value="yes" style="color:green". '. ($delivery_info->are_orders_open == 1?"selected='selected'":"").'> Currently, new orders can be submitted </option>
-								<option value="no" style="color:brown"'. ($delivery_info->are_orders_open == 0?"selected='selected'":"").'> Currently, new orders can not be submitted </option>
+								<option value="yes" style="color:green". '. ($delivery_info->are_orders_open == 1?"selected='selected'":"").'> '.__('Currently, new orders can be submitted', CSA_WP_PLUGIN_DOMAIN).' </option>
+								<option value="no" style="color:brown"'. ($delivery_info->are_orders_open == 0?"selected='selected'":"").'> '.__('Currently, new orders can not be submitted', CSA_WP_PLUGIN_DOMAIN).' </option>
 							';
 						}
 					?>					
@@ -354,12 +355,12 @@ function csa_wp_plugin_new_delivery_form($spot_id, $order_deadline_date, $custom
 						<?php 
 							if ($delivery_id == null) {
 								echo "
-									value='Initiate Delivery'
+									value='".__('Initiate Delivery', CSA_WP_PLUGIN_DOMAIN)."'
 									onclick='csa_wp_plugin_request_initiate_new_or_update_delivery(this, null, \"". admin_url("/admin.php?page=csa_deliveries_management") ."\");'
 								";
 							} else {
 								echo "
-									value='Update Delivery'
+									value='".__('Update Delivery', CSA_WP_PLUGIN_DOMAIN)."'
 									onclick='csa_wp_plugin_request_initiate_new_or_update_delivery(this, $delivery_id, \"". admin_url("/admin.php?page=csa_deliveries_management") ."\");'
 								";
 							}
@@ -369,7 +370,7 @@ function csa_wp_plugin_new_delivery_form($spot_id, $order_deadline_date, $custom
 					<input 
 						type="button"
 						class="button button-secondary"
-						value="Cancel"
+						value="<?php _e('Cancel', CSA_WP_PLUGIN_DOMAIN)?>"
 						<?php echo "onclick='window.location.replace(\"". admin_url('/admin.php?page=csa_deliveries_management')."\")'";
 						?>
 					/>
@@ -396,9 +397,9 @@ function csa_wp_plugin_new_delivery_form($spot_id, $order_deadline_date, $custom
 					style="cursor:pointer"
 					<?php
 						if ($custom_bool === true) {
-							echo "onclick=\"csa_wp_plugin_toggle_form('newDelivery_spotDetailsDetails','Custom values ', ' form', 3, '&nbsp;&nbsp;&nbsp;')\"";
+							echo "onclick=\"csa_wp_plugin_toggle_form('newDelivery_spotDetailsDetails','".__('Custom values', CSA_WP_PLUGIN_DOMAIN)." ', ' ".__('form', CSA_WP_PLUGIN_DOMAIN)."', 3, '&nbsp;&nbsp;&nbsp;')\"";
 						} else {
-							echo "onclick=\"csa_wp_plugin_toggle_form('newDelivery_spotDetailsDetails','Customize default values ', ' form', 3, '&nbsp;&nbsp;&nbsp;')\"";
+							echo "onclick=\"csa_wp_plugin_toggle_form('newDelivery_spotDetailsDetails','".__('Customize default values', CSA_WP_PLUGIN_DOMAIN)." ', ' ".__('form', CSA_WP_PLUGIN_DOMAIN)."', 3, '&nbsp;&nbsp;&nbsp;')\"";
 						}
 					?>
 				><font size='3'>
@@ -409,9 +410,9 @@ function csa_wp_plugin_new_delivery_form($spot_id, $order_deadline_date, $custom
 					}
 				
 					if ($custom_bool === true) {
-						echo "&nbsp;&nbsp;&nbsp;Custom values ($text_hide_show form)";
+						echo "&nbsp;&nbsp;&nbsp;".__('Custom values', CSA_WP_PLUGIN_DOMAIN)." ($text_hide_show ".__('form', CSA_WP_PLUGIN_DOMAIN).")";
 					} else {
-						echo "&nbsp;&nbsp;&nbsp;Customize default values ($text_hide_show form)";
+						echo "&nbsp;&nbsp;&nbsp;".__('Customize default values', CSA_WP_PLUGIN_DOMAIN)." ($text_hide_show ".__('form', CSA_WP_PLUGIN_DOMAIN).")";
 					}
 				?>
 					
@@ -480,7 +481,7 @@ function csa_wp_plugin_new_delivery_form($spot_id, $order_deadline_date, $custom
 					<?php 
 					for ($i=0; $i<7; $i++) {
 						if ($order_deadline_day == $i) {
-							echo "<option value='$i' selected='selected'> order deadline is on $days_of_week[$i] </option>";
+							echo "<option value='$i' selected='selected'> ".__('order deadline is on', CSA_WP_PLUGIN_DOMAIN)." $days_of_week[$i] </option>";
 						} else {
 							echo "<option value='$i'>".$days_of_week[$i]."</option>";
 						}
@@ -490,7 +491,7 @@ function csa_wp_plugin_new_delivery_form($spot_id, $order_deadline_date, $custom
 					<input 
 						<?php 
 							if ($spot_id != null) {
-								echo "value='up to $order_deadline_time'";
+								echo "value='".__('up to', CSA_WP_PLUGIN_DOMAIN)." $order_deadline_time'";
 							}
 						?>
 						placeholder="up to... *"
@@ -516,7 +517,7 @@ function csa_wp_plugin_new_delivery_form($spot_id, $order_deadline_date, $custom
 							this.type="text";
 							if (this.value != "") {
 								this.style.color="black";
-								this.value = "up to " + this.value;
+								this.value = "<?php _e('up to', CSA_WP_PLUGIN_DOMAIN); ?> " + this.value;
 							}'
 						>
 					<span id="csa-wp-plugin-newDelivery_spotDetails_orderDeadline_span" style="display:none"></span>
@@ -534,11 +535,11 @@ function csa_wp_plugin_new_delivery_form($spot_id, $order_deadline_date, $custom
 							getElementById("csa-wp-plugin-newDelivery_spotDetails_delivery_start_time_input_id").style.display = "inline"'
 					>
 					<option value="" disabled="disabled" 
-						id="csa-wp-plugin-newDelivery_delivery_day_disabled_id">Delivery day ... *</option>
+						id="csa-wp-plugin-newDelivery_delivery_day_disabled_id"><?php _e('Delivery Day', CSA_WP_PLUGIN_DOMAIN); ?> ... *</option>
 					<?php 
 					for ($i=0; $i<7; $i++) {
 						if ($delivery_day == $i) {
-							echo "<option value='$i' selected='selected'> Delivery day is $days_of_week[$i] </option>";
+							echo "<option value='$i' selected='selected'> ".__('Delivery day is', CSA_WP_PLUGIN_DOMAIN)." $days_of_week[$i] </option>";
 						} else {
 							echo "<option value='$i'>".$days_of_week[$i]."</option>";
 						}
@@ -551,7 +552,7 @@ function csa_wp_plugin_new_delivery_form($spot_id, $order_deadline_date, $custom
 								echo "value='from $delivery_start_time'";
 							}
 						?>
-						placeholder="from... *"
+						placeholder="<?php _e('from', CSA_WP_PLUGIN_DOMAIN); ?>... *"
 						class="textbox-n" type="text" size="10" 
 						name="csa-wp-plugin-newDelivery_delivery_start_time_input"
 
@@ -590,10 +591,10 @@ function csa_wp_plugin_new_delivery_form($spot_id, $order_deadline_date, $custom
 					<input id="csa-wp-plugin-newDelivery_spotDetails_delivery_end_time_input_id"
 						<?php 
 							if ($spot_id != null) {
-								echo "value='to $delivery_end_time'";
+								echo "value='".__('to', CSA_WP_PLUGIN_DOMAIN)." $delivery_end_time'";
 							}
 						?>
-						placeholder="to... *"					
+						placeholder="<?php _e('to', CSA_WP_PLUGIN_DOMAIN); ?>... *"					
 						class="textbox-n" type="text" size="10" 
 						name="csa-wp-plugin-newDelivery_delivery_end_time_input"
 						
@@ -619,7 +620,7 @@ function csa_wp_plugin_new_delivery_form($spot_id, $order_deadline_date, $custom
 							this.type="text";
 							if (this.value != "") {
 								this.style.color="black";
-								this.value = "to " + this.value;
+								this.value = "<?php _e('to', CSA_WP_PLUGIN_DOMAIN); ?> " + this.value;
 								csa_wp_plugin_validate_delivery_time_period("newDelivery_spotDetails");
 							}
 						'
@@ -632,7 +633,7 @@ function csa_wp_plugin_new_delivery_form($spot_id, $order_deadline_date, $custom
 						type="submit" 
 						class="button button-secondary"
 						id="csa-wp-plugin-newDeliveryCustomValues_button_id"
-						value="Use Custom Values"
+						value="<?php _e('Use Custom Values', CSA_WP_PLUGIN_DOMAIN); ?>"
 						onclick="csa_wp_plugin_new_delivery_format_custom_values(this);"
 					/>
 					<?php
@@ -642,7 +643,7 @@ function csa_wp_plugin_new_delivery_form($spot_id, $order_deadline_date, $custom
 									type='submit'
 									class='button button-secondary'
 									id='csa-wp-plugin-newDeliveryCustomValues_reset_button_id'
-									value='Reset to default values'
+									value='".__('Reset to default values', CSA_WP_PLUGIN_DOMAIN)."'
 									onclick='
 										window.location.replace(\"". admin_url('/admin.php?page=csa_deliveries_management')."&id=". $spot_id ."\");
 										event.preventDefault();
@@ -776,7 +777,7 @@ function CsaWpPluginInitiateOrUpdateNewDelivery() {
 
 
 function csa_wp_plugin_show_deliveries($display) {
-	wp_enqueue_script('csa-wp-plugin-enqueue-csa-scripts');
+	wp_enqueue_script('csa-wp-plugin-general-scripts');
 	wp_enqueue_script('csa-wp-plugin-deliveries-scripts');
 	wp_enqueue_script('jquery.datatables');
 	wp_enqueue_script('jquery.jeditable'); 
@@ -796,9 +797,9 @@ function csa_wp_plugin_show_deliveries($display) {
 			<font size='4'>
 			<?php 
 				if ($display == false) {
-					echo 'Deliveries List (show)';
+					echo __('Deliveries List', CSA_WP_PLUGIN_DOMAIN) .' ('. __('show',CSA_WP_PLUGIN_DOMAIN) .')';
 				} else {
-					echo 'Deliveries List (hide)';
+					echo __('Deliveries List', CSA_WP_PLUGIN_DOMAIN) .' ('. __('hide',CSA_WP_PLUGIN_DOMAIN) .')';
 				}
 			?>
 			</font>
@@ -812,15 +813,15 @@ function csa_wp_plugin_show_deliveries($display) {
 		?>	
 	>
 		<span class='csa-wp-plugin-tip_deliveries' title='
-			Deliveries in "green" are pending and still accept new orders.
-			| Deliveries in "brown" are pending and do not accept new orders.
-			| Deliveries in "grey" are accomplished.
-			| To change the ability of new order submission, you can click on the "envelope" icon.
-			| If you want to edit delivery details, click on the "pen" icon.
-			| If you want to delete some delivery, click on the "x" icon.
+			<?php _e('Deliveries in "green" are pending and still accept new orders',CSA_WP_PLUGIN_DOMAIN)?>.
+			| <?php _e('Deliveries in "brown" are pending and do not accept new orders',CSA_WP_PLUGIN_DOMAIN)?>.
+			| <?php _e('Deliveries in "grey" are accomplished',CSA_WP_PLUGIN_DOMAIN)?>.
+			| <?php _e('To change the ability of new order submission, you can click on the "envelope" icon',CSA_WP_PLUGIN_DOMAIN)?>.
+			| <?php _e('If you want to edit delivery details, click on the "pen" icon',CSA_WP_PLUGIN_DOMAIN)?>.
+			| <?php _e('If you want to delete some delivery, click on the "x" icon',CSA_WP_PLUGIN_DOMAIN)?>.
 			'>
 		<p style="color:green;font-style:italic; font-size:13px">
-			by pointing here you can read additional information.</p></span>
+			<?php _e('by pointing here you can read additional information.',CSA_WP_PLUGIN_DOMAIN)?></p></span>
 
 
 		<table 
@@ -830,14 +831,14 @@ function csa_wp_plugin_show_deliveries($display) {
 		> 
 		<thead class='tableHeader'>
 			<tr>
-				<th>Spot</th>
-				<th>Order Deadline Date</th>
-				<th>Order Deadline Time</th>
-				<th>Delivery Date</th>
-				<th>Delivery Start Time</th>
-				<th>Delivery End Time</th>
-				<th>User In Charge</th>
-				<th>New Orders Can be Submitted?</th>
+				<th><?php _e('Spot',CSA_WP_PLUGIN_DOMAIN)?></th>
+				<th><?php _e('Order Deadline Date',CSA_WP_PLUGIN_DOMAIN)?></th>
+				<th><?php _e('Order Deadline Time',CSA_WP_PLUGIN_DOMAIN)?></th>
+				<th><?php _e('Delivery Date',CSA_WP_PLUGIN_DOMAIN)?></th>
+				<th><?php _e('Delivery Start Time',CSA_WP_PLUGIN_DOMAIN)?></th>
+				<th><?php _e('Delivery End Time',CSA_WP_PLUGIN_DOMAIN)?></th>
+				<th><?php _e('User In Charge',CSA_WP_PLUGIN_DOMAIN)?></th>
+				<th><?php _e('New Orders Can be Submitted?',CSA_WP_PLUGIN_DOMAIN)?></th>
 				<th/>
 				<th/>
 				<th/>
@@ -887,7 +888,7 @@ function csa_wp_plugin_show_deliveries($display) {
 							src='".plugins_url()."/csa-wp-plugin/icons/".(($delivery->are_orders_open == 1)?"open":"close").".png' 
 							height='24' width='24' 
 							id = 'csa-wp-plugin-showDeliveriesOpenOrdersIconID_$delivery_id'
-							title='".(($delivery->are_orders_open == 1)?"remove":"grant")." ability to order'
+							title='".(($delivery->are_orders_open == 1)?__('remover', CSA_WP_PLUGIN_DOMAIN):__('grant', CSA_WP_PLUGIN_DOMAIN))." ".__('ability to order', CSA_WP_PLUGIN_DOMAIN)."'
 							onclick='csa_wp_plugin_request_toggle_delivery_ability_to_order(this,\"$plugins_dir\")'></td>
 					<td style='text-align:center'> 
 						<img 
@@ -896,15 +897,15 @@ function csa_wp_plugin_show_deliveries($display) {
 							src='$plugins_dir/csa-wp-plugin/icons/edit.png' 
 							style='cursor:pointer;padding-left:10px;' 
 							onclick='csa_wp_plugin_edit_delivery(this, \"". admin_url('/admin.php?page=csa_deliveries_management')."\")' 
-							title='click to edit this delivery'/></td>
+							title='".__('click to edit this delivery', CSA_WP_PLUGIN_DOMAIN)."'/></td>
 					<td style='text-align:center'> <img 
-						style='cursor:pointer' 
+						style='cursor:pointer'
 						src='".plugins_url()."/csa-wp-plugin/icons/delete.png' 
 						height='24' width='24'
 						onmouseover='csa_wp_plugin_hover_icon(this, \"delete\", \"$plugins_dir\")' 
 						onmouseout='csa_wp_plugin_unhover_icon(this, \"delete\", \"$plugins_dir\")' 						
 						onclick='csa_wp_plugin_request_delete_deliver(this)' 
-						title='delete delivery'></td>
+						title='".__('delete delivery', CSA_WP_PLUGIN_DOMAIN)."'></td>
 					</tr>
 
 				";
@@ -983,11 +984,11 @@ function csa_wp_plugin_active_deliveries_exist() {
 		") == 0) {
 		
 		echo "
-			<h4 style='color:gray'>You are not able to sumbit new order, since there is no delivery accepting new order submissions</h4> 
-			<h4 style='color:gray'>You can create new deliveries
+			<h4 style='color:gray'>". __('You are not able to sumbit new order, since there is no delivery accepting new order submissions', CSA_WP_PLUGIN_DOMAIN)."</h4> 
+			<h4 style='color:gray'>". __('You can create new deliveries', CSA_WP_PLUGIN_DOMAIN)."
 			<a href='".
 				admin_url('/admin.php?page=csa_deliveries_management')
-			."'>here </a></h4>
+			."'>". __('here', CSA_WP_PLUGIN_DOMAIN)." </a></h4>
 		";
 		return false;
 	} else {
@@ -1068,12 +1069,12 @@ function CsaWpPluginGetReadableDeliveryInfo ($delivery_id) {
 	$delivery_day = (date("w", strtotime($delivery_date)) - 1) % 7;
 	$delivery_day = $days_of_week[$delivery_day];
 	
-	$delivery_info_readable = "Delivery for spot $spotName with
-		deadline on $deadline_day ,". date(CSA_WP_PLUGIN_DATE_FORMAT_READABLE, strtotime($deadlineDate)) . ", 
+	$delivery_info_readable = __('Delivery for spot', CSA_WP_PLUGIN_DOMAIN)." $spotName ".__('with', CSA_WP_PLUGIN_DOMAIN)."
+		".__('deadline on', CSA_WP_PLUGIN_DOMAIN)." $deadline_day ,". date(CSA_WP_PLUGIN_DATE_FORMAT_READABLE, strtotime($deadlineDate)) . ", 
 			up to ". csa_wp_plugin_remove_seconds($delivery_info->order_deadline_time). ",
-		and delivery on $delivery_day,". date(CSA_WP_PLUGIN_DATE_FORMAT_READABLE, strtotime($delivery_date)) . ", 
-			from ". csa_wp_plugin_remove_seconds($delivery_info->delivery_start_time). "
-			up to ". csa_wp_plugin_remove_seconds($delivery_info->delivery_end_time);
+		".__('and delivery on', CSA_WP_PLUGIN_DOMAIN)." $delivery_day,". date(CSA_WP_PLUGIN_DATE_FORMAT_READABLE, strtotime($delivery_date)) . ", 
+			".__('from', CSA_WP_PLUGIN_DOMAIN)." ". csa_wp_plugin_remove_seconds($delivery_info->delivery_start_time). "
+			".__('up to', CSA_WP_PLUGIN_DOMAIN)." ". csa_wp_plugin_remove_seconds($delivery_info->delivery_end_time);
 
 	return $delivery_info_readable;
 }

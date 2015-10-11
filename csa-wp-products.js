@@ -17,8 +17,8 @@ $j(document).ready(function() {
 			"type" : "text",
 			//"submit" : "<img src='" + "<?php echo plugins_url(); ?>" + "/csa-wp-plugin/icons/ok.png'>",
 			//"cancel" : "<img src='" + "<?php echo plugins_url(); ?>" + "/csa-wp-plugin/icons/cancel.png'>",
-			"tooltip": "click to change...",
-			"placeholder": "click to fill ...",
+			"tooltip": products_translation.tooltip,
+			"placeholder": products_translation.placeholder,
 			"onblur": "cancel",
 			"loadtype": 'POST',
 		};
@@ -50,7 +50,7 @@ $j(document).ready(function() {
 		
 		data_editable['submit'] = "OK";
 		data_editable['type'] = "select";
-		data_editable['data'] = "{'yes':'yes', 'no':'no'}"
+		data_editable['data'] = "{'yes':products_translation.yes, 'no':products_translation.no}"
 		
 		//edit any value of any object (of class .editable)
 		$j(".editable_boolean", o_table.fnGetNodes()).editable(
@@ -183,7 +183,7 @@ function csa_wp_plugin_request_delete_product(product) {
 			var return_values = response.split(",");
 						
 			if (return_values[0] == "skipped") {
-				alert("You can not delete this product, since at least one order exists for it.");
+				alert(products_translation.product_cannnot_be_deleted);
 			} else {			
 				$j(product_tr).fadeOut(200,function() {
 						$j(product_tr).remove();
@@ -231,13 +231,13 @@ function csa_wp_plugin_toggle_product_visibility (product_id, plugins_dir) {
 	if (obj_tr.style.color=='gray') {
 		obj_tr.style.color='black';
 		image_obj.src = plugins_dir + "/csa-wp-plugin/icons/visible.png";
-		text_obj.innerHTML = "yes";
-		image_obj.title = "mark it as unavailable";
+		text_obj.innerHTML = products_translation.yes;
+		image_obj.title = products_translation.mark_available;
 	} else {
 		obj_tr.style.color='gray';
 		image_obj.src = plugins_dir + "/csa-wp-plugin/icons/nonVisible.png";
-		text_obj.innerHTML = "no";
-		image_obj.title = "mark it as available";
+		text_obj.innerHTML = products_translation.no;
+		image_obj.title = products_translation.mark_unavailable;
 	}
 }
 

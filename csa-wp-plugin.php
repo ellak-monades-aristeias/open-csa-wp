@@ -74,7 +74,7 @@ $days_of_week = array(
 	***************
 */
 				
-include 'csa-wp-DB-tables.php';
+include 'csa-wp-db-tables.php';
 
 function csa_wp_plugin_activation() {
 	csa_wp_plugin_register_settings();

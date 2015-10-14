@@ -163,7 +163,7 @@ function csa_wp_plugin_spot_form ($spot_id, $display){
 							disabled="disabled" id="csa-wp-plugin-delivery_spot_owner_disabled_id"><?php _e('Owner of this delivery spot... *',CSA_WP_PLUGIN_DOMAIN);?>
 						</option>
 						<?php 
-						$spotOwner = null;
+						$spot_owner_id = null;
 						if ($is_delivery_spot) {
 							$spot_owner_id = $wpdb->get_var($wpdb->prepare("SELECT user_id FROM ".CSA_WP_PLUGIN_TABLE_SPOTS_TO_USERS." WHERE spot_id=%d AND type='delivery' ", $spot_id), 0, 0);
 						}							

@@ -2,7 +2,7 @@
 var $j = jQuery.noConflict();
 
 $j(document).ready(function() {
-	var products_list_table = $j("#csa-wp-plugin-showProductsList_table");
+	var products_list_table = $j("#open-csa-wp-showProductsList_table");
 	if (products_list_table.length > 0) {
 		var o_table = products_list_table.dataTable({
 			"bPaginate": false, 
@@ -15,8 +15,8 @@ $j(document).ready(function() {
 			"width" : "10em",
 			"height": "3em",
 			"type" : "text",
-			//"submit" : "<img src='" + "<?php echo plugins_url(); ?>" + "/csa-wp-plugin/icons/ok.png'>",
-			//"cancel" : "<img src='" + "<?php echo plugins_url(); ?>" + "/csa-wp-plugin/icons/cancel.png'>",
+			//"submit" : "<img src='" + "<?php echo plugins_url(); ?>" + "/open-csa-wp/icons/ok.png'>",
+			//"cancel" : "<img src='" + "<?php echo plugins_url(); ?>" + "/open-csa-wp/icons/cancel.png'>",
 			"tooltip": products_translation.tooltip,
 			"placeholder": products_translation.placeholder,
 			"onblur": "cancel",
@@ -29,7 +29,7 @@ $j(document).ready(function() {
 				var tmp = this;
 
 				var data_post = {
-					"action" : "csa-wp-plugin-update_product",
+					"action" : "open-csa-wp-update_product",
 					"value" : value,
 					"product_id": this.parentNode.getAttribute("id").split('_')[1],
 					"column": o_table.fnGetPosition(this)[2]			//???? why [2] and not [1]? - [0] describes the row, [1] describes the column, [2] describes again the column?, [3..] undefined
@@ -61,7 +61,7 @@ $j(document).ready(function() {
 				var old_value = o_table.fnGetData(field);
 				
 				var data_post = {
-					"action" : "csa-wp-plugin-update_product",
+					"action" : "open-csa-wp-update_product",
 					"value" : value,
 					"product_id": product_id,
 					"column": column
@@ -70,7 +70,7 @@ $j(document).ready(function() {
 					function(response) { 
 						//console.log ("Server returned:["+response+"]");
 						
-						csa_wp_plugin_toggle_product_visibility (product_id, products_list_table.attr("csa-wp-plugin-plugins_dir"));
+						open_csa_wp_toggle_product_visibility (product_id, products_list_table.attr("open-csa-wp-plugins_dir"));
 					}
 				);
 			
@@ -80,7 +80,7 @@ $j(document).ready(function() {
 		);
 	}
 	
-	var products_tips = $j("#csa-wp-plugin-showProductsList_div .csa-wp-plugin-tip_products");
+	var products_tips = $j("#open-csa-wp-showProductsList_div .open-csa-wp-tip_products");
 	if(products_tips.length > 0) {
 		products_tips.cluetip({
 			splitTitle: '|',						 
@@ -94,29 +94,29 @@ $j(document).ready(function() {
 });
 
 
-function csa_wp_plugin_new_product_fields_validation(btn, product_id, url_address) {
+function open_csa_wp_new_product_fields_validation(btn, product_id, url_address) {
 
 	var form = btn.parentNode;
 	
 	if (!form.checkValidity()) {
 		btn.click();
 	} else {
-		document.getElementById("csa-wp-plugin-newProductForm_category_input_disabled_id").disabled = false;
-		document.getElementById("csa-wp-plugin-newProductForm_producer_input_disabled_id").disabled = false;
-		document.getElementById("csa-wp-plugin-newProductForm_unit_input_disabled_id").disabled = false;
-		document.getElementById("csa-wp-plugin-newProductForm_availability_input_disabled_id").disabled = false;
+		document.getElementById("open-csa-wp-newProductForm_category_input_disabled_id").disabled = false;
+		document.getElementById("open-csa-wp-newProductForm_producer_input_disabled_id").disabled = false;
+		document.getElementById("open-csa-wp-newProductForm_unit_input_disabled_id").disabled = false;
+		document.getElementById("open-csa-wp-newProductForm_availability_input_disabled_id").disabled = false;
 		
 		var $j = jQuery.noConflict();
-		var serialized_form_data = $j('#csa-wp-plugin-showNewProduct_form').serializeArray();
+		var serialized_form_data = $j('#open-csa-wp-showNewProduct_form').serializeArray();
 		var arraySpanElements = [
 			"",
-			"csa-wp-plugin-newProductForm_category_input_span_id",
-			"csa-wp-plugin-newProductForm_producer_input_span_id",
+			"open-csa-wp-newProductForm_category_input_span_id",
+			"open-csa-wp-newProductForm_producer_input_span_id",
 			"",
 			"",
-			"csa-wp-plugin-newProductForm_unit_input_span_id",
+			"open-csa-wp-newProductForm_unit_input_span_id",
 			"",
-			"csa-wp-plugin-newProductForm_availability_input_span_id"
+			"open-csa-wp-newProductForm_availability_input_span_id"
 		];
 		
 		validity = true;
@@ -129,24 +129,24 @@ function csa_wp_plugin_new_product_fields_validation(btn, product_id, url_addres
 		}
 	
 		if (validity == true) {
-			csa_wp_plugin_send_request_add_or_update_product_to_server(btn, product_id, url_address);
+			open_csa_wp_send_request_add_or_update_product_to_server(btn, product_id, url_address);
 		} else {
-			csa_wp_plugin_you_forgot_this_one (document.getElementById(arraySpanElements[i]));
+			open_csa_wp_you_forgot_this_one (document.getElementById(arraySpanElements[i]));
 			event.preventDefault();
 		}
 	}
 }
 
-function csa_wp_plugin_send_request_add_or_update_product_to_server(btn, product_id, url_address) {
+function open_csa_wp_send_request_add_or_update_product_to_server(btn, product_id, url_address) {
 
 	btn.disabled = true;
 
 	var $j = jQuery.noConflict();
-	var serialized_form_data = $j('#csa-wp-plugin-showNewProduct_form').serializeArray();
+	var serialized_form_data = $j('#open-csa-wp-showNewProduct_form').serializeArray();
 	serialized_form_data = JSON.stringify(serialized_form_data);
 			
 	var data = {
-		'action': 'csa-wp-plugin-product_add_or_update_request',
+		'action': 'open-csa-wp-product_add_or_update_request',
 		'product_id': product_id,
 		'data'	: serialized_form_data
 	};
@@ -164,7 +164,7 @@ function csa_wp_plugin_send_request_add_or_update_product_to_server(btn, product
 	});
 }
 
-function csa_wp_plugin_request_delete_product(product) {
+function open_csa_wp_request_delete_product(product) {
 
 	var $j = jQuery.noConflict();		
 	var product_tr = $j(product).closest("tr");
@@ -172,7 +172,7 @@ function csa_wp_plugin_request_delete_product(product) {
 	var product_id = $j(product_tr).attr("id").split('_')[1];
 	
 	var data = {
-		"action" : "csa-wp-plugin-delete_product",
+		"action" : "open-csa-wp-delete_product",
 		"product_id" : product_id
 	};
 	
@@ -188,7 +188,7 @@ function csa_wp_plugin_request_delete_product(product) {
 				$j(product_tr).fadeOut(200,function() {
 						$j(product_tr).remove();
 						
-						if ($j('#csa-wp-plugin-showProductsList_table .csa-wp-plugin-showProducts-product').length == 0) {
+						if ($j('#open-csa-wp-showProductsList_table .open-csa-wp-showProducts-product').length == 0) {
 							location.reload(true);
 						}
 				});
@@ -197,7 +197,7 @@ function csa_wp_plugin_request_delete_product(product) {
 	);
 }
 
-function csa_wp_plugin_request_toggle_product_visibility(image_obj, plugins_dir) {
+function open_csa_wp_request_toggle_product_visibility(image_obj, plugins_dir) {
 	var $j = jQuery.noConflict();
 	var row = image_obj.parentNode.parentNode;
 	var product_id = row.id.split('_')[1];
@@ -206,7 +206,7 @@ function csa_wp_plugin_request_toggle_product_visibility(image_obj, plugins_dir)
 	
 	//update database
 	var data = {
-		"action" : "csa-wp-plugin-update_product_availability",
+		"action" : "open-csa-wp-update_product_availability",
 		"product_id" : product_id,
 		"availability" : availability
 	};
@@ -216,33 +216,33 @@ function csa_wp_plugin_request_toggle_product_visibility(image_obj, plugins_dir)
 		function(response) { 
 			//console.log ("Server returned:["+response+"]");
 			
-			csa_wp_plugin_toggle_product_visibility (product_id, plugins_dir);
+			open_csa_wp_toggle_product_visibility (product_id, plugins_dir);
 		}
 	);
 }
 
-function csa_wp_plugin_toggle_product_visibility (product_id, plugins_dir) {
+function open_csa_wp_toggle_product_visibility (product_id, plugins_dir) {
 
-	obj_tr = document.getElementById ("csa-wp-plugin-showProductsProductID_"+product_id);
-	image_obj = document.getElementById("csa-wp-plugin-showProductsAvailabilityIconID_"+product_id);;
-	text_obj = document.getElementById("csa-wp-plugin-showProductsAvailabilityID_"+product_id);
+	obj_tr = document.getElementById ("open-csa-wp-showProductsProductID_"+product_id);
+	image_obj = document.getElementById("open-csa-wp-showProductsAvailabilityIconID_"+product_id);;
+	text_obj = document.getElementById("open-csa-wp-showProductsAvailabilityID_"+product_id);
 	
 	//toggle row color, image source, text, and title
 	if (obj_tr.style.color=='gray') {
 		obj_tr.style.color='black';
-		image_obj.src = plugins_dir + "/csa-wp-plugin/icons/visible.png";
+		image_obj.src = plugins_dir + "/open-csa-wp/icons/visible.png";
 		text_obj.innerHTML = products_translation.yes;
 		image_obj.title = products_translation.mark_available;
 	} else {
 		obj_tr.style.color='gray';
-		image_obj.src = plugins_dir + "/csa-wp-plugin/icons/nonVisible.png";
+		image_obj.src = plugins_dir + "/open-csa-wp/icons/nonVisible.png";
 		text_obj.innerHTML = products_translation.no;
 		image_obj.title = products_translation.mark_unavailable;
 	}
 }
 
 
-function csa_wp_plugin_edit_product(product_obj, page_url) {
+function open_csa_wp_edit_product(product_obj, page_url) {
 	var product_tr = $j(product_obj).closest("tr");
 
 	var product_id = $j(product_tr).attr("id").split('_')[1];
@@ -250,18 +250,18 @@ function csa_wp_plugin_edit_product(product_obj, page_url) {
 	window.location.replace( page_url + "&id=" + product_id);
 }
 
-function csa_wp_plugin_reset_product_form(){
-	document.getElementById("csa-wp-plugin-showNewProduct_form").reset();
+function open_csa_wp_reset_product_form(){
+	document.getElementById("open-csa-wp-showNewProduct_form").reset();
 	
-	document.getElementById("csa-wp-plugin-newProductForm_category_input_id").style.color = "#999";
-	document.getElementById("csa-wp-plugin-newProductForm_producer_input_id").style.color = "#999";
-	document.getElementById("csa-wp-plugin-newProductForm_unit_input_id").style.color = "#999";
-	document.getElementById("csa-wp-plugin-newProductForm_availability_input_id").style.color = "#999";
+	document.getElementById("open-csa-wp-newProductForm_category_input_id").style.color = "#999";
+	document.getElementById("open-csa-wp-newProductForm_producer_input_id").style.color = "#999";
+	document.getElementById("open-csa-wp-newProductForm_unit_input_id").style.color = "#999";
+	document.getElementById("open-csa-wp-newProductForm_availability_input_id").style.color = "#999";
 	
-	document.getElementById("csa-wp-plugin-newProductForm_category_input_span_id").style.display = "none";
-	document.getElementById("csa-wp-plugin-newProductForm_producer_input_span_id").style.display = "none";
-	document.getElementById("csa-wp-plugin-newProductForm_unit_input_span_id").style.display = "none";
-	document.getElementById("csa-wp-plugin-newProductForm_availability_input_span_id").style.display = "none";
+	document.getElementById("open-csa-wp-newProductForm_category_input_span_id").style.display = "none";
+	document.getElementById("open-csa-wp-newProductForm_producer_input_span_id").style.display = "none";
+	document.getElementById("open-csa-wp-newProductForm_unit_input_span_id").style.display = "none";
+	document.getElementById("open-csa-wp-newProductForm_availability_input_span_id").style.display = "none";
 
-	document.getElementById("csa-wp-plugin-showNewProduct_button_id").disabled = false;
+	document.getElementById("open-csa-wp-showNewProduct_button_id").disabled = false;
 }

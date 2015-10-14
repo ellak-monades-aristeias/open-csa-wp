@@ -6,7 +6,7 @@ defined( 'ABSPATH' ) or die( 'No script kiddies please!' );
 	***************************
 */
 
-function csa_wp_plugin_db_tables_creation () {
+function open_csa_wp_db_tables_creation () {
 
 	global $wpdb; 
 	$charset_collate = $wpdb->get_charset_collate();
@@ -14,7 +14,7 @@ function csa_wp_plugin_db_tables_creation () {
 	
 	$sql = "	
 	
-	CREATE TABLE ". CSA_WP_PLUGIN_TABLE_SPOTS ." (
+	CREATE TABLE ". OPEN_CSA_WP_TABLE_SPOTS ." (
 		id int(4) NOT NULL UNIQUE AUTO_INCREMENT,
 		spot_name varchar(30) NOT NULL,
 		street_name varchar(30) NOT NULL,
@@ -34,21 +34,21 @@ function csa_wp_plugin_db_tables_creation () {
 		PRIMARY KEY  (id)
 	) $charset_collate;
 	
-	CREATE TABLE ". CSA_WP_PLUGIN_TABLE_SPOTS_TO_USERS ." (
+	CREATE TABLE ". OPEN_CSA_WP_TABLE_SPOTS_TO_USERS ." (
 		spot_id  int(10) NOT NULL, 
 		user_id  int(10) NOT NULL, 
 		type enum('production','delivery','home') NOT NULL,
 		PRIMARY KEY  (spot_id,user_id,type)
 	) $charset_collate;	
 	
-	CREATE TABLE ". CSA_WP_PLUGIN_TABLE_PRODUCT_CATEGORIES ." (
+	CREATE TABLE ". OPEN_CSA_WP_TABLE_PRODUCT_CATEGORIES ." (
 		id  int(4) NOT NULL AUTO_INCREMENT, 
 		name varchar(20) NOT NULL, 
 		description varchar(100) DEFAULT NULL,
 		PRIMARY KEY  (id)
 	) $charset_collate;
 
-	CREATE TABLE ". CSA_WP_PLUGIN_TABLE_PRODUCTS ." (
+	CREATE TABLE ". OPEN_CSA_WP_TABLE_PRODUCTS ." (
 		id int(10) NOT NULL AUTO_INCREMENT,
 		name varchar(30) NOT NULL,
 		category int(4) NOT NULL,
@@ -61,7 +61,7 @@ function csa_wp_plugin_db_tables_creation () {
 		PRIMARY KEY  (id)
 	) $charset_collate;
 	
-	CREATE TABLE ". CSA_WP_PLUGIN_TABLE_DELIVERIES ." (
+	CREATE TABLE ". OPEN_CSA_WP_TABLE_DELIVERIES ." (
 		id int(11) NOT NULL AUTO_INCREMENT,
 		spot_id int(4) NOT NULL,
 		order_deadline_date date NOT NULL,
@@ -74,7 +74,7 @@ function csa_wp_plugin_db_tables_creation () {
 		PRIMARY KEY  (id)
 	) $charset_collate;
 
-	CREATE TABLE ". CSA_WP_PLUGIN_TABLE_PRODUCT_ORDERS ." (
+	CREATE TABLE ". OPEN_CSA_WP_TABLE_PRODUCT_ORDERS ." (
 		delivery_id int(11) NOT NULL,
 		user_id int(11) NOT NULL,
 		product_id int(11) NOT NULL,
@@ -86,7 +86,7 @@ function csa_wp_plugin_db_tables_creation () {
 		PRIMARY KEY  (delivery_id,user_id,product_id)
 	) $charset_collate;
 	
-	CREATE TABLE ". CSA_WP_PLUGIN_TABLE_USER_ORDERS ." (
+	CREATE TABLE ". OPEN_CSA_WP_TABLE_USER_ORDERS ." (
 		delivery_id int(11) NOT NULL,
 		user_id int(11) NOT NULL,
 		time_of_arrival time DEFAULT NULL,
@@ -100,7 +100,7 @@ function csa_wp_plugin_db_tables_creation () {
 	require_once( ABSPATH . 'wp-admin/includes/upgrade.php' );
 	dbDelta( $sql );
 
-	update_option( 'csa-wp-plugin-db-version', '1.0' );
+	update_option( 'open-csa-wp-db-version', '1.0' );
 }
 
 /*	***************************
@@ -108,17 +108,17 @@ function csa_wp_plugin_db_tables_creation () {
 	***************************
 */
 
-function csa_wp_plugin_dt_tables_drop() {
+function open_csa_wp_db_tables_drop() {
 
 	global $wpdb; 
 
-	$wpdb->query("DROP TABLE IF EXISTS ". CSA_WP_PLUGIN_TABLE_SPOTS);
-	$wpdb->query("DROP TABLE IF EXISTS ". CSA_WP_PLUGIN_TABLE_SPOTS_TO_USERS);
-	$wpdb->query("DROP TABLE IF EXISTS ". CSA_WP_PLUGIN_TABLE_PRODUCT_CATEGORIES);
-	$wpdb->query("DROP TABLE IF EXISTS ". CSA_WP_PLUGIN_TABLE_PRODUCTS);
-	$wpdb->query("DROP TABLE IF EXISTS ". CSA_WP_PLUGIN_TABLE_DELIVERIES);
-	$wpdb->query("DROP TABLE IF EXISTS ". CSA_WP_PLUGIN_TABLE_PRODUCT_ORDERS);
-	$wpdb->query("DROP TABLE IF EXISTS ". CSA_WP_PLUGIN_TABLE_USER_ORDERS);
+	$wpdb->query("DROP TABLE IF EXISTS ". OPEN_CSA_WP_TABLE_SPOTS);
+	$wpdb->query("DROP TABLE IF EXISTS ". OPEN_CSA_WP_TABLE_SPOTS_TO_USERS);
+	$wpdb->query("DROP TABLE IF EXISTS ". OPEN_CSA_WP_TABLE_PRODUCT_CATEGORIES);
+	$wpdb->query("DROP TABLE IF EXISTS ". OPEN_CSA_WP_TABLE_PRODUCTS);
+	$wpdb->query("DROP TABLE IF EXISTS ". OPEN_CSA_WP_TABLE_DELIVERIES);
+	$wpdb->query("DROP TABLE IF EXISTS ". OPEN_CSA_WP_TABLE_PRODUCT_ORDERS);
+	$wpdb->query("DROP TABLE IF EXISTS ". OPEN_CSA_WP_TABLE_USER_ORDERS);
 }
 
 

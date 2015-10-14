@@ -6,15 +6,15 @@ $j(document).ready(function() {
         "width": "10em",
         "height": "3em",
         "type": "text",
-        //"submit" : "<img src='" + "<?php echo plugins_url(); ?>" + "/csa-wp-plugin/icons/ok.png'>",
-        //"cancel" : "<img src='" + "<?php echo plugins_url(); ?>" + "/csa-wp-plugin/icons/cancel.png'>",
+        //"submit" : "<img src='" + "<?php echo plugins_url(); ?>" + "/open-csa-wp/icons/ok.png'>",
+        //"cancel" : "<img src='" + "<?php echo plugins_url(); ?>" + "/open-csa-wp/icons/cancel.png'>",
         "tooltip": product_categories_translation.tooltip,
 		"placeholder": product_categories_translation.placeholder,
         "onblur": "cancel",
         "loadtype": 'POST',
     };
 
-    var category_list_table = $j("#csa-wp-plugin-showProductCategoriesList_table");
+    var category_list_table = $j("#open-csa-wp-showProductCategoriesList_table");
     if (category_list_table.length > 0) {
         var o_table = category_list_table.dataTable({
             "bPaginate": false,
@@ -29,7 +29,7 @@ $j(document).ready(function() {
                 var tmp = this;
 
                 var data_post = {
-                    "action": "csa-wp-plugin-update_category",
+                    "action": "open-csa-wp-update_category",
                     "value": value,
                     "product_category_id": this.parentNode.getAttribute("id"),
                     "column": o_table.fnGetPosition(this)[2] //???? why [2] and not [1]? - [0] describes the row, [1] describes the column, [2] describes again the column?, [3..] undefined
@@ -48,7 +48,7 @@ $j(document).ready(function() {
             data_editable
         );
     }
-    var categories_tips = $j("#csa-wp-plugin-showProductCategoriesList_div .csa-wp-plugin-tip_categories");
+    var categories_tips = $j("#open-csa-wp-showProductCategoriesList_div .open-csa-wp-tip_categories");
     if (categories_tips.length > 0) {
         categories_tips.cluetip({
             splitTitle: '|',
@@ -61,26 +61,26 @@ $j(document).ready(function() {
 });
 
 
-function csa_wp_plugin_new_product_categories_fields_validation(btn) {
+function open_csa_wp_new_product_categories_fields_validation(btn) {
 
     var form = btn.parentNode;
 
     if (!form.checkValidity()) {
 		btn.click();
 	} else {
-		csa_wp_plugin_request_add_category(btn);
+		open_csa_wp_request_add_category(btn);
 	}
 }
 
-function csa_wp_plugin_request_add_category(btn) {
+function open_csa_wp_request_add_category(btn) {
 
     var $j = jQuery.noConflict();
 
-    var serialized_form_data = $j('#csa-wp-plugin-addNewCategoryForm').serializeArray();
+    var serialized_form_data = $j('#open-csa-wp-addNewCategoryForm').serializeArray();
     serialized_form_data = JSON.stringify(serialized_form_data);
 
     var data = {
-        'action': 'csa-wp-plugin-add_new_productCategory',
+        'action': 'open-csa-wp-add_new_productCategory',
         'data': serialized_form_data,
     }
 
@@ -92,7 +92,7 @@ function csa_wp_plugin_request_add_category(btn) {
         });
 }
 
-function csa_wp_plugin_request_delete_product_category(category) {
+function open_csa_wp_request_delete_product_category(category) {
 
     var $j = jQuery.noConflict();
     var product_category_tr = $j(category).closest("tr");
@@ -100,7 +100,7 @@ function csa_wp_plugin_request_delete_product_category(category) {
     var product_category_id = $j(product_category_tr).attr("id").split('_')[1];
 
     var data = {
-        "action": "csa-wp-plugin-delete_product_category",
+        "action": "open-csa-wp-delete_product_category",
         "product_category_id": product_category_id
     };
 
@@ -116,7 +116,7 @@ function csa_wp_plugin_request_delete_product_category(category) {
 				$j(product_category_tr).fadeOut(200, function() {
 					$j(product_category_tr).remove();
 
-					if ($j('#csa-wp-plugin-showProductCategoriesList_table .csa-wp-plugin-showProductCategoriesCategoryID-category').length == 0) {
+					if ($j('#open-csa-wp-showProductCategoriesList_table .open-csa-wp-showProductCategoriesCategoryID-category').length == 0) {
 						location.reload(true);
 					}
 				});

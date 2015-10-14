@@ -7,7 +7,7 @@ defined( 'ABSPATH' ) or die( 'No script kiddies please!' );
 */
 
 ## Clean the input from script, html, style, and almost all potenially harmful tags.
-function csa_wp_plugin_clean_input($input) {
+function open_csa_wp_clean_input($input) {
 	$search = array(
 		'@<script[^>]*?>.*?</script>@si',   /* strip out javascript */
 		'@<[\/\!]*?[^<>]*?>@si',            /* strip out HTML tags */
@@ -25,7 +25,7 @@ for each record it retrieves (1) the <key_field_name> and stores it as a value o
 and (2) an array of <field_names> that create the value of the option
 ******************************************************** */
 
-function csa_wp_plugin_select_options_from_db($field_names, $key_field_name, $table_name, $selected_val, $message){
+function open_csa_wp_select_options_from_db($field_names, $key_field_name, $table_name, $selected_val, $message){
 	global $wpdb;
 	
 	$options = $wpdb->get_results("SELECT * FROM ". $table_name);
@@ -48,12 +48,12 @@ function csa_wp_plugin_select_options_from_db($field_names, $key_field_name, $ta
     	return $result;
 }
 
-function csa_wp_plugin_remove_seconds($time) {
+function open_csa_wp_remove_seconds($time) {
 	$parts = explode (":", $time);
 	return ($parts[0].":".$parts[1]);
 }
 
-function csa_wp_plugin_get_redirection_url($back_end_bool, $page) {
+function open_csa_wp_get_redirection_url($back_end_bool, $page) {
 	global $wp;
 	return ($back_end_bool===true)?admin_url("/admin.php?page=$page"):add_query_arg( $wp->query_string, '', home_url( $wp->request ));
 }

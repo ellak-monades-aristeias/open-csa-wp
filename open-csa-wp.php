@@ -1,6 +1,6 @@
 <?php
 /*
-Plugin Name: Open-CSA WP Plugin
+Plugin Name: Open-CSA WP
 Plugin URI:  
 Description: Provides functionality required to run a CSA (Community Supported Agriculture) Team
 Version:     1.0

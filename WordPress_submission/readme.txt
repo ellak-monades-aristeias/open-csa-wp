@@ -1,4 +1,4 @@
-=== Open-CSA WP Plugin ===
+=== Open-CSA-WP ===
 Contributors: Eleftherios Kosmas, Haris Papagianakis
 Tags: csa
 Requires at least: 4.3.1

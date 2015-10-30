@@ -20,6 +20,41 @@
 [1] - http://open-csa.tolabaki.gr/
 [2] - https://github.com/ellak-monades-aristeias/csa-wp-plugin/blob/master/CSA-WP-Plugin_report_of_D1_and_D2.pdf
 
+# Παραδοτέα
+
+<table>
+  <tr>
+    <th>Παραδοτέο</th>
+    <th>URL/Αναφορές</th>
+  </tr>
+  <tr>
+    <td>Π1: Επανασχεδιασμός πρωτοτύπου</td>
+    <td>https://github.com/ellak-monades-aristeias/open-csa-wp/blob/master/documents/CSA-WP-Plugin_report_of_D1_and_D2.pdf</td>
+  </tr>
+  <tr>
+    <td>Π2: Σχεδιασμός νέων λειτουργιών</td>
+    <td>https://github.com/ellak-monades-aristeias/open-csa-wp/blob/master/documents/CSA-WP-Plugin_report_of_D1_and_D2.pdf</td>
+  </tr>
+  <tr>
+    <td>Π3: Υλοποίηση έργου ως wordpress plugin</td>
+    <td>https://github.com/ellak-monades-aristeias/open-csa-wp</td>
+  </tr>
+  <tr>
+    <td>Π4: Υποβολή στο Wordpress</td>
+    <td>https://github.com/ellak-monades-aristeias/open-csa-wp/tree/master/WordPress_submission</td>
+  </tr>
+  <tr>
+    <td>Π5: Καμπάνια ενημέρωσης χρηστών και προγραμματιστών</td>
+    <td> 
+      <ul>
+        <li> https://github.com/ellak-monades-aristeias/open-csa-wp/blob/master/documents/open_csa_wp_plugin_tutorial.pdf </li>
+        <li>Παρουσίαση του open-csa-wp στο 21ο Πανελλήνιο Μεταπτυχιακό Εντατικό Σεμινάριο-Συνέδριο για Υποψήφιους Διδάκτορες "ΖΗΤΗΜΑΤΑ ΜΕΘΟΔΟΛΟΓΙΑΣ ΤΗΣ ΕΡΕΥΝΑΣ ΣΤΙΣ ΚΟΙΝΩΝΙΚΕΣ ΕΠΙΣΤΗΜΕΣ", Πανεπιστήμιο Κρήτης, Σχολή Κοινωνικών Οοικονομικών ΚΑΙ Πολιτικών Επιστημών, Τμήμα Κοινωνιολογίας, Ρέθυμνο, 14 Οκτώβρη 2015</li>
+        <li>Παρουσίαση/ενημέρωση για το open-csa-wp στην 1η Πανελλήνια Συνάντηση Ομάδων ΚΥΓεω, Θεσσαλονίκη, 27 Οκτώβρη 2015</li>
+      </ul>
+    </td>
+  </tr>
+</table>
+
 # English Version
 
 See the <a href="https://github.com/ellak-monades-aristeias/csa-wp-plugin/wiki/">Wiki page</a> for details.

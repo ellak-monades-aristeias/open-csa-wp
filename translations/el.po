@@ -1,0 +1,664 @@
+msgid ""
+msgstr ""
+"Project-Id-Version: open-csa-wp\n"
+"POT-Creation-Date: 2015-11-14 14:33+0200\n"
+"PO-Revision-Date: 2015-11-14 14:34+0200\n"
+"Last-Translator: \n"
+"Language-Team: \n"
+"Language: el\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Generator: Poedit 1.8.5\n"
+"X-Poedit-Basepath: ../Documents/dev/open-csa-wp\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"X-Poedit-KeywordsList: __\n"
+"X-Poedit-SearchPath-0: open-csa-wp-administration-panel.php\n"
+"X-Poedit-SearchPath-1: open-csa-wp-deliveries.php\n"
+"X-Poedit-SearchPath-2: open-csa-wp-general-functions.php\n"
+"X-Poedit-SearchPath-3: open-csa-wp-orders.php\n"
+"X-Poedit-SearchPath-4: open-csa-wp-product-categories.php\n"
+"X-Poedit-SearchPath-5: open-csa-wp-products.php\n"
+"X-Poedit-SearchPath-6: open-csa-wp-spots.php\n"
+"X-Poedit-SearchPath-7: open-csa-wp-users.php\n"
+
+#: open-csa-wp-administration-panel.php:15
+msgid "CSA Management"
+msgstr ""
+
+#: open-csa-wp-administration-panel.php:15
+msgid "CSA"
+msgstr ""
+
+#: open-csa-wp-administration-panel.php:16
+msgid "Manage CSA Products"
+msgstr ""
+
+#: open-csa-wp-administration-panel.php:16
+msgid "Products"
+msgstr ""
+
+#: open-csa-wp-administration-panel.php:17
+msgid "Manage CSA Spots"
+msgstr ""
+
+#: open-csa-wp-administration-panel.php:17
+msgid "Spots"
+msgstr ""
+
+#: open-csa-wp-administration-panel.php:18
+msgid "Manage CSA Deliveries"
+msgstr ""
+
+#: open-csa-wp-administration-panel.php:18
+msgid "Deliveries"
+msgstr ""
+
+#: open-csa-wp-administration-panel.php:19
+msgid "Manage CSA Orders"
+msgstr ""
+
+#: open-csa-wp-administration-panel.php:19
+msgid "Orders"
+msgstr ""
+
+#: open-csa-wp-administration-panel.php:20
+msgid "Manage CSA Users"
+msgstr ""
+
+#: open-csa-wp-administration-panel.php:20
+msgid "Users"
+msgstr ""
+
+#: open-csa-wp-administration-panel.php:38
+#: open-csa-wp-administration-panel.php:76
+#: open-csa-wp-administration-panel.php:100
+#: open-csa-wp-administration-panel.php:169
+msgid "CSA Management Panel"
+msgstr ""
+
+#: open-csa-wp-administration-panel.php:40
+msgid "Manage Products"
+msgstr ""
+
+#: open-csa-wp-administration-panel.php:163 open-csa-wp-users.php:432
+msgid "sorry... you need to log in first..."
+msgstr ""
+
+#: open-csa-wp-administration-panel.php:171
+msgid "Manage User Orders"
+msgstr ""
+
+#: open-csa-wp-administration-panel.php:173
+msgid "Manage Your Orders"
+msgstr ""
+
+#: open-csa-wp-administration-panel.php:231
+msgid "Total Orders of Deliveries You Are Responsible"
+msgstr ""
+
+#: open-csa-wp-administration-panel.php:235
+msgid "Your Total Orders per Delivery"
+msgstr ""
+
+#: open-csa-wp-administration-panel.php:258
+msgid "You do not have sufficient permissions to access this page."
+msgstr ""
+
+#: open-csa-wp-deliveries.php:108 open-csa-wp-deliveries.php:115
+#: open-csa-wp-deliveries.php:117
+msgid "Initiate New Delivery"
+msgstr ""
+
+#: open-csa-wp-deliveries.php:108
+msgid " \tform"
+msgstr ""
+
+#: open-csa-wp-deliveries.php:115 open-csa-wp-orders.php:40
+#: open-csa-wp-product-categories.php:18 open-csa-wp-products.php:30
+msgid "show form"
+msgstr ""
+
+#: open-csa-wp-deliveries.php:117 open-csa-wp-orders.php:42
+#: open-csa-wp-product-categories.php:20 open-csa-wp-products.php:32
+msgid "hide form"
+msgstr ""
+
+#: open-csa-wp-deliveries.php:121
+msgid "Edit Delivery"
+msgstr ""
+
+#: open-csa-wp-deliveries.php:124
+msgid "Initiating new delivery for "
+msgstr ""
+
+#: open-csa-wp-deliveries.php:172
+msgid ""
+"Below, you can customize the deadline and delivery dates (and times) for "
+"this delivery."
+msgstr ""
+
+#: open-csa-wp-deliveries.php:174
+msgid "with default values... (point here)"
+msgstr ""
+
+#: open-csa-wp-deliveries.php:177
+msgid "with custom values..."
+msgstr ""
+
+#: open-csa-wp-deliveries.php:220 open-csa-wp-deliveries.php:494
+#: open-csa-wp-deliveries.php:1077 open-csa-wp-spots.php:214
+#: open-csa-wp-spots.php:219
+msgid "up to"
+msgstr ""
+
+#: open-csa-wp-deliveries.php:231
+msgid "Order deadline is on"
+msgstr ""
+
+#: open-csa-wp-deliveries.php:298
+msgid "Responsible for this delivery is"
+msgstr ""
+
+#: open-csa-wp-deliveries.php:333
+msgid "Currently, new orders can be submitted"
+msgstr ""
+
+#: open-csa-wp-deliveries.php:334
+msgid "Currently, new orders can not be submitted"
+msgstr ""
+
+#: open-csa-wp-deliveries.php:358
+msgid "Initiate Delivery"
+msgstr ""
+
+#: open-csa-wp-deliveries.php:363
+msgid "Update Delivery"
+msgstr ""
+
+#: open-csa-wp-deliveries.php:400 open-csa-wp-deliveries.php:413
+msgid "Custom values"
+msgstr ""
+
+#: open-csa-wp-deliveries.php:400 open-csa-wp-deliveries.php:402
+#: open-csa-wp-deliveries.php:413 open-csa-wp-deliveries.php:415
+#: open-csa-wp-products.php:23 open-csa-wp-spots.php:24
+msgid "form"
+msgstr ""
+
+#: open-csa-wp-deliveries.php:402 open-csa-wp-deliveries.php:415
+msgid "Customize default values"
+msgstr ""
+
+#: open-csa-wp-deliveries.php:484
+msgid "order deadline is on"
+msgstr ""
+
+#: open-csa-wp-deliveries.php:542 open-csa-wp-spots.php:268
+msgid "Delivery day is"
+msgstr ""
+
+#: open-csa-wp-deliveries.php:594 open-csa-wp-spots.php:307
+#: open-csa-wp-spots.php:312
+msgid "to"
+msgstr ""
+
+#: open-csa-wp-deliveries.php:646
+msgid "Reset to default values"
+msgstr ""
+
+#: open-csa-wp-deliveries.php:800 open-csa-wp-deliveries.php:802
+msgid "Deliveries List"
+msgstr ""
+
+#: open-csa-wp-deliveries.php:800 open-csa-wp-orders.php:126
+#: open-csa-wp-orders.php:625 open-csa-wp-orders.php:817
+#: open-csa-wp-product-categories.php:111 open-csa-wp-products.php:452
+msgid "show"
+msgstr ""
+
+#: open-csa-wp-deliveries.php:802 open-csa-wp-orders.php:623
+#: open-csa-wp-orders.php:819 open-csa-wp-product-categories.php:113
+#: open-csa-wp-products.php:454
+msgid "hide"
+msgstr ""
+
+#: open-csa-wp-deliveries.php:891
+msgid "remover"
+msgstr ""
+
+#: open-csa-wp-deliveries.php:891
+msgid "grant"
+msgstr ""
+
+#: open-csa-wp-deliveries.php:891
+msgid "ability to order"
+msgstr ""
+
+#: open-csa-wp-deliveries.php:900
+msgid "click to edit this delivery"
+msgstr ""
+
+#: open-csa-wp-deliveries.php:908
+msgid "delete delivery"
+msgstr ""
+
+#: open-csa-wp-deliveries.php:987
+msgid ""
+"You are not able to sumbit new order, since there is no delivery accepting "
+"new order submissions"
+msgstr ""
+
+#: open-csa-wp-deliveries.php:988
+msgid "You can create new deliveries"
+msgstr ""
+
+#: open-csa-wp-deliveries.php:991
+msgid "here"
+msgstr ""
+
+#: open-csa-wp-deliveries.php:1072
+msgid "Delivery for spot"
+msgstr ""
+
+#: open-csa-wp-deliveries.php:1072
+msgid "with"
+msgstr ""
+
+#: open-csa-wp-deliveries.php:1073
+msgid "deadline on"
+msgstr ""
+
+#: open-csa-wp-deliveries.php:1075
+msgid "and delivery on"
+msgstr ""
+
+#: open-csa-wp-deliveries.php:1076 open-csa-wp-spots.php:278
+#: open-csa-wp-spots.php:283
+msgid "from"
+msgstr ""
+
+#: open-csa-wp-orders.php:18
+msgid "Submit New Order"
+msgstr ""
+
+#: open-csa-wp-orders.php:26
+msgid "Edit Order"
+msgstr ""
+
+#: open-csa-wp-orders.php:75
+msgid "for user"
+msgstr ""
+
+#: open-csa-wp-orders.php:106
+msgid "on delivery spot"
+msgstr ""
+
+#: open-csa-wp-orders.php:126
+msgid "spot details"
+msgstr ""
+
+#: open-csa-wp-orders.php:189 open-csa-wp-spots.php:540
+msgid "It has refrigerator to store products"
+msgstr ""
+
+#: open-csa-wp-orders.php:190
+msgid "It does not have refrigerator to store products"
+msgstr ""
+
+#: open-csa-wp-orders.php:227
+msgid "for delivery with"
+msgstr ""
+
+#: open-csa-wp-orders.php:233
+msgid "currently, this delivery spot has no active deliveries"
+msgstr ""
+
+#: open-csa-wp-orders.php:289
+msgid ""
+"Choose the quantity of each product you want to order and press \"Submit\" "
+"at the end of the page."
+msgstr ""
+
+#: open-csa-wp-orders.php:290
+msgid ""
+"After submitting your order, you will still be able to edit it, until the "
+"deadline for order submission of this delivery."
+msgstr ""
+
+#: open-csa-wp-orders.php:291
+msgid ""
+"You can read additional information for each product, by pointing to \"info"
+"\"."
+msgstr ""
+
+#: open-csa-wp-orders.php:294
+msgid "by pointing here you can read additional information."
+msgstr ""
+
+#: open-csa-wp-orders.php:374
+msgid "remove this product from your order"
+msgstr ""
+
+#: open-csa-wp-orders.php:397
+msgid "Do you have any comments to add"
+msgstr ""
+
+#: open-csa-wp-orders.php:550
+msgid "Submit Additional Order"
+msgstr ""
+
+#: open-csa-wp-orders.php:552
+msgid "Submit Order"
+msgstr ""
+
+#: open-csa-wp-orders.php:563
+msgid "cancel"
+msgstr ""
+
+#: open-csa-wp-orders.php:601
+msgid "You have not yet submitted any order."
+msgstr ""
+
+#: open-csa-wp-orders.php:603
+msgid "No user has yet submitted any order."
+msgstr ""
+
+#: open-csa-wp-orders.php:617
+msgid "Your Orders List"
+msgstr ""
+
+#: open-csa-wp-orders.php:619
+msgid "User Orders List"
+msgstr ""
+
+#: open-csa-wp-orders.php:645
+msgid ""
+"You can become responsible for some delivery (if none exists) by clicking on "
+"the \"list\" icon."
+msgstr ""
+
+#: open-csa-wp-orders.php:662
+msgid "User"
+msgstr ""
+
+#: open-csa-wp-orders.php:737
+msgid "click to edit this order"
+msgstr ""
+
+#: open-csa-wp-orders.php:750
+msgid "click to become responsible for this delivery"
+msgstr ""
+
+#: open-csa-wp-orders.php:789
+msgid "No delivery has yet been initiated."
+msgstr ""
+
+#: open-csa-wp-orders.php:791
+msgid "You have not yet become responsible for any delivery."
+msgstr ""
+
+#: open-csa-wp-orders.php:795
+msgid "List"
+msgstr ""
+
+#: open-csa-wp-orders.php:797
+msgid "Delivery Total Orders List"
+msgstr ""
+
+#: open-csa-wp-orders.php:857
+msgid "User In Charge"
+msgstr ""
+
+#: open-csa-wp-orders.php:917
+msgid "click to view the total user orders for this delivery"
+msgstr ""
+
+#: open-csa-wp-orders.php:962
+msgid "No order has yet been submitted, for this delivery."
+msgstr ""
+
+#: open-csa-wp-orders.php:964
+msgid "You have no orders in this delivery."
+msgstr ""
+
+#: open-csa-wp-orders.php:982 open-csa-wp-users.php:36
+msgid "Producer"
+msgstr ""
+
+#: open-csa-wp-orders.php:1066
+msgid "Total"
+msgstr ""
+
+#: open-csa-wp-product-categories.php:18 open-csa-wp-product-categories.php:20
+msgid "Add New Category of Products"
+msgstr ""
+
+#: open-csa-wp-product-categories.php:111
+#: open-csa-wp-product-categories.php:113
+msgid "Product Categories List"
+msgstr ""
+
+#: open-csa-wp-product-categories.php:166 open-csa-wp-products.php:555
+msgid "delete product"
+msgstr ""
+
+#: open-csa-wp-products.php:23 open-csa-wp-products.php:30
+#: open-csa-wp-products.php:32
+msgid "Add New Product"
+msgstr ""
+
+#: open-csa-wp-products.php:35
+msgid "Edit Product"
+msgstr ""
+
+#: open-csa-wp-products.php:93
+msgid "Category is "
+msgstr ""
+
+#: open-csa-wp-products.php:127
+msgid "Producer is "
+msgstr ""
+
+#: open-csa-wp-products.php:150
+msgid "Variety is"
+msgstr ""
+
+#: open-csa-wp-products.php:166
+msgid "It costs"
+msgstr ""
+
+#: open-csa-wp-products.php:269
+msgid "Currently, it is available"
+msgstr ""
+
+#: open-csa-wp-products.php:269 open-csa-wp-spots.php:542
+msgid "yes"
+msgstr ""
+
+#: open-csa-wp-products.php:270
+msgid "Currently, it is not available"
+msgstr ""
+
+#: open-csa-wp-products.php:270 open-csa-wp-spots.php:556
+msgid "no"
+msgstr ""
+
+#: open-csa-wp-products.php:290
+msgid "Add Product"
+msgstr ""
+
+#: open-csa-wp-products.php:293
+msgid "Update Product"
+msgstr ""
+
+#: open-csa-wp-products.php:305 open-csa-wp-spots.php:591
+msgid "Reset Info"
+msgstr ""
+
+#: open-csa-wp-products.php:310 open-csa-wp-spots.php:595
+msgid "Cancel"
+msgstr ""
+
+#: open-csa-wp-products.php:331
+msgid "per kilogram"
+msgstr ""
+
+#: open-csa-wp-products.php:333
+msgid "kilogram"
+msgstr ""
+
+#: open-csa-wp-products.php:341
+msgid "per piece"
+msgstr ""
+
+#: open-csa-wp-products.php:343
+msgid "piece"
+msgstr ""
+
+#: open-csa-wp-products.php:351
+msgid "per bunch"
+msgstr ""
+
+#: open-csa-wp-products.php:353
+msgid "bunch"
+msgstr ""
+
+#: open-csa-wp-products.php:361
+msgid "per litre"
+msgstr ""
+
+#: open-csa-wp-products.php:363
+msgid "litre"
+msgstr ""
+
+#: open-csa-wp-products.php:452 open-csa-wp-products.php:454
+msgid "Product List"
+msgstr ""
+
+#: open-csa-wp-products.php:538
+msgid "mark it as"
+msgstr ""
+
+#: open-csa-wp-products.php:538
+msgid "unavailable"
+msgstr ""
+
+#: open-csa-wp-products.php:538
+msgid "available"
+msgstr ""
+
+#: open-csa-wp-products.php:547
+msgid "click to edit this product"
+msgstr ""
+
+#: open-csa-wp-products.php:670
+msgid ""
+"sorry... no available products found... be patient, soon they will have "
+"grown enough... !"
+msgstr ""
+
+#: open-csa-wp-spots.php:24
+msgid "Add New Spot"
+msgstr ""
+
+#: open-csa-wp-spots.php:36
+msgid "Edit Spot #"
+msgstr ""
+
+#: open-csa-wp-spots.php:54
+msgid "Spot Name *"
+msgstr ""
+
+#: open-csa-wp-spots.php:67
+msgid "Street Name *"
+msgstr ""
+
+#: open-csa-wp-spots.php:77
+msgid "Street Number *"
+msgstr ""
+
+#: open-csa-wp-spots.php:88
+msgid "City *"
+msgstr ""
+
+#: open-csa-wp-spots.php:98
+msgid "Region *"
+msgstr ""
+
+#: open-csa-wp-spots.php:170
+msgid "The owner of this delivery spot is: "
+msgstr ""
+
+#: open-csa-wp-spots.php:204
+msgid "Order deadline is on "
+msgstr ""
+
+#: open-csa-wp-spots.php:366 open-csa-wp-spots.php:379
+msgid "Order close"
+msgstr ""
+
+#: open-csa-wp-spots.php:453 open-csa-wp-spots.php:466
+#: open-csa-wp-spots.php:479 open-csa-wp-spots.php:492
+msgid "Finding parking space is"
+msgstr ""
+
+#: open-csa-wp-spots.php:572
+msgid "Add Spot"
+msgstr ""
+
+#: open-csa-wp-spots.php:577
+msgid "Update Spot"
+msgstr ""
+
+#: open-csa-wp-spots.php:583
+msgid "Please fill in required fields, i.e. those marked with (*)"
+msgstr ""
+
+#: open-csa-wp-spots.php:811
+msgid "click to edit this spot"
+msgstr ""
+
+#: open-csa-wp-spots.php:819
+msgid "click to delete this spot"
+msgstr ""
+
+#: open-csa-wp-users.php:31
+msgid "Your account's type in CSA has not yet been defined"
+msgstr ""
+
+#: open-csa-wp-users.php:32
+msgid "Your account's role in CSA has not yet been defined"
+msgstr ""
+
+#: open-csa-wp-users.php:38
+msgid "Producer and Consumer"
+msgstr ""
+
+#: open-csa-wp-users.php:41
+msgid "Simple User"
+msgstr ""
+
+#: open-csa-wp-users.php:43
+msgid "You can become responsible for some delivery"
+msgstr ""
+
+#: open-csa-wp-users.php:50
+msgid "CSA Properties"
+msgstr ""
+
+#: open-csa-wp-users.php:54
+msgid "Type"
+msgstr ""
+
+#: open-csa-wp-users.php:58
+msgid "Role"
+msgstr ""
+
+#: open-csa-wp-users.php:440
+#, php-format
+msgid ""
+"sorry... you do not have sufficient privileges to access \\\"%s\\\" page. In "
+"case something goes wrong, please contant one of your team's "
+"administrators..."
+msgstr ""

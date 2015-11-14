@@ -2,8 +2,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: open-csa-wp\n"
 "POT-Creation-Date: 2015-11-14 14:33+0200\n"
-"PO-Revision-Date: 2015-11-14 14:34+0200\n"
-"Last-Translator: \n"
+"PO-Revision-Date: 2015-11-14 14:46+0200\n"
+"Last-Translator: gin <gin@tolabaki.gr>\n"
 "Language-Team: \n"
 "Language: el\n"
 "MIME-Version: 1.0\n"
@@ -24,43 +24,43 @@ msgstr ""
 
 #: open-csa-wp-administration-panel.php:15
 msgid "CSA Management"
-msgstr ""
+msgstr "Διαχείριση CSA"
 
 #: open-csa-wp-administration-panel.php:15
 msgid "CSA"
-msgstr ""
+msgstr "CSA"
 
 #: open-csa-wp-administration-panel.php:16
 msgid "Manage CSA Products"
-msgstr ""
+msgstr "Διαχείριση Προϊόντων"
 
 #: open-csa-wp-administration-panel.php:16
 msgid "Products"
-msgstr ""
+msgstr "Προϊόντα"
 
 #: open-csa-wp-administration-panel.php:17
 msgid "Manage CSA Spots"
-msgstr ""
+msgstr "Διαχείριση Τοποθεσιών CSA"
 
 #: open-csa-wp-administration-panel.php:17
 msgid "Spots"
-msgstr ""
+msgstr "Τοποθεσίες"
 
 #: open-csa-wp-administration-panel.php:18
 msgid "Manage CSA Deliveries"
-msgstr ""
+msgstr "Διαχείριση Παραδόσεων"
 
 #: open-csa-wp-administration-panel.php:18
 msgid "Deliveries"
-msgstr ""
+msgstr "Παραδόσεις"
 
 #: open-csa-wp-administration-panel.php:19
 msgid "Manage CSA Orders"
-msgstr ""
+msgstr "Διαχείριση Παραγγελιών"
 
 #: open-csa-wp-administration-panel.php:19
 msgid "Orders"
-msgstr ""
+msgstr "Παραγγελίες"
 
 #: open-csa-wp-administration-panel.php:20
 msgid "Manage CSA Users"
@@ -81,7 +81,8 @@ msgstr ""
 msgid "Manage Products"
 msgstr ""
 
-#: open-csa-wp-administration-panel.php:163 open-csa-wp-users.php:432
+#: open-csa-wp-administration-panel.php:163
+#: open-csa-wp-users.php:432
 msgid "sorry... you need to log in first..."
 msgstr ""
 
@@ -105,7 +106,8 @@ msgstr ""
 msgid "You do not have sufficient permissions to access this page."
 msgstr ""
 
-#: open-csa-wp-deliveries.php:108 open-csa-wp-deliveries.php:115
+#: open-csa-wp-deliveries.php:108
+#: open-csa-wp-deliveries.php:115
 #: open-csa-wp-deliveries.php:117
 msgid "Initiate New Delivery"
 msgstr ""
@@ -114,13 +116,17 @@ msgstr ""
 msgid " \tform"
 msgstr ""
 
-#: open-csa-wp-deliveries.php:115 open-csa-wp-orders.php:40
-#: open-csa-wp-product-categories.php:18 open-csa-wp-products.php:30
+#: open-csa-wp-deliveries.php:115
+#: open-csa-wp-orders.php:40
+#: open-csa-wp-product-categories.php:18
+#: open-csa-wp-products.php:30
 msgid "show form"
 msgstr ""
 
-#: open-csa-wp-deliveries.php:117 open-csa-wp-orders.php:42
-#: open-csa-wp-product-categories.php:20 open-csa-wp-products.php:32
+#: open-csa-wp-deliveries.php:117
+#: open-csa-wp-orders.php:42
+#: open-csa-wp-product-categories.php:20
+#: open-csa-wp-products.php:32
 msgid "hide form"
 msgstr ""
 
@@ -133,9 +139,7 @@ msgid "Initiating new delivery for "
 msgstr ""
 
 #: open-csa-wp-deliveries.php:172
-msgid ""
-"Below, you can customize the deadline and delivery dates (and times) for "
-"this delivery."
+msgid "Below, you can customize the deadline and delivery dates (and times) for this delivery."
 msgstr ""
 
 #: open-csa-wp-deliveries.php:174
@@ -146,8 +150,10 @@ msgstr ""
 msgid "with custom values..."
 msgstr ""
 
-#: open-csa-wp-deliveries.php:220 open-csa-wp-deliveries.php:494
-#: open-csa-wp-deliveries.php:1077 open-csa-wp-spots.php:214
+#: open-csa-wp-deliveries.php:220
+#: open-csa-wp-deliveries.php:494
+#: open-csa-wp-deliveries.php:1077
+#: open-csa-wp-spots.php:214
 #: open-csa-wp-spots.php:219
 msgid "up to"
 msgstr ""
@@ -176,17 +182,22 @@ msgstr ""
 msgid "Update Delivery"
 msgstr ""
 
-#: open-csa-wp-deliveries.php:400 open-csa-wp-deliveries.php:413
+#: open-csa-wp-deliveries.php:400
+#: open-csa-wp-deliveries.php:413
 msgid "Custom values"
 msgstr ""
 
-#: open-csa-wp-deliveries.php:400 open-csa-wp-deliveries.php:402
-#: open-csa-wp-deliveries.php:413 open-csa-wp-deliveries.php:415
-#: open-csa-wp-products.php:23 open-csa-wp-spots.php:24
+#: open-csa-wp-deliveries.php:400
+#: open-csa-wp-deliveries.php:402
+#: open-csa-wp-deliveries.php:413
+#: open-csa-wp-deliveries.php:415
+#: open-csa-wp-products.php:23
+#: open-csa-wp-spots.php:24
 msgid "form"
 msgstr ""
 
-#: open-csa-wp-deliveries.php:402 open-csa-wp-deliveries.php:415
+#: open-csa-wp-deliveries.php:402
+#: open-csa-wp-deliveries.php:415
 msgid "Customize default values"
 msgstr ""
 
@@ -194,11 +205,13 @@ msgstr ""
 msgid "order deadline is on"
 msgstr ""
 
-#: open-csa-wp-deliveries.php:542 open-csa-wp-spots.php:268
+#: open-csa-wp-deliveries.php:542
+#: open-csa-wp-spots.php:268
 msgid "Delivery day is"
 msgstr ""
 
-#: open-csa-wp-deliveries.php:594 open-csa-wp-spots.php:307
+#: open-csa-wp-deliveries.php:594
+#: open-csa-wp-spots.php:307
 #: open-csa-wp-spots.php:312
 msgid "to"
 msgstr ""
@@ -207,18 +220,24 @@ msgstr ""
 msgid "Reset to default values"
 msgstr ""
 
-#: open-csa-wp-deliveries.php:800 open-csa-wp-deliveries.php:802
+#: open-csa-wp-deliveries.php:800
+#: open-csa-wp-deliveries.php:802
 msgid "Deliveries List"
 msgstr ""
 
-#: open-csa-wp-deliveries.php:800 open-csa-wp-orders.php:126
-#: open-csa-wp-orders.php:625 open-csa-wp-orders.php:817
-#: open-csa-wp-product-categories.php:111 open-csa-wp-products.php:452
+#: open-csa-wp-deliveries.php:800
+#: open-csa-wp-orders.php:126
+#: open-csa-wp-orders.php:625
+#: open-csa-wp-orders.php:817
+#: open-csa-wp-product-categories.php:111
+#: open-csa-wp-products.php:452
 msgid "show"
 msgstr ""
 
-#: open-csa-wp-deliveries.php:802 open-csa-wp-orders.php:623
-#: open-csa-wp-orders.php:819 open-csa-wp-product-categories.php:113
+#: open-csa-wp-deliveries.php:802
+#: open-csa-wp-orders.php:623
+#: open-csa-wp-orders.php:819
+#: open-csa-wp-product-categories.php:113
 #: open-csa-wp-products.php:454
 msgid "hide"
 msgstr ""
@@ -244,9 +263,7 @@ msgid "delete delivery"
 msgstr ""
 
 #: open-csa-wp-deliveries.php:987
-msgid ""
-"You are not able to sumbit new order, since there is no delivery accepting "
-"new order submissions"
+msgid "You are not able to sumbit new order, since there is no delivery accepting new order submissions"
 msgstr ""
 
 #: open-csa-wp-deliveries.php:988
@@ -273,7 +290,8 @@ msgstr ""
 msgid "and delivery on"
 msgstr ""
 
-#: open-csa-wp-deliveries.php:1076 open-csa-wp-spots.php:278
+#: open-csa-wp-deliveries.php:1076
+#: open-csa-wp-spots.php:278
 #: open-csa-wp-spots.php:283
 msgid "from"
 msgstr ""
@@ -298,7 +316,8 @@ msgstr ""
 msgid "spot details"
 msgstr ""
 
-#: open-csa-wp-orders.php:189 open-csa-wp-spots.php:540
+#: open-csa-wp-orders.php:189
+#: open-csa-wp-spots.php:540
 msgid "It has refrigerator to store products"
 msgstr ""
 
@@ -315,21 +334,15 @@ msgid "currently, this delivery spot has no active deliveries"
 msgstr ""
 
 #: open-csa-wp-orders.php:289
-msgid ""
-"Choose the quantity of each product you want to order and press \"Submit\" "
-"at the end of the page."
+msgid "Choose the quantity of each product you want to order and press \"Submit\" at the end of the page."
 msgstr ""
 
 #: open-csa-wp-orders.php:290
-msgid ""
-"After submitting your order, you will still be able to edit it, until the "
-"deadline for order submission of this delivery."
+msgid "After submitting your order, you will still be able to edit it, until the deadline for order submission of this delivery."
 msgstr ""
 
 #: open-csa-wp-orders.php:291
-msgid ""
-"You can read additional information for each product, by pointing to \"info"
-"\"."
+msgid "You can read additional information for each product, by pointing to \"info\"."
 msgstr ""
 
 #: open-csa-wp-orders.php:294
@@ -373,9 +386,7 @@ msgid "User Orders List"
 msgstr ""
 
 #: open-csa-wp-orders.php:645
-msgid ""
-"You can become responsible for some delivery (if none exists) by clicking on "
-"the \"list\" icon."
+msgid "You can become responsible for some delivery (if none exists) by clicking on the \"list\" icon."
 msgstr ""
 
 #: open-csa-wp-orders.php:662
@@ -422,7 +433,8 @@ msgstr ""
 msgid "You have no orders in this delivery."
 msgstr ""
 
-#: open-csa-wp-orders.php:982 open-csa-wp-users.php:36
+#: open-csa-wp-orders.php:982
+#: open-csa-wp-users.php:36
 msgid "Producer"
 msgstr ""
 
@@ -430,7 +442,8 @@ msgstr ""
 msgid "Total"
 msgstr ""
 
-#: open-csa-wp-product-categories.php:18 open-csa-wp-product-categories.php:20
+#: open-csa-wp-product-categories.php:18
+#: open-csa-wp-product-categories.php:20
 msgid "Add New Category of Products"
 msgstr ""
 
@@ -439,11 +452,13 @@ msgstr ""
 msgid "Product Categories List"
 msgstr ""
 
-#: open-csa-wp-product-categories.php:166 open-csa-wp-products.php:555
+#: open-csa-wp-product-categories.php:166
+#: open-csa-wp-products.php:555
 msgid "delete product"
 msgstr ""
 
-#: open-csa-wp-products.php:23 open-csa-wp-products.php:30
+#: open-csa-wp-products.php:23
+#: open-csa-wp-products.php:30
 #: open-csa-wp-products.php:32
 msgid "Add New Product"
 msgstr ""
@@ -472,7 +487,8 @@ msgstr ""
 msgid "Currently, it is available"
 msgstr ""
 
-#: open-csa-wp-products.php:269 open-csa-wp-spots.php:542
+#: open-csa-wp-products.php:269
+#: open-csa-wp-spots.php:542
 msgid "yes"
 msgstr ""
 
@@ -480,7 +496,8 @@ msgstr ""
 msgid "Currently, it is not available"
 msgstr ""
 
-#: open-csa-wp-products.php:270 open-csa-wp-spots.php:556
+#: open-csa-wp-products.php:270
+#: open-csa-wp-spots.php:556
 msgid "no"
 msgstr ""
 
@@ -492,11 +509,13 @@ msgstr ""
 msgid "Update Product"
 msgstr ""
 
-#: open-csa-wp-products.php:305 open-csa-wp-spots.php:591
+#: open-csa-wp-products.php:305
+#: open-csa-wp-spots.php:591
 msgid "Reset Info"
 msgstr ""
 
-#: open-csa-wp-products.php:310 open-csa-wp-spots.php:595
+#: open-csa-wp-products.php:310
+#: open-csa-wp-spots.php:595
 msgid "Cancel"
 msgstr ""
 
@@ -532,7 +551,8 @@ msgstr ""
 msgid "litre"
 msgstr ""
 
-#: open-csa-wp-products.php:452 open-csa-wp-products.php:454
+#: open-csa-wp-products.php:452
+#: open-csa-wp-products.php:454
 msgid "Product List"
 msgstr ""
 
@@ -553,9 +573,7 @@ msgid "click to edit this product"
 msgstr ""
 
 #: open-csa-wp-products.php:670
-msgid ""
-"sorry... no available products found... be patient, soon they will have "
-"grown enough... !"
+msgid "sorry... no available products found... be patient, soon they will have grown enough... !"
 msgstr ""
 
 #: open-csa-wp-spots.php:24
@@ -594,12 +612,15 @@ msgstr ""
 msgid "Order deadline is on "
 msgstr ""
 
-#: open-csa-wp-spots.php:366 open-csa-wp-spots.php:379
+#: open-csa-wp-spots.php:366
+#: open-csa-wp-spots.php:379
 msgid "Order close"
 msgstr ""
 
-#: open-csa-wp-spots.php:453 open-csa-wp-spots.php:466
-#: open-csa-wp-spots.php:479 open-csa-wp-spots.php:492
+#: open-csa-wp-spots.php:453
+#: open-csa-wp-spots.php:466
+#: open-csa-wp-spots.php:479
+#: open-csa-wp-spots.php:492
 msgid "Finding parking space is"
 msgstr ""
 
@@ -657,8 +678,6 @@ msgstr ""
 
 #: open-csa-wp-users.php:440
 #, php-format
-msgid ""
-"sorry... you do not have sufficient privileges to access \\\"%s\\\" page. In "
-"case something goes wrong, please contant one of your team's "
-"administrators..."
+msgid "sorry... you do not have sufficient privileges to access \\\"%s\\\" page. In case something goes wrong, please contant one of your team's administrators..."
 msgstr ""
+

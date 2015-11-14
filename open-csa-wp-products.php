@@ -7,7 +7,7 @@ function open_csa_wp_show_new_product_form($product_id, $display, $page_url) {
 	wp_enqueue_script( 'open-csa-wp-products-scripts' );
 	
 	global $days_of_week,$wpdb;
-	$product_info;
+	$product_info = null;
 	if ($product_id != null) {
 		$product_info = $wpdb->get_results($wpdb->prepare("SELECT * FROM ".OPEN_CSA_WP_TABLE_PRODUCTS." WHERE id=%d", $product_id));
 	}

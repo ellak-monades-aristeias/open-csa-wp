@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: open-csa-wp\n"
 "POT-Creation-Date: 2015-11-14 14:33+0200\n"
-"PO-Revision-Date: 2015-11-14 14:46+0200\n"
+"PO-Revision-Date: 2015-11-14 16:47+0200\n"
 "Last-Translator: gin <gin@tolabaki.gr>\n"
 "Language-Team: \n"
 "Language: el\n"
@@ -64,91 +64,91 @@ msgstr "Παραγγελίες"
 
 #: open-csa-wp-administration-panel.php:20
 msgid "Manage CSA Users"
-msgstr ""
+msgstr "Διαχείριση Χρηστών"
 
 #: open-csa-wp-administration-panel.php:20
 msgid "Users"
-msgstr ""
+msgstr "Χρήστες"
 
 #: open-csa-wp-administration-panel.php:38
 #: open-csa-wp-administration-panel.php:76
 #: open-csa-wp-administration-panel.php:100
 #: open-csa-wp-administration-panel.php:169
 msgid "CSA Management Panel"
-msgstr ""
+msgstr "Πίνακας Διαχείρισης"
 
 #: open-csa-wp-administration-panel.php:40
 msgid "Manage Products"
-msgstr ""
+msgstr "Διαχείριση Προϊόντων"
 
 #: open-csa-wp-administration-panel.php:163
 #: open-csa-wp-users.php:432
 msgid "sorry... you need to log in first..."
-msgstr ""
+msgstr "Θα πρέπει να συνδεθείτε με το όνομα χρήστη σας για να δείτε το περιεχόμενο της σελίδας."
 
 #: open-csa-wp-administration-panel.php:171
 msgid "Manage User Orders"
-msgstr ""
+msgstr "Διαχείριση των παραγγελιών των χρηστών"
 
 #: open-csa-wp-administration-panel.php:173
 msgid "Manage Your Orders"
-msgstr ""
+msgstr "Διαχείριση των παραγγελιών μου"
 
 #: open-csa-wp-administration-panel.php:231
 msgid "Total Orders of Deliveries You Are Responsible"
-msgstr ""
+msgstr "Συνολικές παραγγελίες των παραδόσεων στις οποίες είστε υπεύθυνος/η"
 
 #: open-csa-wp-administration-panel.php:235
 msgid "Your Total Orders per Delivery"
-msgstr ""
+msgstr "Οι συνολικές παραγγελίες μου ανά παράδοση"
 
 #: open-csa-wp-administration-panel.php:258
 msgid "You do not have sufficient permissions to access this page."
-msgstr ""
+msgstr "Δεν έχετε επαρκή δικαιώματα για να έχετε πρόσβαση εδώ"
 
 #: open-csa-wp-deliveries.php:108
 #: open-csa-wp-deliveries.php:115
 #: open-csa-wp-deliveries.php:117
 msgid "Initiate New Delivery"
-msgstr ""
+msgstr "Δημιουργία νέας παραγγελίας"
 
 #: open-csa-wp-deliveries.php:108
 msgid " \tform"
-msgstr ""
+msgstr "\tφόρμα"
 
 #: open-csa-wp-deliveries.php:115
 #: open-csa-wp-orders.php:40
 #: open-csa-wp-product-categories.php:18
 #: open-csa-wp-products.php:30
 msgid "show form"
-msgstr ""
+msgstr "εμφάνιση φόρμας"
 
 #: open-csa-wp-deliveries.php:117
 #: open-csa-wp-orders.php:42
 #: open-csa-wp-product-categories.php:20
 #: open-csa-wp-products.php:32
 msgid "hide form"
-msgstr ""
+msgstr "απόκρυψη φόρμας"
 
 #: open-csa-wp-deliveries.php:121
 msgid "Edit Delivery"
-msgstr ""
+msgstr "Επεξεργασία παράδοσης"
 
 #: open-csa-wp-deliveries.php:124
 msgid "Initiating new delivery for "
-msgstr ""
+msgstr "Δημιουργία νέας παραγγελίας για"
 
 #: open-csa-wp-deliveries.php:172
 msgid "Below, you can customize the deadline and delivery dates (and times) for this delivery."
-msgstr ""
+msgstr "Παρακάτω μπορείτε να αλλάξετε την προθεσμία για καταχώρηση παραγγελιών, όπως και την ημερομηνία και ώρα για τις παραδόσεις."
 
 #: open-csa-wp-deliveries.php:174
 msgid "with default values... (point here)"
-msgstr ""
+msgstr "με προεπιλεγμένες τιμές... (κινήστε το δείκτη σας εδώ)"
 
 #: open-csa-wp-deliveries.php:177
 msgid "with custom values..."
-msgstr ""
+msgstr "με τιμές επιλεγμένες από τον χρήστη"
 
 #: open-csa-wp-deliveries.php:220
 #: open-csa-wp-deliveries.php:494
@@ -156,36 +156,36 @@ msgstr ""
 #: open-csa-wp-spots.php:214
 #: open-csa-wp-spots.php:219
 msgid "up to"
-msgstr ""
+msgstr "μέχρι"
 
 #: open-csa-wp-deliveries.php:231
 msgid "Order deadline is on"
-msgstr ""
+msgstr "Η προθεσμία για τις παραγγελίες είναι ενεργοποιημένη"
 
 #: open-csa-wp-deliveries.php:298
 msgid "Responsible for this delivery is"
-msgstr ""
+msgstr "Υπεύθυνος/η για αυτή την παράδοση είναι ο χρήστης:"
 
 #: open-csa-wp-deliveries.php:333
 msgid "Currently, new orders can be submitted"
-msgstr ""
+msgstr "Νέες παραγγελίες μπορούν να καταχωρούνται"
 
 #: open-csa-wp-deliveries.php:334
 msgid "Currently, new orders can not be submitted"
-msgstr ""
+msgstr "Προς το παρόν, νέες παραγγελίες δεν μπορούν να καταχωρούνται"
 
 #: open-csa-wp-deliveries.php:358
 msgid "Initiate Delivery"
-msgstr ""
+msgstr "Δημιουργία παράδοσης"
 
 #: open-csa-wp-deliveries.php:363
 msgid "Update Delivery"
-msgstr ""
+msgstr "Ανανέωση παράδοσης"
 
 #: open-csa-wp-deliveries.php:400
 #: open-csa-wp-deliveries.php:413
 msgid "Custom values"
-msgstr ""
+msgstr "Προεπιλεγμένες τιμές"
 
 #: open-csa-wp-deliveries.php:400
 #: open-csa-wp-deliveries.php:402
@@ -194,36 +194,36 @@ msgstr ""
 #: open-csa-wp-products.php:23
 #: open-csa-wp-spots.php:24
 msgid "form"
-msgstr ""
+msgstr "φόρμα"
 
 #: open-csa-wp-deliveries.php:402
 #: open-csa-wp-deliveries.php:415
 msgid "Customize default values"
-msgstr ""
+msgstr "Αλλαγή από τις προεπιλεγμένες τιμές"
 
 #: open-csa-wp-deliveries.php:484
 msgid "order deadline is on"
-msgstr ""
+msgstr "Η προθεσμία για τις παραγγελίες είναι ενεργοποιημένη"
 
 #: open-csa-wp-deliveries.php:542
 #: open-csa-wp-spots.php:268
 msgid "Delivery day is"
-msgstr ""
+msgstr "Η μέρα παράδοσης είναι"
 
 #: open-csa-wp-deliveries.php:594
 #: open-csa-wp-spots.php:307
 #: open-csa-wp-spots.php:312
 msgid "to"
-msgstr ""
+msgstr "έως"
 
 #: open-csa-wp-deliveries.php:646
 msgid "Reset to default values"
-msgstr ""
+msgstr "Επαναφορά στις προεπιλεγμένες (αρχικές) τιμές"
 
 #: open-csa-wp-deliveries.php:800
 #: open-csa-wp-deliveries.php:802
 msgid "Deliveries List"
-msgstr ""
+msgstr "Λίστα παραδόσεων"
 
 #: open-csa-wp-deliveries.php:800
 #: open-csa-wp-orders.php:126
@@ -232,7 +232,7 @@ msgstr ""
 #: open-csa-wp-product-categories.php:111
 #: open-csa-wp-products.php:452
 msgid "show"
-msgstr ""
+msgstr "εμφάνιση"
 
 #: open-csa-wp-deliveries.php:802
 #: open-csa-wp-orders.php:623
@@ -240,7 +240,7 @@ msgstr ""
 #: open-csa-wp-product-categories.php:113
 #: open-csa-wp-products.php:454
 msgid "hide"
-msgstr ""
+msgstr "απόκρυψη"
 
 #: open-csa-wp-deliveries.php:891
 msgid "remover"
@@ -252,432 +252,432 @@ msgstr ""
 
 #: open-csa-wp-deliveries.php:891
 msgid "ability to order"
-msgstr ""
+msgstr "Δυνατότητα δημιουργίας παραγγελίας"
 
 #: open-csa-wp-deliveries.php:900
 msgid "click to edit this delivery"
-msgstr ""
+msgstr "Επιλέξτε για επεξεργασία παράδοσης"
 
 #: open-csa-wp-deliveries.php:908
 msgid "delete delivery"
-msgstr ""
+msgstr "Διαγραφή παραγγελίας"
 
 #: open-csa-wp-deliveries.php:987
 msgid "You are not able to sumbit new order, since there is no delivery accepting new order submissions"
-msgstr ""
+msgstr "Δεν μπορείτε να καταχωρήσετε νέα παραγγελία επειδή δεν υπάρχει παράδοση που να δέχεται νέες καταχωρήσεις"
 
 #: open-csa-wp-deliveries.php:988
 msgid "You can create new deliveries"
-msgstr ""
+msgstr "Μπορείτε να δημιουργήσετε νέες παραδόσεις"
 
 #: open-csa-wp-deliveries.php:991
 msgid "here"
-msgstr ""
+msgstr "εδώ"
 
 #: open-csa-wp-deliveries.php:1072
 msgid "Delivery for spot"
-msgstr ""
+msgstr "Παράδοση για τοποθεσία"
 
 #: open-csa-wp-deliveries.php:1072
 msgid "with"
-msgstr ""
+msgstr "με"
 
 #: open-csa-wp-deliveries.php:1073
 msgid "deadline on"
-msgstr ""
+msgstr "Προθεσμία για καταχώρηση παραγγελιών στις"
 
 #: open-csa-wp-deliveries.php:1075
 msgid "and delivery on"
-msgstr ""
+msgstr "και παράδοση στις"
 
 #: open-csa-wp-deliveries.php:1076
 #: open-csa-wp-spots.php:278
 #: open-csa-wp-spots.php:283
 msgid "from"
-msgstr ""
+msgstr "από"
 
 #: open-csa-wp-orders.php:18
 msgid "Submit New Order"
-msgstr ""
+msgstr "Καταχώρηση νέας παραγγελίας"
 
 #: open-csa-wp-orders.php:26
 msgid "Edit Order"
-msgstr ""
+msgstr "Επεξεργασία παραγγελίας"
 
 #: open-csa-wp-orders.php:75
 msgid "for user"
-msgstr ""
+msgstr "για τον χρήστη"
 
 #: open-csa-wp-orders.php:106
 msgid "on delivery spot"
-msgstr ""
+msgstr "στην τοποθεσία παράδοσης"
 
 #: open-csa-wp-orders.php:126
 msgid "spot details"
-msgstr ""
+msgstr "λεπτομέρειες τοποθεσίας"
 
 #: open-csa-wp-orders.php:189
 #: open-csa-wp-spots.php:540
 msgid "It has refrigerator to store products"
-msgstr ""
+msgstr "Διαθέτει ψυγείο για την αποθήκευση προϊόντων"
 
 #: open-csa-wp-orders.php:190
 msgid "It does not have refrigerator to store products"
-msgstr ""
+msgstr "Δε διαθέτει ψυγείο για την αποθήκευση προϊόντων"
 
 #: open-csa-wp-orders.php:227
 msgid "for delivery with"
-msgstr ""
+msgstr "για παράδοση με"
 
 #: open-csa-wp-orders.php:233
 msgid "currently, this delivery spot has no active deliveries"
-msgstr ""
+msgstr "Προς το παρόν, αυτό το σημείο παράδοσης δεν έχει ενεργές παραδόσεις"
 
 #: open-csa-wp-orders.php:289
 msgid "Choose the quantity of each product you want to order and press \"Submit\" at the end of the page."
-msgstr ""
+msgstr "Επιλέξτε την ποσότητα κάθε προϊόντος που επιθυμείτε να παραγγείλετε και πατήστε \"Καταχώρηση\" στο τέλος της σελίδας."
 
 #: open-csa-wp-orders.php:290
 msgid "After submitting your order, you will still be able to edit it, until the deadline for order submission of this delivery."
-msgstr ""
+msgstr "Μετά την καταχώρηση της παραγγελίας σας θα μπορείτε ακόμα να την επεξεργαστείτε, μέχρι και την προθεσμία καταχώρησης παραγγελιών για αυτήν την παράδοση."
 
 #: open-csa-wp-orders.php:291
 msgid "You can read additional information for each product, by pointing to \"info\"."
-msgstr ""
+msgstr "Μπορείτε να διαβάσετε επιπλέον πληροφορίες για κάθε προϊόν δείχνοντας το \"πληροφορίες\"."
 
 #: open-csa-wp-orders.php:294
 msgid "by pointing here you can read additional information."
-msgstr ""
+msgstr "κινήστε το δείκτη σας εδώ για να διαβάσετε επιπρόσθετες πληροφορίες"
 
 #: open-csa-wp-orders.php:374
 msgid "remove this product from your order"
-msgstr ""
+msgstr "αφαιρέστε το προϊόν από την παραγγελία σας"
 
 #: open-csa-wp-orders.php:397
 msgid "Do you have any comments to add"
-msgstr ""
+msgstr "Έχετε σχόλια να προσθέσετε"
 
 #: open-csa-wp-orders.php:550
 msgid "Submit Additional Order"
-msgstr ""
+msgstr "Καταχώρηση επιπλέον παραγγελίας"
 
 #: open-csa-wp-orders.php:552
 msgid "Submit Order"
-msgstr ""
+msgstr "Καταχώρηση παραγγελίας"
 
 #: open-csa-wp-orders.php:563
 msgid "cancel"
-msgstr ""
+msgstr "ακύρωση"
 
 #: open-csa-wp-orders.php:601
 msgid "You have not yet submitted any order."
-msgstr ""
+msgstr "Δεν έχετε καταχωρήσει ακόμα κάποια παραγγελία."
 
 #: open-csa-wp-orders.php:603
 msgid "No user has yet submitted any order."
-msgstr ""
+msgstr "Κανείς χρήστης δεν έχει καταχωρήσει ακόμα παραγγελία."
 
 #: open-csa-wp-orders.php:617
 msgid "Your Orders List"
-msgstr ""
+msgstr "Η λίστα παραγγελιών σας"
 
 #: open-csa-wp-orders.php:619
 msgid "User Orders List"
-msgstr ""
+msgstr "Λίστα παραγγελιών του χρήστη"
 
 #: open-csa-wp-orders.php:645
 msgid "You can become responsible for some delivery (if none exists) by clicking on the \"list\" icon."
-msgstr ""
+msgstr "Μπορείτε να γίνετε υπεύθυνος/η για κάποια παράδοση (εάν δεν σας πρόλαβε κανείς ακόμα) πατώντας στο εικονίδιο \"λίστα\"."
 
 #: open-csa-wp-orders.php:662
 msgid "User"
-msgstr ""
+msgstr "Χρήστης"
 
 #: open-csa-wp-orders.php:737
 msgid "click to edit this order"
-msgstr ""
+msgstr "Επιλέξτε για να επεξεργαστείτε την παραγγελία"
 
 #: open-csa-wp-orders.php:750
 msgid "click to become responsible for this delivery"
-msgstr ""
+msgstr "Πατήστε εδώ για να αναλάβετε το ρόλο του υπευθύνου για αυτήν την παράδοση"
 
 #: open-csa-wp-orders.php:789
 msgid "No delivery has yet been initiated."
-msgstr ""
+msgstr "Δεν έχει δημιουργηθεί ακόμα κάποια παράδοση."
 
 #: open-csa-wp-orders.php:791
 msgid "You have not yet become responsible for any delivery."
-msgstr ""
+msgstr "Δεν έχετε γίνει ακόμα υπεύθυνος για καμία απολύτως παράδοση :("
 
 #: open-csa-wp-orders.php:795
 msgid "List"
-msgstr ""
+msgstr "Λίστα"
 
 #: open-csa-wp-orders.php:797
 msgid "Delivery Total Orders List"
-msgstr ""
+msgstr "Λίστα συνολικών παραγγελιών για την τρέχουσα παράδοση"
 
 #: open-csa-wp-orders.php:857
 msgid "User In Charge"
-msgstr ""
+msgstr "Υπεύθυνος/η χρήστης"
 
 #: open-csa-wp-orders.php:917
 msgid "click to view the total user orders for this delivery"
-msgstr ""
+msgstr "επιλέξτε για να δείτε τις συνολικές παραγγελίες για αυτήν την παράδοση"
 
 #: open-csa-wp-orders.php:962
 msgid "No order has yet been submitted, for this delivery."
-msgstr ""
+msgstr "Δεν έχει καταχωρηθεί ακόμα κάποια παραγγελία για την παράδοση."
 
 #: open-csa-wp-orders.php:964
 msgid "You have no orders in this delivery."
-msgstr ""
+msgstr "Δεν έχετε παραγγελίες για αυτήν την παράδοση."
 
 #: open-csa-wp-orders.php:982
 #: open-csa-wp-users.php:36
 msgid "Producer"
-msgstr ""
+msgstr "Παραγωγός"
 
 #: open-csa-wp-orders.php:1066
 msgid "Total"
-msgstr ""
+msgstr "Σύνολο"
 
 #: open-csa-wp-product-categories.php:18
 #: open-csa-wp-product-categories.php:20
 msgid "Add New Category of Products"
-msgstr ""
+msgstr "Προσθήκη νέας κατηγορίας προϊόντων"
 
 #: open-csa-wp-product-categories.php:111
 #: open-csa-wp-product-categories.php:113
 msgid "Product Categories List"
-msgstr ""
+msgstr "Λίστα κατηγοριών προϊόντων"
 
 #: open-csa-wp-product-categories.php:166
 #: open-csa-wp-products.php:555
 msgid "delete product"
-msgstr ""
+msgstr "Διαγραφή προϊόντος"
 
 #: open-csa-wp-products.php:23
 #: open-csa-wp-products.php:30
 #: open-csa-wp-products.php:32
 msgid "Add New Product"
-msgstr ""
+msgstr "Προσθήκη προϊόντος"
 
 #: open-csa-wp-products.php:35
 msgid "Edit Product"
-msgstr ""
+msgstr "Επεξεργασία προϊόντος"
 
 #: open-csa-wp-products.php:93
 msgid "Category is "
-msgstr ""
+msgstr "Η κατηγορία είναι"
 
 #: open-csa-wp-products.php:127
 msgid "Producer is "
-msgstr ""
+msgstr "Ο παραγωγός είναι"
 
 #: open-csa-wp-products.php:150
 msgid "Variety is"
-msgstr ""
+msgstr "Η ποικιλία είναι"
 
 #: open-csa-wp-products.php:166
 msgid "It costs"
-msgstr ""
+msgstr "Κοστίζει"
 
 #: open-csa-wp-products.php:269
 msgid "Currently, it is available"
-msgstr ""
+msgstr "Διαθέσιμο"
 
 #: open-csa-wp-products.php:269
 #: open-csa-wp-spots.php:542
 msgid "yes"
-msgstr ""
+msgstr "ναι"
 
 #: open-csa-wp-products.php:270
 msgid "Currently, it is not available"
-msgstr ""
+msgstr "Μη διαθέσιμο"
 
 #: open-csa-wp-products.php:270
 #: open-csa-wp-spots.php:556
 msgid "no"
-msgstr ""
+msgstr "όχι"
 
 #: open-csa-wp-products.php:290
 msgid "Add Product"
-msgstr ""
+msgstr "Προσθήκη προϊόντος"
 
 #: open-csa-wp-products.php:293
 msgid "Update Product"
-msgstr ""
+msgstr "Ενημέρωση προϊόντος"
 
 #: open-csa-wp-products.php:305
 #: open-csa-wp-spots.php:591
 msgid "Reset Info"
-msgstr ""
+msgstr "Επαναφορά Πληροφοριών"
 
 #: open-csa-wp-products.php:310
 #: open-csa-wp-spots.php:595
 msgid "Cancel"
-msgstr ""
+msgstr "Ακύρωση"
 
 #: open-csa-wp-products.php:331
 msgid "per kilogram"
-msgstr ""
+msgstr "ανά κιλό"
 
 #: open-csa-wp-products.php:333
 msgid "kilogram"
-msgstr ""
+msgstr "κιλό"
 
 #: open-csa-wp-products.php:341
 msgid "per piece"
-msgstr ""
+msgstr "ανά τεμάχιο"
 
 #: open-csa-wp-products.php:343
 msgid "piece"
-msgstr ""
+msgstr "τεμάχιο"
 
 #: open-csa-wp-products.php:351
 msgid "per bunch"
-msgstr ""
+msgstr "ανά μάτσο"
 
 #: open-csa-wp-products.php:353
 msgid "bunch"
-msgstr ""
+msgstr "μάτσο"
 
 #: open-csa-wp-products.php:361
 msgid "per litre"
-msgstr ""
+msgstr "ανά λίτρο"
 
 #: open-csa-wp-products.php:363
 msgid "litre"
-msgstr ""
+msgstr "λίτρο"
 
 #: open-csa-wp-products.php:452
 #: open-csa-wp-products.php:454
 msgid "Product List"
-msgstr ""
+msgstr "Λίστα προϊόντων"
 
 #: open-csa-wp-products.php:538
 msgid "mark it as"
-msgstr ""
+msgstr "επισήμανση ως"
 
 #: open-csa-wp-products.php:538
 msgid "unavailable"
-msgstr ""
+msgstr "μη διαθέσιμο"
 
 #: open-csa-wp-products.php:538
 msgid "available"
-msgstr ""
+msgstr "διαθέσιμο"
 
 #: open-csa-wp-products.php:547
 msgid "click to edit this product"
-msgstr ""
+msgstr "επιλέξτε για να επεξεργαστείτε το προϊόν"
 
 #: open-csa-wp-products.php:670
 msgid "sorry... no available products found... be patient, soon they will have grown enough... !"
-msgstr ""
+msgstr "Δεν υπάρχουν διαθέσιμα προϊόντα ακόμα, λίγη υπομονή μέχρι να μεγαλώσουν τα φυτά!"
 
 #: open-csa-wp-spots.php:24
 msgid "Add New Spot"
-msgstr ""
+msgstr "Προσθήκη νέας τοποθεσίας"
 
 #: open-csa-wp-spots.php:36
 msgid "Edit Spot #"
-msgstr ""
+msgstr "Επεξεργασία τοποθεσίας #"
 
 #: open-csa-wp-spots.php:54
 msgid "Spot Name *"
-msgstr ""
+msgstr "Όνομα τοποθεσίας *"
 
 #: open-csa-wp-spots.php:67
 msgid "Street Name *"
-msgstr ""
+msgstr "Οδός *"
 
 #: open-csa-wp-spots.php:77
 msgid "Street Number *"
-msgstr ""
+msgstr "Αριθμός οδού *"
 
 #: open-csa-wp-spots.php:88
 msgid "City *"
-msgstr ""
+msgstr "Πόλη *"
 
 #: open-csa-wp-spots.php:98
 msgid "Region *"
-msgstr ""
+msgstr "Περιοχή *"
 
 #: open-csa-wp-spots.php:170
 msgid "The owner of this delivery spot is: "
-msgstr ""
+msgstr "Ο ιδιοκτήτης της τοποθεσίας παράδοσης είναι:"
 
 #: open-csa-wp-spots.php:204
 msgid "Order deadline is on "
-msgstr ""
+msgstr "Η προθεσμία για καταχώρηση παραγγελιών είναι ενεργοποιημένη"
 
 #: open-csa-wp-spots.php:366
 #: open-csa-wp-spots.php:379
 msgid "Order close"
-msgstr ""
+msgstr "Κλείσιμο παραγγελίας"
 
 #: open-csa-wp-spots.php:453
 #: open-csa-wp-spots.php:466
 #: open-csa-wp-spots.php:479
 #: open-csa-wp-spots.php:492
 msgid "Finding parking space is"
-msgstr ""
+msgstr "Η εύρεση σημείου στάθμευσης είναι"
 
 #: open-csa-wp-spots.php:572
 msgid "Add Spot"
-msgstr ""
+msgstr "Προσθήκη τοποθεσίας"
 
 #: open-csa-wp-spots.php:577
 msgid "Update Spot"
-msgstr ""
+msgstr "Ενημέρωση τοποθεσίας"
 
 #: open-csa-wp-spots.php:583
 msgid "Please fill in required fields, i.e. those marked with (*)"
-msgstr ""
+msgstr "Παρακαλώ συμπληρώστε όλα τα πεδία με την ένδειξη (*)"
 
 #: open-csa-wp-spots.php:811
 msgid "click to edit this spot"
-msgstr ""
+msgstr "επιλέξτε για να επεξεργαστείτε αυτήν την τοποθεσία"
 
 #: open-csa-wp-spots.php:819
 msgid "click to delete this spot"
-msgstr ""
+msgstr "επιλέξτε για να διαγράψετε αυτήν την τοποθεσία"
 
 #: open-csa-wp-users.php:31
 msgid "Your account's type in CSA has not yet been defined"
-msgstr ""
+msgstr "Ο τύπος του λογαριασμού σας δεν έχει οριστεί ακόμα"
 
 #: open-csa-wp-users.php:32
 msgid "Your account's role in CSA has not yet been defined"
-msgstr ""
+msgstr "Ο ρόλος του λογαριασμού σας δεν έχει οριστεί ακόμα"
 
 #: open-csa-wp-users.php:38
 msgid "Producer and Consumer"
-msgstr ""
+msgstr "Παραγωγός και Καταναλωτής"
 
 #: open-csa-wp-users.php:41
 msgid "Simple User"
-msgstr ""
+msgstr "Απλός χρήστης"
 
 #: open-csa-wp-users.php:43
 msgid "You can become responsible for some delivery"
-msgstr ""
+msgstr "Μπορείτε να γίνετε υπεύθυνος/η για κάποια παράδοση "
 
 #: open-csa-wp-users.php:50
 msgid "CSA Properties"
-msgstr ""
+msgstr "Ιδιότητες CSA"
 
 #: open-csa-wp-users.php:54
 msgid "Type"
-msgstr ""
+msgstr "Τύπος"
 
 #: open-csa-wp-users.php:58
 msgid "Role"
-msgstr ""
+msgstr "Ρόλος"
 
 #: open-csa-wp-users.php:440
 #, php-format
 msgid "sorry... you do not have sufficient privileges to access \\\"%s\\\" page. In case something goes wrong, please contant one of your team's administrators..."
-msgstr ""
+msgstr "Δεν έχετε τα απαιτούμενα δικαιώματα για να έχετε πρόσβαση στη σελίδα \\\"%s\\\". Αν κάτι έχει πάει στραβά, επικοινωνήστε με κάποιον από τους διαχειριστές στην ομάδα σας."
 

@@ -20,6 +20,9 @@
 [1] - http://open-csa.tolabaki.gr/
 [2] - https://github.com/ellak-monades-aristeias/csa-wp-plugin/blob/master/CSA-WP-Plugin_report_of_D1_and_D2.pdf
 
+## Σε ποίους απευθύνεται - Κοινότητες Χρηστών - Προγραμματιστών(Developers) ##
+...εδώ περιγράφετε τους δυνητικούς τελικούς χρήστες του έργου σας και τις κοινότητες χρηστών/developers που θα ενδιαφερόντουσαν να επεκτείνουν το έργο σας. ...
+
 # Παραδοτέα
 
 <table>

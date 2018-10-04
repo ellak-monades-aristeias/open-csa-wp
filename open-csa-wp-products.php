@@ -7,7 +7,7 @@ function open_csa_wp_show_new_product_form($product_id, $display, $page_url) {
 	wp_enqueue_script( 'open-csa-wp-products-scripts' );
 	
 	global $days_of_week,$wpdb;
-	$product_info;
+	$product_info = null;
 	if ($product_id != null) {
 		$product_info = $wpdb->get_results($wpdb->prepare("SELECT * FROM ".OPEN_CSA_WP_TABLE_PRODUCTS." WHERE id=%d", $product_id));
 	}
@@ -84,7 +84,7 @@ function open_csa_wp_show_new_product_form($product_id, $display, $page_url) {
 						selected='selected' 
 						disabled='disabled'
 						id = "open-csa-wp-newProductForm_category_input_disabled_id"
-					>Category *</option>
+					><?php _e("Category", OPEN_CSA_WP_DOMAIN)?> *</option>
  					<?php echo open_csa_wp_select_options_from_db(
 									array("name"), 
 									"id", 
@@ -123,7 +123,7 @@ function open_csa_wp_show_new_product_form($product_id, $display, $page_url) {
 							?>
 							disabled='disabled'
 							id = "open-csa-wp-newProductForm_producer_input_disabled_id"
-						>Producer *</option>
+						><?php _e("Producer", OPEN_CSA_WP_DOMAIN)?> *</option>
 						<?php echo open_csa_wp_select_users_of_type("producer", ($product_id!=null)?$product_info[0]->producer:null, __("Producer is ", OPEN_CSA_WP_DOMAIN)); ?>
 					</select>
 					<span id="open-csa-wp-newProductForm_producer_input_span_id"></span>
@@ -212,7 +212,7 @@ function open_csa_wp_show_new_product_form($product_id, $display, $page_url) {
 							?>
 							disabled='disabled'
 							id = "open-csa-wp-newProductForm_unit_input_disabled_id"
-						>per... *</option>
+						><?php _e("per...",OPEN_CSA_WP_DOMAIN)?> *</option>
 						<?php echo open_csa_wp_select_measurement_unit($product_id, $product_info); ?>
 					</select> 
 					<span id="open-csa-wp-newProductForm_unit_input_span_id"></span>
@@ -262,7 +262,7 @@ function open_csa_wp_show_new_product_form($product_id, $display, $page_url) {
 						?>
 						disabled='disabled'
 						id = "open-csa-wp-newProductForm_availability_input_disabled_id"
-					>Available? *</option>
+					><?php _e('Available?', OPEN_CSA_WP_DOMAIN); ?> *</option>
 					<?php 
 						if ($product_id != null) {
 							echo '

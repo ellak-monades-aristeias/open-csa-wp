@@ -170,6 +170,6 @@ function open_csa_wp_toggle_delivery_ability_to_order (delivery_id, plugins_dir)
 		}
 		image_obj.src = plugins_dir + "/open-csa-wp/icons/close.png";
 		text_obj.innerHTML = deliveries_translation.no;
-		image_obj.title = deliveries_translation.grant_ability_to_order";
+		image_obj.title = deliveries_translation.grant_ability_to_order;
 	}
 }
